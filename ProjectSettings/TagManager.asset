@@ -53,3 +53,6 @@ TagManager:
   - name: Ceiling
     uniqueID: 1014425499
     locked: 0
+  - name: Transitions
+    uniqueID: 157543589
+    locked: 0
