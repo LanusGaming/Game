@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float speed = 10f;
+    public bool active = true;
 
     private Rigidbody2D rb;
 
@@ -17,7 +18,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
+        if (active)
+            Move();
+        else
+            rb.velocity = Vector3.zero;
     }
 
     private void Move()
