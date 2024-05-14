@@ -1587,10 +1587,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0d11d181ea99045b81fe68126139e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomType: 0
+  isStartingRoom: 1
+  isChestRoom: 0
+  isHiddenRoom: 0
+  isLockedRoom: 0
+  doors:
+    hasDoorTopLeft: 0
+    hasDoorTop: 1
+    hasDoorTopRight: 0
+    hasDoorBottomLeft: 0
+    hasDoorBottom: 1
+    hasDoorBottomRight: 0
+    hasDoorLeftTop: 0
+    hasDoorLeft: 0
+    hasDoorLeftBottom: 0
+    hasDoorRightTop: 0
+    hasDoorRight: 0
+    hasDoorRightBottom: 0
+  layoutPresets: []
   triggers:
   - {fileID: 7339704894386101419}
   - {fileID: 6096805168306123094}
-  level: {x: 0, y: 0}
+  location: {x: 0, y: 0}
 --- !u!1 &6480503592972369796
 GameObject:
   m_ObjectHideFlags: 0
