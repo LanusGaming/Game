@@ -155,7 +155,8 @@ MonoBehaviour:
   player: {fileID: 419009856}
   transitionObject: {fileID: 679647144363379413, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
   levelGenerator: {fileID: 716529660}
-  seed: 20
+  seed: 1
+  duration: 10
 --- !u!4 &87611984
 Transform:
   m_ObjectHideFlags: 0
@@ -606,16 +607,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomTileSize: {x: 20, y: 20}
-  minimumRooms: 5
-  maximumRoomsBeforeEndingRoom: 15
-  maximumRooms: 30
-  type1Probability: 0.25
-  type2HProbability: 0.25
-  type2VProbability: 0.25
-  type4Probability: 0.25
+  minimumRooms: 10
+  maximumRooms: 20
+  minimumDistanceFromBossRoom: 3
+  type1Probability: 4
+  type2HProbability: 3
+  type2VProbability: 3
+  type4Probability: 2
   normalRoomProbability: 1
   roomsParent: {fileID: 217388895}
-  endingRoomObject: {fileID: 8527446893717985353, guid: b63ab15971a612f4392d7109e323232e, type: 3}
+  bossRoomObjects:
+  - {fileID: 8527446893717985353, guid: b63ab15971a612f4392d7109e323232e, type: 3}
+  - {fileID: 8527446893717985353, guid: 8dcd84d505cef7944af961865df62955, type: 3}
+  - {fileID: 8527446893717985353, guid: 70dfa688664eeed4dac01f494cfb24ae, type: 3}
+  - {fileID: 8527446893717985353, guid: 7b34eb388d51dad4ab901a9855085611, type: 3}
   roomObjects:
   - {fileID: 8527446893717985353, guid: bf1a73a48d7af5d4b8ad47ec73498229, type: 3}
   - {fileID: 8527446893717985353, guid: 58b3c0a5d074b3d43813e62201a4f96c, type: 3}
@@ -641,6 +646,13 @@ MonoBehaviour:
   - {fileID: 7710840166367890622, guid: e5fd10e091411624d94bb4490e0f5e23, type: 3}
   - {fileID: 7710840166367890622, guid: 23b79d784791ff14d80a55b9d8a7ee05, type: 3}
   - {fileID: 4470066198443898539, guid: 79b141ca552261045b8018a6f3b607aa, type: 3}
+  - {fileID: 1873663025538645156, guid: e93ce22f9d0773847bb5f2c918a7052c, type: 3}
+  - {fileID: 5056784741142572190, guid: 3830e0cbdefe4b14aa2cf1c6087047c0, type: 3}
+  - {fileID: 7710840166367890622, guid: 737ddab33a76ca8499762ef87d0fa722, type: 3}
+  - {fileID: 7710840166367890622, guid: eaf7bff50a6a295458bdbe4829ee1f81, type: 3}
+  - {fileID: 7710840166367890622, guid: 88df74f2b34fa1646b79695ae3cab646, type: 3}
+  - {fileID: 7710840166367890622, guid: bbc31c9dfd51b164e845196181fb33cc, type: 3}
+  - {fileID: 7710840166367890622, guid: d8ca01ca01fae9242b7089737bd38c4f, type: 3}
 --- !u!4 &716529661
 Transform:
   m_ObjectHideFlags: 0

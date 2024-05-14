@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 6843376061257455751}
   - component: {fileID: 5884763827144816681}
   m_Layer: 0
-  m_Name: Starting Room 2
+  m_Name: Spawn Room 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomType: 0
-  isStartingRoom: 1
+  isSpawnRoom: 1
   isChestRoom: 0
   isHiddenRoom: 0
   isLockedRoom: 0
@@ -235,3 +235,4 @@ MonoBehaviour:
   layoutPresets: []
   triggers: []
   location: {x: 0, y: 0}
+  distanceFromBossRoom: -1

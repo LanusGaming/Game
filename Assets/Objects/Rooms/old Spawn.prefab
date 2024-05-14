@@ -1551,7 +1551,7 @@ GameObject:
   - component: {fileID: 2057883002973346470}
   - component: {fileID: 1762778799580591290}
   m_Layer: 0
-  m_Name: Spawn Room
+  m_Name: old Spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

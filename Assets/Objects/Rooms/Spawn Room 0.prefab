@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1103108332379312176}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 6843376061257455751}
   - component: {fileID: 5884763827144816681}
   m_Layer: 0
-  m_Name: Starting Room 1
+  m_Name: Spawn Room 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -215,16 +215,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomType: 0
-  isStartingRoom: 1
+  isSpawnRoom: 1
   isChestRoom: 0
   isHiddenRoom: 0
   isLockedRoom: 0
   doors:
     hasDoorTopLeft: 0
-    hasDoorTop: 0
+    hasDoorTop: 1
     hasDoorTopRight: 0
     hasDoorBottomLeft: 0
-    hasDoorBottom: 1
+    hasDoorBottom: 0
     hasDoorBottomRight: 0
     hasDoorLeftTop: 0
     hasDoorLeft: 0
@@ -235,3 +235,4 @@ MonoBehaviour:
   layoutPresets: []
   triggers: []
   location: {x: 0, y: 0}
+  distanceFromBossRoom: -1

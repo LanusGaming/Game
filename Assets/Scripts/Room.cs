@@ -34,6 +34,19 @@ public struct Doors
     public bool hasDoorRightTop;
     public bool hasDoorRight;
     public bool hasDoorRightBottom;
+
+    public static bool operator ==(Doors a, Doors b)
+    {
+        if (a.hasDoorTopLeft == b.hasDoorTopLeft && a.hasDoorTop == b.hasDoorTop && a.hasDoorTopRight == b.hasDoorTopRight
+            && a.hasDoorBottomLeft == b.hasDoorBottomLeft && a.hasDoorBottom == b.hasDoorBottom && a.hasDoorBottomRight == b.hasDoorBottomRight
+            && a.hasDoorLeftTop == b.hasDoorLeftTop && a.hasDoorLeft == b.hasDoorLeft && a.hasDoorLeftBottom == b.hasDoorLeftBottom
+            && a.hasDoorRightTop == b.hasDoorRightTop && a.hasDoorRight == b.hasDoorRight && a.hasDoorRightBottom == b.hasDoorRightBottom)
+            return true;
+
+        return false;
+    }
+
+    public static bool operator !=(Doors a, Doors b) => !(a == b);
 }
 
 public class Room : MonoBehaviour
@@ -41,7 +54,7 @@ public class Room : MonoBehaviour
     [Header("Room Info")]
     public RoomType roomType;
 
-    public bool isStartingRoom;
+    public bool isSpawnRoom;
     public bool isChestRoom;
     public bool isHiddenRoom;
     public bool isLockedRoom;
@@ -55,10 +68,12 @@ public class Room : MonoBehaviour
 
     [HideInInspector]
     public Vector2Int location;
+    [HideInInspector]
+    public int distanceFromBossRoom = -1;
 
     public bool IsSpecialRoom()
     {
-        return isStartingRoom || isChestRoom || isHiddenRoom || isLockedRoom;
+        return isSpawnRoom || isChestRoom || isHiddenRoom || isLockedRoom;
     }
 
     public int GetDoorCount()
