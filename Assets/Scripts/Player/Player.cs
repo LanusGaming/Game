@@ -8,7 +8,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float speed = 10f;
-    public bool active = true;
+
+    [HideInInspector]
+    public bool active = false;
 
     private Rigidbody2D rb;
 

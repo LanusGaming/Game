@@ -40,11 +40,9 @@ public class LevelGenerator : MonoBehaviour
 
     private int openDoorCount;
 
-    public int Generate(int seed)
+    public void Generate()
     {
         ResetGeneration();
-
-        UnityEngine.Random.InitState(seed);
 
         roomToObjectMap = new Dictionary<Room, int>();
         Room[] rooms = new Room[roomObjects.Length];
@@ -70,21 +68,18 @@ public class LevelGenerator : MonoBehaviour
             Room currentRoom = generationQueue.Dequeue();
             if (!GenerateAdjacentRooms(currentRoom))
             {
-                Debug.Log($"Restarting generation with seed {seed + 1}");
-                return Generate(seed + 1);
+                Generate();
+                return;
             }
         }
 
         if (!AddSpawnRoom(bossRoom))
         {
-            Debug.Log($"Could not generate starting room for seed {seed}");
-            Debug.Log($"Restarting generation with seed {seed + 1}");
-            return Generate(seed + 1);
+            Generate();
+            return;
         }
 
-        Debug.Log($"Generated a level with {roomCount} rooms! (Seed: {seed})");
-
-        return seed;
+        Debug.Log($"Generated a level with {roomCount} rooms!");
     }
 
     public void ResetGeneration()
@@ -144,7 +139,7 @@ public class LevelGenerator : MonoBehaviour
 
     private BossRoom AddBossRoom()
     {
-        BossRoom bossRoom = Instantiate(bossRoomObjects[UnityEngine.Random.Range(0, bossRoomObjects.Length)]).GetComponent<BossRoom>();
+        BossRoom bossRoom = Instantiate(bossRoomObjects[GameController.generationRandomizer.Next(0, bossRoomObjects.Length)]).GetComponent<BossRoom>();
         bossRoom.transform.SetParent(roomsParent);
 
         openDoorCount = bossRoom.GetDoorCount() - 1;
@@ -257,7 +252,7 @@ public class LevelGenerator : MonoBehaviour
                     if (fittingRooms.Count == 0)
                         continue;
 
-                    Room fittingRoom = fittingRooms.Keys.ToArray()[UnityEngine.Random.Range(0, fittingRooms.Count)];
+                    Room fittingRoom = fittingRooms.Keys.ToArray()[GameController.generationRandomizer.Next(0, fittingRooms.Count)];
 
                     openDoorCount += fittingRooms[fittingRoom];
                     roomCount++;
@@ -334,7 +329,7 @@ public class LevelGenerator : MonoBehaviour
 
         for (int i = 0; i < roomTypePriority.Length; i++)
         {
-            float random = UnityEngine.Random.value * maxProbability;
+            double random = GameController.generationRandomizer.NextDouble() * maxProbability;
 
             foreach (RoomType type in possibleRoomTypes.Keys)
             {
@@ -362,7 +357,7 @@ public class LevelGenerator : MonoBehaviour
 
         for (int i = 0; i < offsetPriority.Length; i++)
         {
-            float random = UnityEngine.Random.value * availableOffsets.Count;
+            double random = GameController.generationRandomizer.NextDouble() * availableOffsets.Count;
 
             foreach (Vector2Int offset in availableOffsets)
             {
@@ -615,7 +610,7 @@ public class LevelGenerator : MonoBehaviour
     {
         Room[] candidates = GetStartingRoomCandidates(bossRoom);
 
-        foreach (Room room in ShuffleArray(candidates))
+        foreach (Room room in HelperFunctions.ShuffleArray(candidates, GameController.generationRandomizer))
         {
             List<Room> fittingRooms = new List<Room>();
 
@@ -630,7 +625,7 @@ public class LevelGenerator : MonoBehaviour
             if (fittingRooms.Count == 0)
                 continue;
 
-            Room fittingRoom = fittingRooms[UnityEngine.Random.Range(0, fittingRooms.Count)];
+            Room fittingRoom = fittingRooms[GameController.generationRandomizer.Next(0, fittingRooms.Count)];
             GameObject oldRoom = level[room.location.x, room.location.y].gameObject;
 
             roomsParent.transform.position = -CreateRoom(fittingRoom, room.location).transform.position;
@@ -641,21 +636,5 @@ public class LevelGenerator : MonoBehaviour
         }
 
         return false;
-    }
-    
-    private T[] ShuffleArray<T>(T[] array)
-    {
-        List<T> result = new List<T>();
-        List<T> remaining = new List<T>();
-        remaining.AddRange(array);
-
-        while (remaining.Count > 0)
-        {
-            int index = UnityEngine.Random.Range(0, remaining.Count);
-            result.Add(remaining[index]);
-            remaining.RemoveAt(index);
-        }
-
-        return result.ToArray();
     }
 }

@@ -1,37 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
     public Player player;
-    public GameObject transitionObject;
     public LevelGenerator levelGenerator;
-    public int seed = 1;
-    public float duration = 5f;
+    public Trigger levelEndTrigger;
+    public GameObject transitionObject;
 
-    private float timer = 0f;
+    public static System.Random generationRandomizer;
+    public static Queue<int> levelOrder;
 
-    // Start is called before the first frame update
     void Start()
     {
-        seed = levelGenerator.Generate(seed) + 1;
+        levelEndTrigger.callback = EndLevel;
+
+        player.active = false;
+
+        Transition transition = Instantiate(transitionObject).GetComponent<Transition>();
+        transition.transform.position = player.transform.position;
+        transition.doneCallback = (transition) => {
+            player.active = true;
+            Destroy(transition.gameObject);
+        };
+        
+        levelGenerator.Generate();
     }
 
-    private void Update()
+    public void EndLevel(Trigger trigger)
     {
-        if (timer < duration)
-            timer += Time.deltaTime;
-        else
-        {
-            seed = levelGenerator.Generate(seed) + 1;
-            timer = 0f;
-        }
-    }
+        player.active = false;
 
-    public void ChangeLevel(Vector2Int direction)
-    {
-        return;
+        Transition transition = Instantiate(transitionObject).GetComponent<Transition>();
+        transition.transform.position = player.transform.position;
+        transition.doneCallback = (transition) => SceneManager.LoadSceneAsync(levelOrder.Dequeue());
+        transition.reversed = true;
     }
 }

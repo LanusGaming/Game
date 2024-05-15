@@ -64,7 +64,7 @@ public class Room : MonoBehaviour
     public GameObject[] layoutPresets;
 
     [Header("Other")]
-    public LevelTrigger[] triggers;
+    public Trigger[] triggers;
 
     [HideInInspector]
     public Vector2Int location;

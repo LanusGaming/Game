@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1103108332379312176}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: 0}
+  m_LocalPosition: {x: -5, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 76167275
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.0073931217, g: 1, b: 0, a: 1}
@@ -154,8 +154,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 76167275
+  m_SortingLayer: -2
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.030668736, g: 1, b: 0, a: 1}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 6843376061257455751}
   - component: {fileID: 5884763827144816681}
   m_Layer: 0
-  m_Name: Spawn Room 3
+  m_Name: Spawn Room 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -227,10 +227,10 @@ MonoBehaviour:
     hasDoorBottom: 0
     hasDoorBottomRight: 0
     hasDoorLeftTop: 0
-    hasDoorLeft: 0
+    hasDoorLeft: 1
     hasDoorLeftBottom: 0
     hasDoorRightTop: 0
-    hasDoorRight: 1
+    hasDoorRight: 0
     hasDoorRightBottom: 0
   layoutPresets: []
   triggers: []
