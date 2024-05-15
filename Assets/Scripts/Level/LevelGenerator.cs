@@ -2,118 +2,99 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEditor;
 using UnityEngine;
 
-public class LevelGenerator : MonoBehaviour
+[Serializable]
+public class LevelGenerationProperties
 {
-    public Vector2Int roomTileSize = new Vector2Int(20, 20);
-
-    public int minimumRooms = 5;
+    [Min(3)]
+    public int minimumRooms = 10;
+    [Min(3)]
     public int maximumRooms = 15;
+    [Min(1)]
     public int minimumDistanceFromBossRoom = 3;
 
-    public float type1Probability = 0.25f;
-    public float type2HProbability = 0.25f;
-    public float type2VProbability = 0.25f;
-    public float type4Probability = 0.25f;
+    [Min(0)]
+    public float type1Probability = 1f;
+    [Min(0)]
+    public float type2HProbability = 1f;
+    [Min(0)]
+    public float type2VProbability = 1f;
+    [Min(0)]
+    public float type4Probability = 1f;
+}
 
-    public float normalRoomProbability = 1f;
+public class LevelGenerator
+{
+    private LevelGenerationProperties properties;
+    private RoomData[] spawnRooms;
+    private BossRoomData[] bossRooms; 
+    private RoomData[] rooms;
+    private System.Random randomizer;
 
-    public Transform roomsParent;
-    public GameObject[] bossRoomObjects;
-    public GameObject[] roomObjects;
-
-    private Room[,] level;
+    private List<RoomData> levelData;
+    private RoomData[,] level;
     private Vector2Int levelSize;
     private int roomCount;
-
-    private Dictionary<Room, int> roomToObjectMap;
-
-    private Queue<Room> generationQueue;
-
-    private Room[] spawnRooms;
-    private Room[] type1Rooms;
-    private Room[] type2HRooms;
-    private Room[] type2VRooms;
-    private Room[] type4Rooms;
-
     private int openDoorCount;
 
-    public void Generate()
+    private Queue<RoomData> generationQueue;
+
+    private RoomData[] type1Rooms;
+    private RoomData[] type2HRooms;
+    private RoomData[] type2VRooms;
+    private RoomData[] type4Rooms;
+
+    public LevelGenerator(LevelGenerationProperties properties, RoomData[] spawnRooms, BossRoomData[] bossRooms, RoomData[] rooms, System.Random randomizer)
     {
-        ResetGeneration();
+        this.properties = properties;
+        this.bossRooms = bossRooms;
+        this.spawnRooms = spawnRooms;
+        this.rooms = rooms;
+        this.randomizer = randomizer;
+    }
 
-        roomToObjectMap = new Dictionary<Room, int>();
-        Room[] rooms = new Room[roomObjects.Length];
+    public RoomData[] Generate()
+    {
+        levelSize = new Vector2Int((properties.maximumRooms + 1) * 4, (properties.maximumRooms + 1) * 4);
+        level = new RoomData[levelSize.x, levelSize.y];
+        levelData = new List<RoomData>();
+        generationQueue = new Queue<RoomData>();
+        roomCount = 0;
+        openDoorCount = 0;
 
-        for (int i = 0; i < roomObjects.Length; i++)
-        {
-            rooms[i] = roomObjects[i].GetComponent<Room>();
-            roomToObjectMap.Add(rooms[i], i);
-        }
+        RoomData[] bossRoomTiles = AddBossRoom();
 
         CategorizeRooms(rooms);
-
-        levelSize = new Vector2Int((maximumRooms + 1) * 4, (maximumRooms + 1) * 4);
-        level = new Room[levelSize.x, levelSize.y];
-        generationQueue = new Queue<Room>();
-        roomsParent.position = Vector3.zero;
-
-        BossRoom bossRoom = AddBossRoom();
 
         // Generate rooms around other rooms
         while (generationQueue.Count > 0)
         {
-            Room currentRoom = generationQueue.Dequeue();
-            if (!GenerateAdjacentRooms(currentRoom))
-            {
-                Generate();
-                return;
-            }
+            if (!GenerateAdjacentRooms(generationQueue.Dequeue()))
+                return Generate();
         }
 
-        if (!AddSpawnRoom(bossRoom))
-        {
-            Generate();
-            return;
-        }
+        if (!AddSpawnRoom(bossRoomTiles))
+            return Generate();
 
-        Debug.Log($"Generated a level with {roomCount} rooms!");
+        return levelData.ToArray();
     }
 
-    public void ResetGeneration()
+    private void CategorizeRooms(RoomData[] rooms)
     {
-        List<GameObject> generatedRooms = new List<GameObject>();
+        List<RoomData> type1Rooms = new List<RoomData>();
+        List<RoomData> type2HRooms = new List<RoomData>();
+        List<RoomData> type2VRooms = new List<RoomData>();
+        List<RoomData> type4Rooms = new List<RoomData>();
 
-        for (int i = 0; i < roomsParent.childCount; i++)
-        {
-            generatedRooms.Add(roomsParent.GetChild(i).gameObject);
-        }
-
-        foreach (GameObject roomObject in generatedRooms)
-        {
-            Destroy(roomObject);
-        }
-    }
-
-    private void CategorizeRooms(Room[] rooms)
-    {
-        List<Room> spawnRooms = new List<Room>();
-        List<Room> type1Rooms = new List<Room>();
-        List<Room> type2HRooms = new List<Room>();
-        List<Room> type2VRooms = new List<Room>();
-        List<Room> type4Rooms = new List<Room>();
-
-        foreach (Room room in rooms)
+        foreach (RoomData room in rooms)
         {
             switch (room.roomType)
             {
                 case RoomType.Type1:
-                    if (room.isSpawnRoom)
-                        spawnRooms.Add(room);
-                    else
-                        type1Rooms.Add(room);
+                    type1Rooms.Add(room);
                     break;
 
                 case RoomType.Type2Horizontal:
@@ -130,17 +111,15 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        this.spawnRooms = spawnRooms.ToArray();
         this.type1Rooms = type1Rooms.ToArray();
         this.type2HRooms = type2HRooms.ToArray();
         this.type2VRooms = type2VRooms.ToArray();
         this.type4Rooms = type4Rooms.ToArray();
     }
 
-    private BossRoom AddBossRoom()
+    private RoomData[] AddBossRoom()
     {
-        BossRoom bossRoom = Instantiate(bossRoomObjects[GameController.generationRandomizer.Next(0, bossRoomObjects.Length)]).GetComponent<BossRoom>();
-        bossRoom.transform.SetParent(roomsParent);
+        BossRoomData bossRoom = bossRooms[randomizer.Next(0, bossRooms.Length)];
 
         openDoorCount = bossRoom.GetDoorCount() - 1;
 
@@ -165,48 +144,29 @@ public class LevelGenerator : MonoBehaviour
                 break;
         }
 
-        // bottom-left tile
-        Room bottomLeftTile = bossRoom.bottomLeft;
-        bottomLeftTile.location = levelSize/2;
-        AssignRoomToLevel(bottomLeftTile);
+        RoomData bottomLeftTile = CreateRoom(bossRoom.bottomLeft, levelSize / 2);
         generationQueue.Enqueue(bottomLeftTile);
 
-        // bottom-right tile
-        Room bottomRightTile = bossRoom.bottomRight;
-        bottomRightTile.location = new Vector2Int(levelSize.x / 2 + offset.x, levelSize.y / 2);
-        AssignRoomToLevel(bottomRightTile);
+        RoomData bottomRightTile = CreateRoom(bossRoom.bottomRight, new Vector2Int(levelSize.x / 2 + offset.x, levelSize.y / 2));
         generationQueue.Enqueue(bottomRightTile);
 
-        // top-left tile
-        Room topLeftTile = bossRoom.topLeft;
-        topLeftTile.location = new Vector2Int(levelSize.x / 2, levelSize.y / 2 + offset.y);
-        AssignRoomToLevel(topLeftTile);
+        RoomData topLeftTile = CreateRoom(bossRoom.topLeft, new Vector2Int(levelSize.x / 2, levelSize.y / 2 + offset.y));
         generationQueue.Enqueue(topLeftTile);
 
-        // top-right tile
-        Room topRightTile = bossRoom.topRight;
-        topRightTile.location = levelSize / 2 + offset;
-        AssignRoomToLevel(topRightTile);
+        RoomData topRightTile = CreateRoom(bossRoom.topRight, levelSize / 2 + offset);
         generationQueue.Enqueue(topRightTile);
 
-        // create exit room
-        GameObject exitRoomObject = Instantiate(bossRoom.exitRoomObject);
-        Room exitRoom = exitRoomObject.GetComponent<Room>();
-        exitRoom.location = levelSize / 2 + bossRoom.exitRoomPosition;
-        exitRoom.distanceFromBossRoom = -1;
-
-        exitRoomObject.transform.position = new Vector3(bossRoom.exitRoomPosition.x * roomTileSize.x, bossRoom.exitRoomPosition.y * roomTileSize.y, 0);
-        exitRoomObject.transform.SetParent(roomsParent);
-
-        AssignRoomToLevel(exitRoom);
+        CreateRoom(bossRoom.exitRoom, levelSize / 2 + bossRoom.exitRoomPosition).distanceFromBossRoom = 0;
 
         roomCount = 2;
 
-        return bossRoom;
+        return new RoomData[] { bottomLeftTile, bottomRightTile, topLeftTile, topRightTile };
     }
 
-    private void AssignRoomToLevel(Room room)
+    private void AssignRoomToLevel(RoomData room)
     {
+        levelData.Add(room);
+
         switch (room.roomType)
         {
             case RoomType.Type1:
@@ -232,7 +192,16 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    private bool GenerateAdjacentRooms(Room room)
+    private RoomData CreateRoom(RoomData room, Vector2Int location)
+    {
+        RoomData newRoom = new RoomData(room);
+        newRoom.location = location;
+        AssignRoomToLevel(newRoom);
+
+        return newRoom;
+    }
+
+    private bool GenerateAdjacentRooms(RoomData room)
     {
         Dictionary<Vector2Int, Vector2Int> connections = room.GetDoorConnections();
 
@@ -247,17 +216,16 @@ public class LevelGenerator : MonoBehaviour
             {
                 foreach (Vector2Int offset in GetOffsetPriority(roomType, room.location + connectionDirection))
                 {
-                    Dictionary<Room, int> fittingRooms = FindFittingRooms(roomType, room.location + connectionDirection + offset);
+                    Dictionary<RoomData, int> fittingRooms = FindFittingRooms(roomType, room.location + connectionDirection + offset);
 
                     if (fittingRooms.Count == 0)
                         continue;
 
-                    Room fittingRoom = fittingRooms.Keys.ToArray()[GameController.generationRandomizer.Next(0, fittingRooms.Count)];
+                    RoomData fittingRoom = fittingRooms.Keys.ToArray()[randomizer.Next(0, fittingRooms.Count)];
+                    generationQueue.Enqueue(CreateRoom(fittingRoom, room.location + connectionDirection + offset));
 
                     openDoorCount += fittingRooms[fittingRoom];
                     roomCount++;
-
-                    generationQueue.Enqueue(CreateRoom(fittingRoom, room.location + connectionDirection + offset));
 
                     generatedRoom = true;
                     break;
@@ -277,22 +245,6 @@ public class LevelGenerator : MonoBehaviour
         return true;
     }
 
-    private Room CreateRoom(Room room, Vector2Int location)
-    {
-        GameObject newRoomObject = Instantiate(roomObjects[roomToObjectMap[room]]);
-        room = newRoomObject.GetComponent<Room>();
-        room.location = location;
-        room.distanceFromBossRoom = -1;
-
-        Vector2Int roomPosition = (room.location - levelSize / 2);
-        newRoomObject.transform.position = new Vector3(roomPosition.x * roomTileSize.x, roomPosition.y * roomTileSize.y, 0);
-        newRoomObject.transform.SetParent(roomsParent);
-
-        AssignRoomToLevel(room);
-
-        return room;
-    }
-
     private RoomType[] GetRoomTypePriority(Vector2Int location)
     {
         Dictionary<RoomType, float> possibleRoomTypes = new Dictionary<RoomType, float>();
@@ -300,36 +252,36 @@ public class LevelGenerator : MonoBehaviour
 
         if (GetAvailableSpace(RoomType.Type1, location).Length > 0)
         {
-            possibleRoomTypes.Add(RoomType.Type1, type1Probability);
-            maxProbability += type1Probability;
+            possibleRoomTypes.Add(RoomType.Type1, properties.type1Probability);
+            maxProbability += properties.type1Probability;
         }
 
 
         if (GetAvailableSpace(RoomType.Type2Horizontal, location).Length > 0)
         {
-            possibleRoomTypes.Add(RoomType.Type2Horizontal, type2HProbability);
-            maxProbability += type2HProbability;
+            possibleRoomTypes.Add(RoomType.Type2Horizontal, properties.type2HProbability);
+            maxProbability += properties.type2HProbability;
         }
 
 
         if (GetAvailableSpace(RoomType.Type2Vertical, location).Length > 0)
         {
-            possibleRoomTypes.Add(RoomType.Type2Vertical, type2VProbability);
-            maxProbability += type2VProbability;
+            possibleRoomTypes.Add(RoomType.Type2Vertical, properties.type2VProbability);
+            maxProbability += properties.type2VProbability;
         }
 
 
         if (GetAvailableSpace(RoomType.Type4, location).Length > 0)
         {
-            possibleRoomTypes.Add(RoomType.Type4, type4Probability);
-            maxProbability += type4Probability;
+            possibleRoomTypes.Add(RoomType.Type4, properties.type4Probability);
+            maxProbability += properties.type4Probability;
         }
 
         RoomType[] roomTypePriority = new RoomType[possibleRoomTypes.Count];
 
         for (int i = 0; i < roomTypePriority.Length; i++)
         {
-            double random = GameController.generationRandomizer.NextDouble() * maxProbability;
+            double random = randomizer.NextDouble() * maxProbability;
 
             foreach (RoomType type in possibleRoomTypes.Keys)
             {
@@ -357,7 +309,7 @@ public class LevelGenerator : MonoBehaviour
 
         for (int i = 0; i < offsetPriority.Length; i++)
         {
-            double random = GameController.generationRandomizer.NextDouble() * availableOffsets.Count;
+            double random = randomizer.NextDouble() * availableOffsets.Count;
 
             foreach (Vector2Int offset in availableOffsets)
             {
@@ -414,10 +366,10 @@ public class LevelGenerator : MonoBehaviour
         return available.ToArray();
     }
 
-    private Dictionary<Room, int> FindFittingRooms(RoomType roomType, Vector2Int location)
+    private Dictionary<RoomData, int> FindFittingRooms(RoomType roomType, Vector2Int location)
     {
         // TODO add categorization between normal rooms and other types to change probability of them being chosen
-        List<Room> roomShapes = new List<Room>();
+        List<RoomData> roomShapes = new List<RoomData>();
 
         switch (roomType)
         {
@@ -438,50 +390,24 @@ public class LevelGenerator : MonoBehaviour
                 break;
         }
 
-        Dictionary<Room, int> fittingRooms = new Dictionary<Room, int>();
+        Dictionary<RoomData, int> fittingRooms = new Dictionary<RoomData, int>();
 
-        foreach (Room currentRoom in roomShapes)
+        foreach (RoomData currentRoom in roomShapes)
         {
             Dictionary<Vector2Int, Vector2Int> connections = currentRoom.GetDoorConnections();
 
             bool fits = true;
             int openDoors = currentRoom.GetDoorCount();
 
-            foreach (Vector2Int adjacentRoomOffset in Room.GetSurroundings(roomType))
+            foreach (Vector2Int adjacentRoomOffset in RoomData.GetSurroundingTiles(roomType))
             {
-                Room adjacentRoom = level[location.x + adjacentRoomOffset.x, location.y + adjacentRoomOffset.y];
-
-                List<Vector2Int> connectionsFromCurrentRoom = new List<Vector2Int>();
-                List<Vector2Int> connectionsFromAdjacentRoom = new List<Vector2Int>();
+                RoomData adjacentRoom = level[location.x + adjacentRoomOffset.x, location.y + adjacentRoomOffset.y];
 
                 if (adjacentRoom is null)
                     continue;
 
-                foreach (Vector2Int adjacentRoomConnectionDirection in adjacentRoom.GetDoorConnections().Keys)
-                {
-                    switch (roomType)
-                    {
-                        case RoomType.Type1:
-                            if (adjacentRoom.location + adjacentRoomConnectionDirection == location)
-                                connectionsFromAdjacentRoom.Add(adjacentRoom.location + adjacentRoomConnectionDirection);
-                            break;
-
-                        case RoomType.Type2Horizontal:
-                            if (adjacentRoom.location + adjacentRoomConnectionDirection == location || adjacentRoom.location + adjacentRoomConnectionDirection == location + Vector2Int.right)
-                                connectionsFromAdjacentRoom.Add(adjacentRoom.location + adjacentRoomConnectionDirection);
-                            break;
-
-                        case RoomType.Type2Vertical:
-                            if (adjacentRoom.location + adjacentRoomConnectionDirection == location || adjacentRoom.location + adjacentRoomConnectionDirection == location + Vector2Int.up)
-                                connectionsFromAdjacentRoom.Add(adjacentRoom.location + adjacentRoomConnectionDirection);
-                            break;
-
-                        case RoomType.Type4:
-                            if (adjacentRoom.location + adjacentRoomConnectionDirection == location || adjacentRoom.location + adjacentRoomConnectionDirection == location + Vector2Int.right || adjacentRoom.location + adjacentRoomConnectionDirection == location + Vector2Int.up || adjacentRoom.location + adjacentRoomConnectionDirection == location + new Vector2Int(1, 1))
-                                connectionsFromAdjacentRoom.Add(adjacentRoom.location + adjacentRoomConnectionDirection);
-                            break;
-                    }
-                }
+                List<Vector2Int> connectionsFromCurrentRoom = new List<Vector2Int>();
+                List<Vector2Int> connectionsFromAdjacentRoom = new List<Vector2Int>();
 
                 foreach (Vector2Int connectionDirection in connections.Keys)
                 {
@@ -509,6 +435,32 @@ public class LevelGenerator : MonoBehaviour
                     }
                 }
 
+                foreach (Vector2Int adjacentRoomConnectionDirection in adjacentRoom.GetDoorConnections().Keys)
+                {
+                    switch (roomType)
+                    {
+                        case RoomType.Type1:
+                            if (adjacentRoom.location + adjacentRoomConnectionDirection == location)
+                                connectionsFromAdjacentRoom.Add(adjacentRoom.location + adjacentRoomConnectionDirection);
+                            break;
+
+                        case RoomType.Type2Horizontal:
+                            if (adjacentRoom.location + adjacentRoomConnectionDirection == location || adjacentRoom.location + adjacentRoomConnectionDirection == location + Vector2Int.right)
+                                connectionsFromAdjacentRoom.Add(adjacentRoom.location + adjacentRoomConnectionDirection);
+                            break;
+
+                        case RoomType.Type2Vertical:
+                            if (adjacentRoom.location + adjacentRoomConnectionDirection == location || adjacentRoom.location + adjacentRoomConnectionDirection == location + Vector2Int.up)
+                                connectionsFromAdjacentRoom.Add(adjacentRoom.location + adjacentRoomConnectionDirection);
+                            break;
+
+                        case RoomType.Type4:
+                            if (adjacentRoom.location + adjacentRoomConnectionDirection == location || adjacentRoom.location + adjacentRoomConnectionDirection == location + Vector2Int.right || adjacentRoom.location + adjacentRoomConnectionDirection == location + Vector2Int.up || adjacentRoom.location + adjacentRoomConnectionDirection == location + new Vector2Int(1, 1))
+                                connectionsFromAdjacentRoom.Add(adjacentRoom.location + adjacentRoomConnectionDirection);
+                            break;
+                    }
+                }
+
                 if (connectionsFromAdjacentRoom.Count + connectionsFromCurrentRoom.Count == 0)
                     continue;
 
@@ -518,52 +470,91 @@ public class LevelGenerator : MonoBehaviour
                     break;
                 }
 
-                foreach (Vector2Int adjacentConnection in connectionsFromAdjacentRoom)
+                bool currentConnectionCorrect = false;
+                bool adjacentConnectionCorrect = false;
+
+                foreach (Vector2Int currentConnection in connectionsFromCurrentRoom)
                 {
-                    bool contained = false;
-
-                    foreach (Vector2Int currentConnection in connectionsFromCurrentRoom)
+                    if (currentConnection == location + adjacentRoomOffset - RoomData.GetDoorNormal(adjacentRoomOffset))
                     {
-                        if (currentConnection == adjacentConnection)
-                        {
-                            contained = true;
-                            break;
-                        }
-                    }
-
-                    if (!contained)
-                    {
-                        fits = false;
+                        currentConnectionCorrect = true;
                         break;
                     }
                 }
+
+                foreach (Vector2Int adjacentConnection in connectionsFromAdjacentRoom)
+                {
+                    if (adjacentConnection == location + adjacentRoomOffset - RoomData.GetDoorNormal(adjacentRoomOffset))
+                    {
+                        adjacentConnectionCorrect = true;
+                        break;
+                    }
+                }
+
+                if (currentConnectionCorrect != adjacentConnectionCorrect)
+                {
+                    fits = false;
+                    break;
+                }
+
+                if (!(currentConnectionCorrect || adjacentConnectionCorrect))
+                    continue;
 
                 openDoors -= 2;
             }
 
             if (fits
                 && (openDoorCount + openDoors > 0
-                    || (roomCount >= minimumRooms && openDoorCount + openDoors == 0))
-                && roomCount + openDoorCount + openDoors < maximumRooms)
+                    || (roomCount >= properties.minimumRooms && openDoorCount + openDoors == 0))
+                && roomCount + openDoorCount + openDoors < properties.maximumRooms)
                 fittingRooms.Add(currentRoom, openDoors);
         }
 
         return fittingRooms;
     }
 
-    private Room[] GetStartingRoomCandidates(BossRoom bossRoom)
+    private bool AddSpawnRoom(RoomData[] bossRoomTiles)
     {
-        bossRoom.bottomLeft.distanceFromBossRoom = 0;
-        bossRoom.bottomRight.distanceFromBossRoom = 0;
-        bossRoom.topLeft.distanceFromBossRoom = 0;
-        bossRoom.topRight.distanceFromBossRoom = 0;
+        RoomData[] candidates = GetSpawnRoomCandidates(bossRoomTiles);
 
-        AssignDistanceValueForAdjacentRooms(bossRoom.bottomLeft);
-        AssignDistanceValueForAdjacentRooms(bossRoom.bottomRight);
-        AssignDistanceValueForAdjacentRooms(bossRoom.topLeft);
-        AssignDistanceValueForAdjacentRooms(bossRoom.topRight);
+        foreach (RoomData room in HelperFunctions.ShuffleArray(candidates, randomizer))
+        {
+            List<RoomData> fittingRooms = new List<RoomData>();
 
-        List<Room> candidates = new List<Room>();
+            foreach (RoomData spawnRoom in spawnRooms)
+            {
+                if (spawnRoom.IsEquivalentTo(room))
+                {
+                    fittingRooms.Add(spawnRoom);
+                }
+            }
+
+            if (fittingRooms.Count == 0)
+                continue;
+
+            levelData.Remove(level[room.location.x, room.location.y]);
+            CreateRoom(fittingRooms[randomizer.Next(0, fittingRooms.Count)], room.location);
+
+            return true;
+        }
+
+        Debug.Log("Could not generate spawn room!");
+        return false;
+    }
+
+    private RoomData[] GetSpawnRoomCandidates(RoomData[] bossRoomTiles)
+    {
+        bossRoomTiles[0].distanceFromBossRoom = 0;
+        bossRoomTiles[1].distanceFromBossRoom = 0;
+        bossRoomTiles[2].distanceFromBossRoom = 0;
+        bossRoomTiles[3].distanceFromBossRoom = 0;
+
+        AssignDistanceValueForAdjacentRooms(bossRoomTiles[0]);
+        AssignDistanceValueForAdjacentRooms(bossRoomTiles[1]);
+        AssignDistanceValueForAdjacentRooms(bossRoomTiles[2]);
+        AssignDistanceValueForAdjacentRooms(bossRoomTiles[3]);
+
+        List<RoomData> candidates = new List<RoomData>();
 
         for (int x = 0; x < levelSize.x; x++)
         {
@@ -572,7 +563,7 @@ public class LevelGenerator : MonoBehaviour
                 if (level[x, y] is null)
                     continue;
 
-                if (level[x, y].distanceFromBossRoom >= minimumDistanceFromBossRoom && !candidates.Contains(level[x, y]))
+                if (level[x, y].distanceFromBossRoom >= properties.minimumDistanceFromBossRoom)
                     candidates.Add(level[x, y]);
             }
         }
@@ -580,13 +571,13 @@ public class LevelGenerator : MonoBehaviour
         return candidates.ToArray();
     }
 
-    private void AssignDistanceValueForAdjacentRooms(Room room)
+    private void AssignDistanceValueForAdjacentRooms(RoomData room)
     {
-        List<Room> roomsToCheck = new List<Room>();
+        List<RoomData> roomsToCheck = new List<RoomData>();
 
         foreach (Vector2Int adjecentRoomOffset in room.GetDoorConnections().Keys)
         {
-            Room adjacentRoom = level[room.location.x + adjecentRoomOffset.x, room.location.y + adjecentRoomOffset.y];
+            RoomData adjacentRoom = level[room.location.x + adjecentRoomOffset.x, room.location.y + adjecentRoomOffset.y];
 
             if (adjacentRoom.distanceFromBossRoom == -1)
             {
@@ -600,41 +591,9 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        foreach(Room roomToCheck in roomsToCheck)
+        foreach(RoomData roomToCheck in roomsToCheck)
         {
             AssignDistanceValueForAdjacentRooms(roomToCheck);
         }
-    }
-
-    private bool AddSpawnRoom(BossRoom bossRoom)
-    {
-        Room[] candidates = GetStartingRoomCandidates(bossRoom);
-
-        foreach (Room room in HelperFunctions.ShuffleArray(candidates, GameController.generationRandomizer))
-        {
-            List<Room> fittingRooms = new List<Room>();
-
-            foreach (Room spawnRoom in spawnRooms)
-            {
-                if (spawnRoom.roomType == room.roomType && spawnRoom.doors == room.doors)
-                {
-                    fittingRooms.Add(spawnRoom);
-                }
-            }
-
-            if (fittingRooms.Count == 0)
-                continue;
-
-            Room fittingRoom = fittingRooms[GameController.generationRandomizer.Next(0, fittingRooms.Count)];
-            GameObject oldRoom = level[room.location.x, room.location.y].gameObject;
-
-            roomsParent.transform.position = -CreateRoom(fittingRoom, room.location).transform.position;
-
-            Destroy(oldRoom);
-
-            return true;
-        }
-
-        return false;
     }
 }

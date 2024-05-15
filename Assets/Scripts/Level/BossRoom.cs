@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class BossRoom : MonoBehaviour
+public class BossRoomData
 {
-    public Room topLeft;
-    public Room topRight;
-    public Room bottomLeft;
-    public Room bottomRight;
+    public RoomData topLeft;
+    public RoomData topRight;
+    public RoomData bottomLeft;
+    public RoomData bottomRight;
 
-    public GameObject exitRoomObject;
-    [Tooltip("Relative to the bottom-left corner of the bottom-left tile")]
+    public RoomData exitRoom;
     public Vector2Int exitRoomPosition;
 
     public int GetDoorCount()
@@ -45,7 +44,7 @@ public class BossRoom : MonoBehaviour
         }
 
         Dictionary<Vector2Int, Vector2Int> connections;
-        
+
         connections = bottomLeft.GetDoorConnections();
         foreach (Vector2Int connectionDirection in connections.Keys)
         {
@@ -71,5 +70,31 @@ public class BossRoom : MonoBehaviour
         }
 
         return directions;
+    }
+}
+
+public class BossRoom : MonoBehaviour
+{
+    public Room topLeft;
+    public Room topRight;
+    public Room bottomLeft;
+    public Room bottomRight;
+
+    public GameObject exitRoomObject;
+    [Tooltip("Relative to the bottom-left corner of the bottom-left tile")]
+    public Vector2Int exitRoomPosition;
+
+    public BossRoomData GetBossRoomData()
+    {
+        BossRoomData bossRoomData = new BossRoomData();
+
+        bossRoomData.topLeft = topLeft.data;
+        bossRoomData.topRight = topRight.data;
+        bossRoomData.bottomLeft = bottomLeft.data;
+        bossRoomData.bottomRight = bottomRight.data;
+        bossRoomData.exitRoom = exitRoomObject.GetComponent<Room>().data;
+        bossRoomData.exitRoomPosition = exitRoomPosition;
+
+        return bossRoomData;
     }
 }

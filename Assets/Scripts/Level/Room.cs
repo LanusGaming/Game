@@ -13,63 +13,88 @@ public enum RoomType
 }
 
 [Serializable]
-public struct Doors
+public class RoomData
 {
-    [Header("Top")]
-    public bool hasDoorTopLeft;
-    public bool hasDoorTop;
-    public bool hasDoorTopRight;
+    [HideInInspector]
+    public string roomID;
+    [HideInInspector]
+    public Vector2Int location;
+    [HideInInspector]
+    public int distanceFromBossRoom;
 
-    [Header("Bottom")]
-    public bool hasDoorBottomLeft;
-    public bool hasDoorBottom;
-    public bool hasDoorBottomRight;
-
-    [Header("Left")]
-    public bool hasDoorLeftTop;
-    public bool hasDoorLeft;
-    public bool hasDoorLeftBottom;
-
-    [Header("Right")]
-    public bool hasDoorRightTop;
-    public bool hasDoorRight;
-    public bool hasDoorRightBottom;
-
-    public static bool operator ==(Doors a, Doors b)
-    {
-        if (a.hasDoorTopLeft == b.hasDoorTopLeft && a.hasDoorTop == b.hasDoorTop && a.hasDoorTopRight == b.hasDoorTopRight
-            && a.hasDoorBottomLeft == b.hasDoorBottomLeft && a.hasDoorBottom == b.hasDoorBottom && a.hasDoorBottomRight == b.hasDoorBottomRight
-            && a.hasDoorLeftTop == b.hasDoorLeftTop && a.hasDoorLeft == b.hasDoorLeft && a.hasDoorLeftBottom == b.hasDoorLeftBottom
-            && a.hasDoorRightTop == b.hasDoorRightTop && a.hasDoorRight == b.hasDoorRight && a.hasDoorRightBottom == b.hasDoorRightBottom)
-            return true;
-
-        return false;
-    }
-
-    public static bool operator !=(Doors a, Doors b) => !(a == b);
-}
-
-public class Room : MonoBehaviour
-{
-    [Header("Room Info")]
+    [Header("Type Info")]
     public RoomType roomType;
 
     public bool isSpawnRoom;
     public bool isChestRoom;
     public bool isHiddenRoom;
     public bool isLockedRoom;
-    
-    public Doors doors;
 
-    public GameObject[] layoutPresets;
+    [Header("Top Doors")]
+    public bool hasDoorTopLeft;
+    public bool hasDoorTop;
+    public bool hasDoorTopRight;
 
-    [Header("Other")]
-    public Trigger[] triggers;
+    [Header("Bottom Doors")]
+    public bool hasDoorBottomLeft;
+    public bool hasDoorBottom;
+    public bool hasDoorBottomRight;
 
-    [HideInInspector]
-    public Vector2Int location;
-    [HideInInspector]
-    public int distanceFromBossRoom = -1;
+    [Header("Left Doors")]
+    public bool hasDoorLeftTop;
+    public bool hasDoorLeft;
+    public bool hasDoorLeftBottom;
+
+    [Header("Right Doors")]
+    public bool hasDoorRightTop;
+    public bool hasDoorRight;
+    public bool hasDoorRightBottom;
+
+    public RoomData() { }
+
+    public RoomData(RoomData other)
+    {
+        roomID = other.roomID;
+        location = new Vector2Int();
+        distanceFromBossRoom = -1;
+
+        roomType = other.roomType;
+
+        isSpawnRoom = other.isSpawnRoom;
+        isChestRoom = other.isChestRoom;
+        isHiddenRoom = other.isHiddenRoom;
+        isLockedRoom = other.isLockedRoom;
+
+        hasDoorTopLeft = other.hasDoorTopLeft;
+        hasDoorTop = other.hasDoorTop;
+        hasDoorTopRight = other.hasDoorTopRight;
+
+        hasDoorBottomLeft = other.hasDoorBottomLeft;
+        hasDoorBottom = other.hasDoorBottom;
+        hasDoorBottomRight = other.hasDoorBottomRight;
+
+        hasDoorLeftTop = other.hasDoorLeftTop;
+        hasDoorLeft = other.hasDoorLeft;
+        hasDoorLeftBottom = other.hasDoorLeftBottom;
+
+        hasDoorRightTop = other.hasDoorRightTop;
+        hasDoorRight = other.hasDoorRight;
+        hasDoorRightBottom = other.hasDoorRightBottom;
+    }
+
+    public bool IsEquivalentTo(RoomData other)
+    {
+        if (roomType != other.roomType)
+            return false;
+
+        if (hasDoorTopLeft == other.hasDoorTopLeft && hasDoorTop == other.hasDoorTop && hasDoorTopRight == other.hasDoorTopRight
+            && hasDoorBottomLeft == other.hasDoorBottomLeft && hasDoorBottom == other.hasDoorBottom && hasDoorBottomRight == other.hasDoorBottomRight
+            && hasDoorLeftTop == other.hasDoorLeftTop && hasDoorLeft == other.hasDoorLeft && hasDoorLeftBottom == other.hasDoorLeftBottom
+            && hasDoorRightTop == other.hasDoorRightTop && hasDoorRight == other.hasDoorRight && hasDoorRightBottom == other.hasDoorRightBottom)
+            return true;
+
+        return false;
+    }
 
     public bool IsSpecialRoom()
     {
@@ -80,34 +105,34 @@ public class Room : MonoBehaviour
     {
         int count = 0;
 
-        if (doors.hasDoorTopLeft)
+        if (hasDoorTopLeft)
             count++;
-        if (doors.hasDoorTop)
+        if (hasDoorTop)
             count++;
-        if (doors.hasDoorTopRight)
-            count++;
-
-        if (doors.hasDoorBottomLeft)
-            count++;
-        if (doors.hasDoorBottom)
-            count++;
-        if (doors.hasDoorBottomRight)
+        if (hasDoorTopRight)
             count++;
 
-        if (doors.hasDoorLeftTop)
+        if (hasDoorBottomLeft)
             count++;
-        if (doors.hasDoorLeft)
+        if (hasDoorBottom)
             count++;
-        if (doors.hasDoorLeftBottom)
+        if (hasDoorBottomRight)
             count++;
 
-        if (doors.hasDoorRightTop)
+        if (hasDoorLeftTop)
             count++;
-        if (doors.hasDoorRight)
+        if (hasDoorLeft)
             count++;
-        if (doors.hasDoorRightBottom)
+        if (hasDoorLeftBottom)
             count++;
-        
+
+        if (hasDoorRightTop)
+            count++;
+        if (hasDoorRight)
+            count++;
+        if (hasDoorRightBottom)
+            count++;
+
         return count;
     }
 
@@ -118,77 +143,77 @@ public class Room : MonoBehaviour
         switch (roomType)
         {
             case RoomType.Type1:
-                if (doors.hasDoorTop)
+                if (hasDoorTop)
                     directions.Add(new Vector2Int(0, 1), Vector2Int.up);
 
-                if (doors.hasDoorBottom)
+                if (hasDoorBottom)
                     directions.Add(new Vector2Int(0, -1), Vector2Int.down);
 
-                if (doors.hasDoorLeft)
+                if (hasDoorLeft)
                     directions.Add(new Vector2Int(-1, 0), Vector2Int.left);
 
-                if (doors.hasDoorRight)
+                if (hasDoorRight)
                     directions.Add(new Vector2Int(1, 0), Vector2Int.right);
 
                 break;
 
             case RoomType.Type2Horizontal:
-                if (doors.hasDoorTopLeft)
+                if (hasDoorTopLeft)
                     directions.Add(new Vector2Int(0, 1), Vector2Int.up);
-                if (doors.hasDoorTopRight)
+                if (hasDoorTopRight)
                     directions.Add(new Vector2Int(1, 1), Vector2Int.up);
 
-                if (doors.hasDoorBottomLeft)
+                if (hasDoorBottomLeft)
                     directions.Add(new Vector2Int(0, -1), Vector2Int.down);
-                if (doors.hasDoorBottomRight)
+                if (hasDoorBottomRight)
                     directions.Add(new Vector2Int(1, -1), Vector2Int.down);
 
-                if (doors.hasDoorLeft)
+                if (hasDoorLeft)
                     directions.Add(new Vector2Int(-1, 0), Vector2Int.left);
 
-                if (doors.hasDoorRight)
+                if (hasDoorRight)
                     directions.Add(new Vector2Int(2, 0), Vector2Int.right);
 
                 break;
 
             case RoomType.Type2Vertical:
-                if (doors.hasDoorTop)
+                if (hasDoorTop)
                     directions.Add(new Vector2Int(0, 2), Vector2Int.up);
 
-                if (doors.hasDoorBottom)
+                if (hasDoorBottom)
                     directions.Add(new Vector2Int(0, -1), Vector2Int.down);
 
-                if (doors.hasDoorLeftTop)
+                if (hasDoorLeftTop)
                     directions.Add(new Vector2Int(-1, 1), Vector2Int.left);
-                if (doors.hasDoorLeftBottom)
+                if (hasDoorLeftBottom)
                     directions.Add(new Vector2Int(-1, 0), Vector2Int.left);
 
-                if (doors.hasDoorRightTop)
+                if (hasDoorRightTop)
                     directions.Add(new Vector2Int(1, 1), Vector2Int.right);
-                if (doors.hasDoorRightBottom)
+                if (hasDoorRightBottom)
                     directions.Add(new Vector2Int(1, 0), Vector2Int.right);
 
                 break;
 
             case RoomType.Type4:
-                if (doors.hasDoorTopLeft)
+                if (hasDoorTopLeft)
                     directions.Add(new Vector2Int(0, 2), Vector2Int.up);
-                if (doors.hasDoorTopRight)
+                if (hasDoorTopRight)
                     directions.Add(new Vector2Int(1, 2), Vector2Int.up);
 
-                if (doors.hasDoorBottomLeft)
+                if (hasDoorBottomLeft)
                     directions.Add(new Vector2Int(0, -1), Vector2Int.down);
-                if (doors.hasDoorBottomRight)
+                if (hasDoorBottomRight)
                     directions.Add(new Vector2Int(1, -1), Vector2Int.down);
 
-                if (doors.hasDoorLeftTop)
+                if (hasDoorLeftTop)
                     directions.Add(new Vector2Int(-1, 1), Vector2Int.left);
-                if (doors.hasDoorLeftBottom)
+                if (hasDoorLeftBottom)
                     directions.Add(new Vector2Int(-1, 0), Vector2Int.left);
 
-                if (doors.hasDoorRightTop)
+                if (hasDoorRightTop)
                     directions.Add(new Vector2Int(2, 1), Vector2Int.right);
-                if (doors.hasDoorRightBottom)
+                if (hasDoorRightBottom)
                     directions.Add(new Vector2Int(2, 0), Vector2Int.right);
 
                 break;
@@ -197,7 +222,38 @@ public class Room : MonoBehaviour
         return directions;
     }
 
-    public static Vector2Int[] GetSurroundings(RoomType roomType)
+    public Vector2Int[] GetSurroundingTiles()
+    {
+        return GetSurroundingTiles(roomType);
+    }
+
+    public static Vector2Int GetDoorNormal(Vector2Int direction)
+    {
+        if (direction == new Vector2Int(0, 1))
+            return Vector2Int.up;
+        if (direction == new Vector2Int(0, -1))
+            return Vector2Int.down;
+        if (direction == new Vector2Int(1, 0))
+            return Vector2Int.right;
+        if (direction == new Vector2Int(-1, 0))
+            return Vector2Int.left;
+        if (direction == new Vector2Int(0, 2))
+            return Vector2Int.up;
+        if (direction == new Vector2Int(1, 2))
+            return Vector2Int.up;
+        if (direction == new Vector2Int(1, -1))
+            return Vector2Int.down;
+        if (direction == new Vector2Int(2, 1))
+            return Vector2Int.right;
+        if (direction == new Vector2Int(2, 0))
+            return Vector2Int.right;
+        if (direction == new Vector2Int(-1, 1))
+            return Vector2Int.left;
+
+        return Vector2Int.zero;
+    }
+
+    public static Vector2Int[] GetSurroundingTiles(RoomType roomType)
     {
         List<Vector2Int> directions = new List<Vector2Int>();
 
@@ -246,4 +302,11 @@ public class Room : MonoBehaviour
 
         return directions.ToArray();
     }
+}
+
+public class Room : MonoBehaviour
+{
+    public RoomData data;
+    public GameObject[] layoutPresets;
+    public Trigger[] triggers;
 }

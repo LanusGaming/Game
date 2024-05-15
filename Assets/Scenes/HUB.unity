@@ -367,6 +367,66 @@ PrefabInstance:
       propertyPath: transitionObject
       value: 
       objectReference: {fileID: 679647144363379413, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[0].levels.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[1].levels.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[2].levels.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[3].levels.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[4].levels.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[0].levels.Array.data[0]
+      value: Level 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[1].levels.Array.data[0]
+      value: Level 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[1].levels.Array.data[1]
+      value: Level 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[2].levels.Array.data[0]
+      value: Level 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[2].levels.Array.data[1]
+      value: Level 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[3].levels.Array.data[0]
+      value: Level 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[3].levels.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[4].levels.Array.data[0]
+      value: HUB
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[4].levels.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

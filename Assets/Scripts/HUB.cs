@@ -9,25 +9,28 @@ using UnityEngine.SceneManagement;
 public struct Stage
 {
     [SerializeField]
-    public int[] levels;
+    public string[] levels;
 }
 
 public class HUB : MonoBehaviour
 {
-    public Trigger startGameTrigger;
+    public int debugSeed = 0;
+    public Stage[] levels;
+
     public Player player;
+    public Trigger startGameTrigger;
     public GameObject transitionObject;
 
-    public Stage[] levels;
-    
-    public int debugSeed = 0;
+    public static int buildIndex;
     
     void Start()
     {
+        buildIndex = SceneManager.GetActiveScene().buildIndex;
+
         if (debugSeed != 0)
-        {
             Settings.seed = debugSeed;
-        }
+        else if (Settings.seed == 0)
+            Settings.seed = (int)(DateTime.Now.Ticks % int.MaxValue);
 
         startGameTrigger.callback = StartGame;
 
@@ -58,11 +61,11 @@ public class HUB : MonoBehaviour
 
     private void GenerateLevelOrder()
     {
-        GameController.levelOrder = new Queue<int>();
+        GameController.levelOrder = new Queue<string>();
 
         foreach (Stage stage in levels)
         {
-            foreach (var level in HelperFunctions.ShuffleArray(stage.levels, GameController.generationRandomizer))
+            foreach (string level in HelperFunctions.ShuffleArray(stage.levels, GameController.generationRandomizer))
             {
                 GameController.levelOrder.Enqueue(level);
             }

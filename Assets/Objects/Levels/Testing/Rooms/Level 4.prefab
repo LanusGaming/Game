@@ -299,12 +299,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0d11d181ea99045b81fe68126139e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: 0
-  isStartingRoom: 0
-  isChestRoom: 0
-  isHiddenRoom: 0
-  isLockedRoom: 0
-  doors:
+  data:
+    location: {x: 0, y: 0}
+    distanceFromBossRoom: 0
+    roomID: test_t1tmbmlmrm
+    roomType: 0
+    isSpawnRoom: 0
+    isChestRoom: 0
+    isHiddenRoom: 0
+    isLockedRoom: 0
     hasDoorTopLeft: 0
     hasDoorTop: 1
     hasDoorTopRight: 0
@@ -319,4 +322,3 @@ MonoBehaviour:
     hasDoorRightBottom: 0
   layoutPresets: []
   triggers: []
-  location: {x: 0, y: 0}

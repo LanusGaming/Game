@@ -219,10 +219,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 513189025d479ac49adf5f7899252e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topLeft: {fileID: 3518722834424066715}
+  topLeft: {fileID: 2324362635007315432}
   topRight: {fileID: 990323188784038310}
   bottomLeft: {fileID: 5884763827144816681}
-  bottomRight: {fileID: 2324362635007315432}
+  bottomRight: {fileID: 3518722834424066715}
   exitRoomObject: {fileID: 1392295148030105193, guid: 5306be459cd77a146901db9e330d16c7, type: 3}
   exitRoomPosition: {x: 3, y: 1}
 --- !u!114 &5884763827144816681
@@ -237,12 +237,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0d11d181ea99045b81fe68126139e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: 3
-  isSpawnRoom: 0
-  isChestRoom: 0
-  isHiddenRoom: 0
-  isLockedRoom: 0
-  doors:
+  data:
+    roomID: 
+    location: {x: 0, y: 0}
+    distanceFromBossRoom: 0
+    roomType: 3
+    isSpawnRoom: 0
+    isChestRoom: 0
+    isHiddenRoom: 0
+    isLockedRoom: 0
     hasDoorTopLeft: 0
     hasDoorTop: 0
     hasDoorTopRight: 0
@@ -257,8 +260,6 @@ MonoBehaviour:
     hasDoorRightBottom: 0
   layoutPresets: []
   triggers: []
-  location: {x: 0, y: 0}
-  distanceFromBossRoom: -1
 --- !u!114 &3518722834424066715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,46 +272,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0d11d181ea99045b81fe68126139e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: 1
-  isSpawnRoom: 0
-  isChestRoom: 0
-  isHiddenRoom: 0
-  isLockedRoom: 0
-  doors:
-    hasDoorTopLeft: 0
-    hasDoorTop: 0
-    hasDoorTopRight: 0
-    hasDoorBottomLeft: 0
-    hasDoorBottom: 0
-    hasDoorBottomRight: 0
-    hasDoorLeftTop: 0
-    hasDoorLeft: 0
-    hasDoorLeftBottom: 0
-    hasDoorRightTop: 0
-    hasDoorRight: 0
-    hasDoorRightBottom: 0
-  layoutPresets: []
-  triggers: []
-  location: {x: 0, y: 0}
-  distanceFromBossRoom: -1
---- !u!114 &2324362635007315432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8527446893717985353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b0d11d181ea99045b81fe68126139e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roomType: 2
-  isSpawnRoom: 0
-  isChestRoom: 0
-  isHiddenRoom: 0
-  isLockedRoom: 0
-  doors:
+  data:
+    roomID: 
+    location: {x: 0, y: 0}
+    distanceFromBossRoom: 0
+    roomType: 2
+    isSpawnRoom: 0
+    isChestRoom: 0
+    isHiddenRoom: 0
+    isLockedRoom: 0
     hasDoorTopLeft: 0
     hasDoorTop: 0
     hasDoorTopRight: 0
@@ -325,9 +295,7 @@ MonoBehaviour:
     hasDoorRightBottom: 0
   layoutPresets: []
   triggers: []
-  location: {x: 0, y: 0}
-  distanceFromBossRoom: -1
---- !u!114 &990323188784038310
+--- !u!114 &2324362635007315432
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -339,12 +307,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0d11d181ea99045b81fe68126139e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: 0
-  isSpawnRoom: 0
-  isChestRoom: 0
-  isHiddenRoom: 0
-  isLockedRoom: 0
-  doors:
+  data:
+    roomID: 
+    location: {x: 0, y: 0}
+    distanceFromBossRoom: 0
+    roomType: 1
+    isSpawnRoom: 0
+    isChestRoom: 0
+    isHiddenRoom: 0
+    isLockedRoom: 0
     hasDoorTopLeft: 0
     hasDoorTop: 0
     hasDoorTopRight: 0
@@ -359,8 +330,41 @@ MonoBehaviour:
     hasDoorRightBottom: 0
   layoutPresets: []
   triggers: []
-  location: {x: 0, y: 0}
-  distanceFromBossRoom: -1
+--- !u!114 &990323188784038310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8527446893717985353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b0d11d181ea99045b81fe68126139e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    roomID: 
+    location: {x: 0, y: 0}
+    distanceFromBossRoom: 0
+    roomType: 0
+    isSpawnRoom: 0
+    isChestRoom: 0
+    isHiddenRoom: 0
+    isLockedRoom: 0
+    hasDoorTopLeft: 0
+    hasDoorTop: 0
+    hasDoorTopRight: 0
+    hasDoorBottomLeft: 0
+    hasDoorBottom: 0
+    hasDoorBottomRight: 0
+    hasDoorLeftTop: 0
+    hasDoorLeft: 0
+    hasDoorLeftBottom: 0
+    hasDoorRightTop: 0
+    hasDoorRight: 0
+    hasDoorRightBottom: 0
+  layoutPresets: []
+  triggers: []
 --- !u!1 &9162218380454795876
 GameObject:
   m_ObjectHideFlags: 0

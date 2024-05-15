@@ -9,8 +9,6 @@ public class Trigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log(collider.gameObject.tag);
-
         if (collider.gameObject.tag == "Player" && callback is not null)
         {
             callback.Invoke(this);

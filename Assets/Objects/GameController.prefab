@@ -45,5 +45,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  levelEndTrigger: {fileID: 0}
   transitionObject: {fileID: 679647144363379413, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-  levelGenerator: {fileID: 0}
+  properties:
+    minimumRooms: 5000
+    maximumRooms: 5000
+    minimumDistanceFromBossRoom: 20
+    type1Probability: 4
+    type2HProbability: 3
+    type2VProbability: 3
+    type4Probability: 2
+  roomSizeInTiles: {x: 20, y: 20}
+  spawnRoomObjects: []
+  bossRoomObjects: []
+  roomObjects: []
+  levelParent: {fileID: 0}
