@@ -8,18 +8,18 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
-  m_EditorHideFlags: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 12004, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 3840
-    y: 645
-    width: 1920
-    height: 989
+    x: 0
+    y: 42.666668
+    width: 2560
+    height: 1349.3334
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Git for Unity
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -44,8 +44,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1920
-    height: 989
+    width: 2560
+    height: 1349.3334
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
@@ -69,7 +69,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1920
+    width: 2560
     height: 30
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
@@ -90,8 +90,8 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 969
-    width: 1920
+    y: 1329.3334
+    width: 2560
     height: 20
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
@@ -114,12 +114,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 30
-    width: 1920
-    height: 939
+    width: 2560
+    height: 1299.3334
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 90
+  controlID: 214
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -139,12 +139,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1330
-    height: 939
+    width: 1860.6666
+    height: 1299.3334
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 54
+  controlID: 157
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -164,12 +164,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1330
-    height: 661
+    width: 1860.6666
+    height: 916
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 44
+  controlID: 158
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -187,8 +187,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 211
-    height: 661
+    width: 298.66666
+    height: 916
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 13}
@@ -206,23 +206,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SceneView
+  m_Name: GameView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 211
+    x: 298.66666
     y: 0
-    width: 1119
-    height: 661
+    width: 1562
+    height: 916
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 14}
+  m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 14}
   - {fileID: 15}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -233,23 +233,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ConsoleWindow
+  m_Name: ProjectBrowser
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 661
-    width: 1330
-    height: 278
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 17}
+    y: 916
+    width: 1860.6666
+    height: 383.33337
+  m_MinSize: {x: 231, y: 271}
+  m_MaxSize: {x: 10001, y: 10021}
+  m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
   - {fileID: 17}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -260,23 +260,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: InspectorWindow
+  m_Name: Window
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1330
+    x: 1860.6666
     y: 0
-    width: 590
-    height: 939
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 18}
+    width: 699.3334
+    height: 1299.3334
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 18}
   - {fileID: 12}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -297,10 +297,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 5312
-    y: 675
-    width: 447
-    height: 605
+    x: 1860.6667
+    y: 72.66667
+    width: 698.3334
+    height: 1278.3334
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -311,14 +311,14 @@ MonoBehaviour:
     m_LastAppliedPresetName: Default
     m_SaveData: []
     m_OverlaysVisible: 1
-  progressMessageClearTime: -1
+  progressMessageClearTime: 2445.7365600000003
   notificationClearTime: -1
   timeSinceLastRotation: -1
   currentBranchAndRemoteHasUpdate: 0
   currentTrackingStatusHasUpdate: 0
-  currentStatusEntriesHasUpdate: 1
-  repositoryProgressHasUpdate: 1
-  appManagerProgressHasUpdate: 1
+  currentStatusEntriesHasUpdate: 0
+  repositoryProgressHasUpdate: 0
+  appManagerProgressHasUpdate: 0
   changeTab: 3
   activeTab: 3
   initProjectView:
@@ -490,9 +490,9 @@ MonoBehaviour:
     - name: origin/master
       tracking: '[None]'
   changesView:
-    currentBranchHasUpdate: 1
-    currentStatusEntriesHasUpdate: 1
-    currentLocksHasUpdate: 1
+    currentBranchHasUpdate: 0
+    currentStatusEntriesHasUpdate: 0
+    currentLocksHasUpdate: 0
     commitBody: 
     commitMessage: 
     currentBranch: master
@@ -500,173 +500,11 @@ MonoBehaviour:
     treeChanges:
       assets:
         keys:
-        - 00000000000000001000000000000000
-        - 57161493eeb0d4f41a1d4e82ecd33490
-        - 9fc9f93b38b1f234a9942f32b2dabde1
-        - 84f8ae6f5dc5bce4ba17fb16b1ef4d34
-        - 3558b9c72a8129c4bbfb050e75b762ad
-        - db4c12648f68dd342b9a01ed833f4d27
-        - 6f69da37922c2c049b0a7b55185c9786
-        - 31190b48305cf404ca6c5bf4b5fd1f8d
-        - 3578920dc6ee0d84cadfb3a89c198eb7
-        - 2e9e7a3841cfd0f498f514f2c1bd221b
-        - 513189025d479ac49adf5f7899252e25
-        - 864d94b37a41ae84db795cc733f44318
-        - fed7a845ca3526348a5b218fd114447b
-        - 0b0d11d181ea99045b81fe68126139e5
+        - 00000000000000003000000000000000
         values:
-        - path: Assets
-          label: Assets
-          level: 0
-          isFolder: 1
-          isContainer: 0
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: 
-            fullPath: 
-            projectPath: 
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 0
-        - path: Assets\Scenes
-          label: Scenes
+        - path: ProjectSettings\TagManager.asset
+          label: TagManager.asset
           level: 1
-          isFolder: 1
-          isContainer: 0
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: 
-            fullPath: 
-            projectPath: 
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 0
-        - path: Assets\Scenes\Level 1.unity
-          label: Level 1.unity
-          level: 2
-          isFolder: 0
-          isContainer: 1
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\Scenes\Level 1.unity
-            fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-              1.unity
-            projectPath: Assets\Scenes\Level 1.unity
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 5
-        - path: Assets\Scenes\Level 2.unity
-          label: Level 2.unity
-          level: 2
-          isFolder: 0
-          isContainer: 1
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\Scenes\Level 2.unity
-            fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-              2.unity
-            projectPath: Assets\Scenes\Level 2.unity
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 5
-        - path: Assets\Scenes\Level 3.unity
-          label: Level 3.unity
-          level: 2
-          isFolder: 0
-          isContainer: 1
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\Scenes\Level 3.unity
-            fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-              3.unity
-            projectPath: Assets\Scenes\Level 3.unity
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 5
-        - path: Assets\Scenes\Level 4.unity
-          label: Level 4.unity
-          level: 2
-          isFolder: 0
-          isContainer: 1
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\Scenes\Level 4.unity
-            fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-              4.unity
-            projectPath: Assets\Scenes\Level 4.unity
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 5
-        - path: Assets\Scenes\Level 5.unity
-          label: Level 5.unity
-          level: 2
-          isFolder: 0
-          isContainer: 1
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\Scenes\Level 5.unity
-            fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-              5.unity
-            projectPath: Assets\Scenes\Level 5.unity
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 5
-        - path: Assets\Scripts
-          label: Scripts
-          level: 1
-          isFolder: 1
-          isContainer: 0
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: 
-            fullPath: 
-            projectPath: 
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 0
-        - path: Assets\Scripts\GameController.cs
-          label: GameController.cs
-          level: 2
           isFolder: 0
           isContainer: 0
           isCollapsed: 0
@@ -676,168 +514,21 @@ MonoBehaviour:
           checkState: 0
           isLocked: 0
           gitStatusEntry:
-            path: Assets\Scripts\GameController.cs
-            fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\GameController.cs
-            projectPath: Assets\Scripts\GameController.cs
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 3
-        - path: Assets\Scripts\Level
-          label: Level
-          level: 2
-          isFolder: 1
-          isContainer: 0
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: 
-            fullPath: 
-            projectPath: 
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 0
-        - path: Assets\Scripts\Level\BossRoom.cs
-          label: BossRoom.cs
-          level: 3
-          isFolder: 0
-          isContainer: 0
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\Scripts\Level\BossRoom.cs
-            fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\BossRoom.cs
-            projectPath: Assets\Scripts\Level\BossRoom.cs
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 3
-        - path: Assets\Scripts\Level\LevelGenerator(old).txt
-          label: LevelGenerator(old).txt
-          level: 3
-          isFolder: 0
-          isContainer: 1
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\Scripts\Level\LevelGenerator(old).txt
-            fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\LevelGenerator(old).txt
-            projectPath: Assets\Scripts\Level\LevelGenerator(old).txt
-            originalPath: 
-            indexStatus: 1
-            workTreeStatus: 1
-        - path: Assets\Scripts\Level\LevelGenerator.cs
-          label: LevelGenerator.cs
-          level: 3
-          isFolder: 0
-          isContainer: 1
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\Scripts\Level\LevelGenerator.cs
-            fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\LevelGenerator.cs
-            projectPath: Assets\Scripts\Level\LevelGenerator.cs
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 3
-        - path: Assets\Scripts\Level\Room.cs
-          label: Room.cs
-          level: 3
-          isFolder: 0
-          isContainer: 0
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: Assets\Scripts\Level\Room.cs
-            fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\Room.cs
-            projectPath: Assets\Scripts\Level\Room.cs
+            path: ProjectSettings\TagManager.asset
+            fullPath: C:\Users\lanus\Documents\Development\Game\ProjectSettings\TagManager.asset
+            projectPath: ProjectSettings\TagManager.asset
             originalPath: 
             indexStatus: 0
             workTreeStatus: 3
       folders:
         keys:
-        - Assets
-        - Assets\Scenes
-        - Assets\Scripts
-        - Assets\Scripts\Level
+        - ProjectSettings
         - UserSettings
         - UserSettings\Layouts
         values:
-        - path: Assets
-          label: Assets
+        - path: ProjectSettings
+          label: ProjectSettings
           level: 0
-          isFolder: 1
-          isContainer: 0
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: 
-            fullPath: 
-            projectPath: 
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 0
-        - path: Assets\Scenes
-          label: Scenes
-          level: 1
-          isFolder: 1
-          isContainer: 0
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: 
-            fullPath: 
-            projectPath: 
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 0
-        - path: Assets\Scripts
-          label: Scripts
-          level: 1
-          isFolder: 1
-          isContainer: 0
-          isCollapsed: 0
-          isHidden: 0
-          isActive: 0
-          treeIsCheckable: 1
-          checkState: 0
-          isLocked: 0
-          gitStatusEntry:
-            path: 
-            fullPath: 
-            projectPath: 
-            originalPath: 
-            indexStatus: 0
-            workTreeStatus: 0
-        - path: Assets\Scripts\Level
-          label: Level
-          level: 2
           isFolder: 1
           isContainer: 0
           isCollapsed: 0
@@ -917,8 +608,8 @@ MonoBehaviour:
           originalPath: 
           indexStatus: 0
           workTreeStatus: 0
-      - path: Assets
-        label: Assets
+      - path: ProjectSettings
+        label: ProjectSettings
         level: 0
         isFolder: 1
         isContainer: 0
@@ -935,46 +626,9 @@ MonoBehaviour:
           originalPath: 
           indexStatus: 0
           workTreeStatus: 0
-      - path: Assets\Scenes
-        label: Scenes
+      - path: ProjectSettings\TagManager.asset
+        label: TagManager.asset
         level: 1
-        isFolder: 1
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: 
-          fullPath: 
-          projectPath: 
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 0
-      - path: Assets\Scenes\Level 1.unity
-        label: Level 1.unity
-        level: 2
-        isFolder: 0
-        isContainer: 1
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scenes\Level 1.unity
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-            1.unity
-          projectPath: Assets\Scenes\Level 1.unity
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 5
-      - path: Assets\Scenes\Level 1.unity.meta
-        label: Level 1.unity.meta
-        level: 3
         isFolder: 0
         isContainer: 0
         isCollapsed: 0
@@ -984,324 +638,9 @@ MonoBehaviour:
         checkState: 0
         isLocked: 0
         gitStatusEntry:
-          path: Assets\Scenes\Level 1.unity.meta
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-            1.unity.meta
-          projectPath: Assets\Scenes\Level 1.unity.meta
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 5
-      - path: Assets\Scenes\Level 2.unity
-        label: Level 2.unity
-        level: 2
-        isFolder: 0
-        isContainer: 1
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scenes\Level 2.unity
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-            2.unity
-          projectPath: Assets\Scenes\Level 2.unity
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 5
-      - path: Assets\Scenes\Level 2.unity.meta
-        label: Level 2.unity.meta
-        level: 3
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scenes\Level 2.unity.meta
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-            2.unity.meta
-          projectPath: Assets\Scenes\Level 2.unity.meta
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 5
-      - path: Assets\Scenes\Level 3.unity
-        label: Level 3.unity
-        level: 2
-        isFolder: 0
-        isContainer: 1
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scenes\Level 3.unity
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-            3.unity
-          projectPath: Assets\Scenes\Level 3.unity
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 5
-      - path: Assets\Scenes\Level 3.unity.meta
-        label: Level 3.unity.meta
-        level: 3
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scenes\Level 3.unity.meta
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-            3.unity.meta
-          projectPath: Assets\Scenes\Level 3.unity.meta
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 5
-      - path: Assets\Scenes\Level 4.unity
-        label: Level 4.unity
-        level: 2
-        isFolder: 0
-        isContainer: 1
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scenes\Level 4.unity
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-            4.unity
-          projectPath: Assets\Scenes\Level 4.unity
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 5
-      - path: Assets\Scenes\Level 4.unity.meta
-        label: Level 4.unity.meta
-        level: 3
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scenes\Level 4.unity.meta
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-            4.unity.meta
-          projectPath: Assets\Scenes\Level 4.unity.meta
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 5
-      - path: Assets\Scenes\Level 5.unity
-        label: Level 5.unity
-        level: 2
-        isFolder: 0
-        isContainer: 1
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scenes\Level 5.unity
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-            5.unity
-          projectPath: Assets\Scenes\Level 5.unity
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 5
-      - path: Assets\Scenes\Level 5.unity.meta
-        label: Level 5.unity.meta
-        level: 3
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scenes\Level 5.unity.meta
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level
-            5.unity.meta
-          projectPath: Assets\Scenes\Level 5.unity.meta
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 5
-      - path: Assets\Scripts
-        label: Scripts
-        level: 1
-        isFolder: 1
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: 
-          fullPath: 
-          projectPath: 
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 0
-      - path: Assets\Scripts\GameController.cs
-        label: GameController.cs
-        level: 2
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scripts\GameController.cs
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\GameController.cs
-          projectPath: Assets\Scripts\GameController.cs
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 3
-      - path: Assets\Scripts\Level
-        label: Level
-        level: 2
-        isFolder: 1
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: 
-          fullPath: 
-          projectPath: 
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 0
-      - path: Assets\Scripts\Level\BossRoom.cs
-        label: BossRoom.cs
-        level: 3
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scripts\Level\BossRoom.cs
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\BossRoom.cs
-          projectPath: Assets\Scripts\Level\BossRoom.cs
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 3
-      - path: Assets\Scripts\Level\LevelGenerator(old).txt
-        label: LevelGenerator(old).txt
-        level: 3
-        isFolder: 0
-        isContainer: 1
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scripts\Level\LevelGenerator(old).txt
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\LevelGenerator(old).txt
-          projectPath: Assets\Scripts\Level\LevelGenerator(old).txt
-          originalPath: 
-          indexStatus: 1
-          workTreeStatus: 1
-      - path: Assets\Scripts\Level\LevelGenerator(old).txt.meta
-        label: LevelGenerator(old).txt.meta
-        level: 4
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scripts\Level\LevelGenerator(old).txt.meta
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\LevelGenerator(old).txt.meta
-          projectPath: Assets\Scripts\Level\LevelGenerator(old).txt.meta
-          originalPath: 
-          indexStatus: 1
-          workTreeStatus: 1
-      - path: Assets\Scripts\Level\LevelGenerator.cs
-        label: LevelGenerator.cs
-        level: 3
-        isFolder: 0
-        isContainer: 1
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scripts\Level\LevelGenerator.cs
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\LevelGenerator.cs
-          projectPath: Assets\Scripts\Level\LevelGenerator.cs
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 3
-      - path: Assets\Scripts\Level\LevelGenerator.cs.meta
-        label: LevelGenerator.cs.meta
-        level: 4
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scripts\Level\LevelGenerator.cs.meta
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\LevelGenerator.cs.meta
-          projectPath: Assets\Scripts\Level\LevelGenerator.cs.meta
-          originalPath: 
-          indexStatus: 0
-          workTreeStatus: 3
-      - path: Assets\Scripts\Level\Room.cs
-        label: Room.cs
-        level: 3
-        isFolder: 0
-        isContainer: 0
-        isCollapsed: 0
-        isHidden: 0
-        isActive: 0
-        treeIsCheckable: 1
-        checkState: 0
-        isLocked: 0
-        gitStatusEntry:
-          path: Assets\Scripts\Level\Room.cs
-          fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\Room.cs
-          projectPath: Assets\Scripts\Level\Room.cs
+          path: ProjectSettings\TagManager.asset
+          fullPath: C:\Users\lanus\Documents\Development\Game\ProjectSettings\TagManager.asset
+          projectPath: ProjectSettings\TagManager.asset
           originalPath: 
           indexStatus: 0
           workTreeStatus: 3
@@ -1397,105 +736,9 @@ MonoBehaviour:
           indexStatus: 0
           workTreeStatus: 0
     gitStatusEntries:
-    - path: Assets\Scenes\Level 1.unity
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level 1.unity
-      projectPath: Assets\Scenes\Level 1.unity
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 5
-    - path: Assets\Scenes\Level 1.unity.meta
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level 1.unity.meta
-      projectPath: Assets\Scenes\Level 1.unity.meta
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 5
-    - path: Assets\Scenes\Level 2.unity
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level 2.unity
-      projectPath: Assets\Scenes\Level 2.unity
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 5
-    - path: Assets\Scenes\Level 2.unity.meta
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level 2.unity.meta
-      projectPath: Assets\Scenes\Level 2.unity.meta
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 5
-    - path: Assets\Scenes\Level 3.unity
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level 3.unity
-      projectPath: Assets\Scenes\Level 3.unity
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 5
-    - path: Assets\Scenes\Level 3.unity.meta
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level 3.unity.meta
-      projectPath: Assets\Scenes\Level 3.unity.meta
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 5
-    - path: Assets\Scenes\Level 4.unity
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level 4.unity
-      projectPath: Assets\Scenes\Level 4.unity
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 5
-    - path: Assets\Scenes\Level 4.unity.meta
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level 4.unity.meta
-      projectPath: Assets\Scenes\Level 4.unity.meta
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 5
-    - path: Assets\Scenes\Level 5.unity
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level 5.unity
-      projectPath: Assets\Scenes\Level 5.unity
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 5
-    - path: Assets\Scenes\Level 5.unity.meta
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scenes\Level 5.unity.meta
-      projectPath: Assets\Scenes\Level 5.unity.meta
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 5
-    - path: Assets\Scripts\GameController.cs
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\GameController.cs
-      projectPath: Assets\Scripts\GameController.cs
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 3
-    - path: Assets\Scripts\Level\BossRoom.cs
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\BossRoom.cs
-      projectPath: Assets\Scripts\Level\BossRoom.cs
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 3
-    - path: Assets\Scripts\Level\LevelGenerator(old).txt
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\LevelGenerator(old).txt
-      projectPath: Assets\Scripts\Level\LevelGenerator(old).txt
-      originalPath: 
-      indexStatus: 1
-      workTreeStatus: 1
-    - path: Assets\Scripts\Level\LevelGenerator(old).txt.meta
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\LevelGenerator(old).txt.meta
-      projectPath: Assets\Scripts\Level\LevelGenerator(old).txt.meta
-      originalPath: 
-      indexStatus: 1
-      workTreeStatus: 1
-    - path: Assets\Scripts\Level\LevelGenerator.cs
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\LevelGenerator.cs
-      projectPath: Assets\Scripts\Level\LevelGenerator.cs
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 3
-    - path: Assets\Scripts\Level\LevelGenerator.cs.meta
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\LevelGenerator.cs.meta
-      projectPath: Assets\Scripts\Level\LevelGenerator.cs.meta
-      originalPath: 
-      indexStatus: 0
-      workTreeStatus: 3
-    - path: Assets\Scripts\Level\Room.cs
-      fullPath: C:\Users\lanus\Documents\Development\Game\Assets\Scripts\Level\Room.cs
-      projectPath: Assets\Scripts\Level\Room.cs
+    - path: ProjectSettings\TagManager.asset
+      fullPath: C:\Users\lanus\Documents\Development\Game\ProjectSettings\TagManager.asset
+      projectPath: ProjectSettings\TagManager.asset
       originalPath: 
       indexStatus: 0
       workTreeStatus: 3
@@ -1511,15 +754,15 @@ MonoBehaviour:
       originalPath: 
       indexStatus: 0
       workTreeStatus: 3
-    changedFilesText: 19 changed files
+    changedFilesText: 3 changed files
     lastCurrentBranchChangedEvent:
-      updatedTimeString: 2024-05-15T19:55:46.245+02:00
+      updatedTimeString: 2024-05-16T04:47:53.613+02:00
       cacheType: 1
     lastStatusEntriesChangedEvent:
-      updatedTimeString: 2024-05-15T19:55:35.503+02:00
+      updatedTimeString: 2024-05-16T04:47:37.163+02:00
       cacheType: 6
     lastLocksChangedEvent:
-      updatedTimeString: 2024-05-15T19:55:36.795+02:00
+      updatedTimeString: 2024-05-16T04:46:40.005+02:00
       cacheType: 7
   historyView:
     currentLogHasUpdate: 0
@@ -8645,13 +7888,13 @@ MonoBehaviour:
     m_Image: {fileID: 0}
     m_Tooltip: Url of the origin remote
   lastCurrentBranchAndRemoteChangedEvent:
-    updatedTimeString: 2024-05-15T18:51:07.500+02:00
+    updatedTimeString: 2024-05-16T04:47:53.613+02:00
     cacheType: 1
   lastTrackingStatusChangedEvent:
-    updatedTimeString: 2024-05-15T18:51:10.207+02:00
+    updatedTimeString: 2024-05-16T04:47:53.588+02:00
     cacheType: 5
   lastStatusEntriesChangedEvent:
-    updatedTimeString: 2024-05-15T19:10:09.918+02:00
+    updatedTimeString: 2024-05-16T04:47:37.163+02:00
     cacheType: 6
   pullButtonContent:
     m_Text: Pull
@@ -8669,8 +7912,8 @@ MonoBehaviour:
     m_Text: Fetch
     m_Image: {fileID: 0}
     m_Tooltip: 
-  repositoryProgressValue: 0
-  repositoryProgressMessage: 
+  repositoryProgressValue: 0.99929476
+  repositoryProgressMessage: Pushed
   appManagerProgressValue: 1
   appManagerProgressMessage: 
   primaryConnectionUsername: 
@@ -8690,14 +7933,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Hierarchy
-    m_Image: {fileID: 7966133145522015247, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -3734745235275155857, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 3840
-    y: 675
-    width: 210
-    height: 640
+    x: 0
+    y: 72.66667
+    width: 297.66666
+    height: 895
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -8711,9 +7954,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 1afbffff
+      m_SelectedIDs: 38950000
+      m_LastClickedID: 38200
+      m_ExpandedIDs: f8e2feff2e95000030950000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -8753,13 +7996,13 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Scene
-    m_Image: {fileID: 2593428753322112591, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: 8634526014445323508, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 4051
-    y: 675
-    width: 1117
+    x: 212
+    y: 19
+    width: 1099
     height: 640
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -9035,7 +8278,7 @@ MonoBehaviour:
       floating: 0
       collapsed: 0
       displayed: 1
-      snapOffset: {x: 876, y: 10}
+      snapOffset: {x: 859, y: 25}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: UnityEditor.SceneViewCameraOverlay
@@ -9098,17 +8341,17 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_WindowGUID: cc27987af1a868c49b0894db9c0f5429
   m_Gizmos: 1
-  m_OverrideSceneCullingMask: 6917529027641081856
-  m_SceneIsLit: 1
+  m_OverrideSceneCullingMask: 0
+  m_SceneIsLit: 0
   m_SceneLighting: 1
   m_2DMode: 1
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -0.51486605, y: -1.8921746, z: -0.26285028}
+    m_Target: {x: 0, y: 0, z: -6}
     speed: 2
-    m_Value: {x: -0.51486605, y: -1.8921746, z: -0.26285028}
+    m_Value: {x: 0, y: 0, z: -6}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -9158,9 +8401,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 26.991869
+    m_Target: 7.2083287
     speed: 2
-    m_Value: 26.991869
+    m_Value: 7.2083287
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -9201,14 +8444,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Game
-    m_Image: {fileID: -6423792434712278376, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: 4621777727084837110, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 4051
-    y: 675
-    width: 1117
-    height: 640
+    x: 298.6667
+    y: 72.66667
+    width: 1560
+    height: 895
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -9240,10 +8483,10 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -960
-    m_HBaseRangeMax: 960
-    m_VBaseRangeMin: -540
-    m_VBaseRangeMax: 540
+    m_HBaseRangeMin: -640
+    m_HBaseRangeMax: 640
+    m_VBaseRangeMin: -360
+    m_VBaseRangeMax: 360
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -9252,7 +8495,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -9261,23 +8504,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 1117
-      height: 619
-    m_Scale: {x: 0.57314813, y: 0.57314813}
-    m_Translation: {x: 558.5, y: 309.5}
+      width: 1560
+      height: 874
+    m_Scale: {x: 1, y: 1}
+    m_Translation: {x: 780, y: 437}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -974.4427
-      y: -540
-      width: 1948.8854
-      height: 1080
+      x: -780
+      y: -437
+      width: 1560
+      height: 874
     m_MinimalGUI: 1
-  m_defaultScale: 0.57314813
-  m_LastWindowPixelSize: {x: 1117, y: 640}
+  m_defaultScale: 1
+  m_LastWindowPixelSize: {x: 2340, y: 1342.5}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
@@ -9299,14 +8542,14 @@ MonoBehaviour:
   m_MaxSize: {x: 10000, y: 10000}
   m_TitleContent:
     m_Text: Project
-    m_Image: {fileID: -5467254957812901981, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -5179483145760003458, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 3840
-    y: 1336
-    width: 1328
-    height: 257
+    x: 0
+    y: 988.6667
+    width: 1859.6666
+    height: 362.33337
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -9328,7 +8571,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Objects/Levels/Testing/Boss Rooms
+    - Packages/com.unity.2d.sprite/Editor/ObjectMenuCreation/DefaultAssets/Textures
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -9336,16 +8579,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Objects/Levels/Testing/Boss Rooms
+  - Packages/com.unity.2d.sprite/Editor/ObjectMenuCreation/DefaultAssets/Textures
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\lanus\Documents\Development\Game
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 19}
-    m_SelectedIDs: b86a0000
-    m_LastClickedID: 27320
-    m_ExpandedIDs: 00000000f4650000f6650000f8650000
+    scrollPos: {x: 0, y: 265.66663}
+    m_SelectedIDs: 9e9f0000
+    m_LastClickedID: 40862
+    m_ExpandedIDs: 000000001c8000002080000026800000f4860000f6860000488d0000a09f0000a29f0000a49f0000a69f000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -9373,7 +8616,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000f4650000f6650000f8650000
+    m_ExpandedIDs: 000000001c80000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -9401,7 +8644,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c62300005a720000
+    m_ExpandedInstanceIDs: c62300005a720000de860000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -9445,13 +8688,13 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Console
-    m_Image: {fileID: -4327648978806127646, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -4950941429401207979, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
     x: 3840
     y: 1336
-    width: 1329
+    width: 1311
     height: 257
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -9479,14 +8722,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Inspector
-    m_Image: {fileID: -2667387946076563598, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -440750813802333266, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 5170
-    y: 675
-    width: 589
-    height: 918
+    x: 1860.6667
+    y: 72.66667
+    width: 698.3334
+    height: 1278.3334
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0

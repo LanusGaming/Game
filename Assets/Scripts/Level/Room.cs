@@ -317,6 +317,61 @@ public class RoomData
 public class Room : MonoBehaviour
 {
     public RoomData data;
+    public Transform room;
+    public Trigger[] visibilityTriggers;
+    public Trigger[] enteredTriggers;
     public GameObject[] layoutPresets;
-    public Trigger[] triggers;
+    public GameObject unexploredMinimapObject;
+    public GameObject exploredMinimapObject;
+
+    [HideInInspector]
+    public bool visible = false;
+    [HideInInspector]
+    public bool cleared = false;
+    [HideInInspector]
+    public Transform minimapObject;
+    [HideInInspector]
+    public Room[] connectedRooms;
+
+    private void Start()
+    {
+        foreach (Trigger trigger in visibilityTriggers)
+            trigger.triggeredCallback = OnVisibilityTriggerHit;
+
+        foreach (Trigger trigger in enteredTriggers)
+        {
+            trigger.triggeredCallback = OnEnteredTriggerHit;
+        }
+    }
+
+    public void OnVisibilityTriggerHit(Trigger trigger)
+    {
+        if (visible)
+            return;
+
+        if (room)
+            room.gameObject.SetActive(true);
+
+        foreach (Room room in connectedRooms)
+            if (!room.visible)
+                room.minimapObject.gameObject.SetActive(true);
+
+        visible = true;
+
+        foreach (Trigger visibilityTrigger in visibilityTriggers)
+            visibilityTrigger.gameObject.SetActive(false);
+    }
+
+    public void OnEnteredTriggerHit(Trigger trigger)
+    {
+        if (cleared)
+            return;
+
+        Debug.Log("Entered Combat");
+
+        GameController.instance.minimap.ExploreRoom(this);
+
+        foreach (Trigger enteredTrigger in enteredTriggers)
+            enteredTrigger.gameObject.SetActive(false);
+    }
 }

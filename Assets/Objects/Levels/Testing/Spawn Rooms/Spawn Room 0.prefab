@@ -25,12 +25,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1103108332379312176}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6843376061257455751}
+  m_Father: {fileID: 2857932783830581584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1986936344140589249
 SpriteRenderer:
@@ -84,6 +84,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3899788700575116625
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2857932783830581584}
+  m_Layer: 0
+  m_Name: Room
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2857932783830581584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899788700575116625}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7478629754525987348}
+  - {fileID: 1391680604567900353}
+  m_Father: {fileID: 6843376061257455751}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7095545911621095250
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,7 +147,7 @@ Transform:
   m_LocalScale: {x: 15, y: 15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6843376061257455751}
+  m_Father: {fileID: 2857932783830581584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4927770195359379235
 SpriteRenderer:
@@ -198,8 +231,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7478629754525987348}
-  - {fileID: 1391680604567900353}
+  - {fileID: 2857932783830581584}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5884763827144816681
@@ -220,6 +252,7 @@ MonoBehaviour:
     distanceFromBossRoom: 0
     roomType: 0
     isSpawnRoom: 1
+    isBossRoom: 0
     isChestRoom: 0
     isHiddenRoom: 0
     isLockedRoom: 0
@@ -235,5 +268,12 @@ MonoBehaviour:
     hasDoorRightTop: 0
     hasDoorRight: 0
     hasDoorRightBottom: 0
+  room: {fileID: 2857932783830581584}
+  minimapRepresantationObject: {fileID: 0}
   layoutPresets: []
-  triggers: []
+  visibilityTriggers: []
+  enteredTriggers: []
+  visible: 0
+  cleared: 0
+  minimapRepresantation: {fileID: 0}
+  connectedRooms: []

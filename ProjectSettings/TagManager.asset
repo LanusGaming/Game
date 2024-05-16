@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Transition
   - 
   - 
   - 
@@ -52,6 +52,9 @@ TagManager:
     locked: 0
   - name: Ceiling
     uniqueID: 1014425499
+    locked: 0
+  - name: Minimap
+    uniqueID: 865069519
     locked: 0
   - name: ' UI'
     uniqueID: 3856743905

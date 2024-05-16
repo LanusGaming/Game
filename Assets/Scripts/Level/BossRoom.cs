@@ -148,8 +148,6 @@ public class BossRoom : MonoBehaviour
     [Tooltip("Relative to the bottom-left corner of the bottom-left tile")]
     public Vector2Int exitRoomPosition;
 
-    public GameObject minimapObject;
-
     public BossRoomData GetBossRoomData()
     {
         BossRoomData bossRoomData = new BossRoomData();

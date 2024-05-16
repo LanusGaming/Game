@@ -7,24 +7,23 @@ using UnityEngine;
 [Serializable]
 public class MinimapObjects
 {
-    [Header("Minimap Rooms")]
-    public GameObject tier1;
-    public GameObject tier2H;
-    public GameObject tier2V;
-    public GameObject tier4;
+    [Header("Unexplored Minimap Rooms")]
+    public GameObject unexploredTier1;
+    public GameObject unexploredTier2H;
+    public GameObject unexploredTier2V;
+    public GameObject unexploredTier4;
+
+    [Header("Explored Minimap Rooms")]
+    public GameObject exploredTier1;
+    public GameObject exploredTier2H;
+    public GameObject exploredTier2V;
+    public GameObject exploredTier4;
 
     [Header("Corridors")]
     public GameObject corridorTop;
     public GameObject corridorBottom;
     public GameObject corridorLeft;
     public GameObject corridorRight;
-
-    [Header("Boss Room Extensions")]
-    public GameObject corner;
-    public GameObject wall1H;
-    public GameObject wall2H;
-    public GameObject wall1V;
-    public GameObject wall2V;
 }
 
 public class Minimap : MonoBehaviour
@@ -32,56 +31,100 @@ public class Minimap : MonoBehaviour
     public MinimapObjects minimapObjects;
     public Camera minimapCamera;
     public Transform spriteMask;
+    public Transform background;
     public Transform minimapRoomsParent;
 
     private void Start()
     {
         spriteMask.localScale = new Vector3(minimapCamera.orthographicSize * 2, minimapCamera.orthographicSize * 2, 1);
+        background.localScale = spriteMask.localScale;
     }
 
-    // TODO let game controller handle minimap generation
-    public void GenerateMinimap(RoomData[] rooms)
+    public void GenerateMinimap(Room[,] level, Vector2Int size)
     {
-        foreach (RoomData room in rooms)
+        for (int x = 0; x < size.x; x++)
         {
-            if (room.isSpawnRoom)
-                minimapRoomsParent.localPosition = new Vector2(room.location.x, room .location.y) * -1;
+            for (int y = 0; y < size.y; y++)
+            {
+                if (level[x, y] == null)
+                    continue;
 
-            if (room.isBossRoom)
-                GenerateBossRoomExtensions(room);
+                Room room = level[x, y];
 
-            GenerateRoom(room);
-            GenerateCorridors(room);
+                if (room.data.location != new Vector2Int(x, y))
+                    continue;
+
+                Transform corridorParent;
+
+                if (!room.unexploredMinimapObject)
+                    corridorParent = GenerateRoom(room.data);
+                else
+                {
+                    corridorParent = Instantiate(room.unexploredMinimapObject, minimapRoomsParent).transform;
+                    corridorParent.localPosition = new Vector2(room.data.location.x, room.data.location.y);
+                }
+
+                GenerateCorridors(room.data, corridorParent);
+
+                room.minimapObject = corridorParent;
+
+                if (room.data.isSpawnRoom)
+                    minimapRoomsParent.localPosition = new Vector2(room.data.location.x, room.data.location.y) * -1;
+                else
+                    corridorParent.gameObject.SetActive(false);
+            }
         }
     }
 
-    private void GenerateRoom(RoomData room)
+    public Transform ExploreRoom(Room room)
+    {
+        Destroy(room.minimapObject.gameObject);
+
+        Transform corridorParent;
+
+        if (!room.exploredMinimapObject)
+            corridorParent = GenerateRoom(room.data, true);
+        else
+        {
+            corridorParent = Instantiate(room.exploredMinimapObject, minimapRoomsParent).transform;
+            corridorParent.localPosition = new Vector2(room.data.location.x, room.data.location.y);
+        }
+
+        GenerateCorridors(room.data, corridorParent);
+
+        return corridorParent;
+    }
+
+    private Transform GenerateRoom(RoomData room, bool explored = false)
     {
         GameObject roomObject = null;
 
         switch (room.roomType)
         {
             case RoomType.Type1:
-                roomObject = minimapObjects.tier1;
+                roomObject = (explored) ? minimapObjects.exploredTier1 : minimapObjects.unexploredTier1;
                 break;
 
             case RoomType.Type2Horizontal:
-                roomObject = minimapObjects.tier2H;
+                roomObject = (explored) ? minimapObjects.exploredTier2H : minimapObjects.unexploredTier2H;
                 break;
 
             case RoomType.Type2Vertical:
-                roomObject = minimapObjects.tier2V;
+                roomObject = (explored) ? minimapObjects.exploredTier2V : minimapObjects.unexploredTier2V;
                 break;
 
             case RoomType.Type4:
-                roomObject = minimapObjects.tier4;
+                roomObject = (explored) ? minimapObjects.exploredTier4 : minimapObjects.unexploredTier4;
                 break;
         }
 
-        Instantiate(roomObject, minimapRoomsParent).transform.localPosition = new Vector2(room.location.x, room.location.y);
+        GameObject generatedRoom = Instantiate(roomObject, minimapRoomsParent);
+        generatedRoom.transform.localPosition = new Vector2(room.location.x, room.location.y);
+
+        return generatedRoom.transform;
     }
 
-    private void GenerateCorridors(RoomData room)
+    private void GenerateCorridors(RoomData room, Transform parent)
     {
         foreach (Vector2Int connectionDirection in room.GetDoorConnections())
         {
@@ -98,55 +141,8 @@ public class Minimap : MonoBehaviour
             if (corridorType == Vector2Int.right)
                 corridorObject = minimapObjects.corridorRight;
 
-            Vector2Int corridorPosition = room.location + connectionDirection - RoomData.GetDoorNormal(connectionDirection, room.roomType);
-            Instantiate(corridorObject, minimapRoomsParent).transform.localPosition = new Vector2(corridorPosition.x, corridorPosition.y);
+            Vector2Int corridorPosition = connectionDirection - RoomData.GetDoorNormal(connectionDirection, room.roomType);
+            Instantiate(corridorObject, parent).transform.localPosition = new Vector2(corridorPosition.x, corridorPosition.y);
         }
-    }
-
-    private void GenerateBossRoomExtensions(RoomData room)
-    {
-        GameObject horizontalWall = null;
-        GameObject verticalWall = null;
-        Vector2 offset = Vector2.zero;
-
-        switch (room.roomType)
-        {
-            case RoomType.Type1:
-                horizontalWall = minimapObjects.wall1H;
-                verticalWall = minimapObjects.wall1V;
-                offset = new Vector2(0.45f, 0.45f);
-                break;
-
-            case RoomType.Type2Horizontal:
-                horizontalWall = minimapObjects.wall2H;
-                verticalWall = minimapObjects.wall1V;
-                offset = new Vector2(1.45f, 0.45f);
-                break;
-
-            case RoomType.Type2Vertical:
-                horizontalWall = minimapObjects.wall1H;
-                verticalWall = minimapObjects.wall2V;
-                offset = new Vector2(0.45f, 1.45f);
-                break;
-
-            case RoomType.Type4:
-                horizontalWall = minimapObjects.wall2H;
-                verticalWall = minimapObjects.wall2V;
-                offset = new Vector2(1.45f, 1.45f);
-                break;
-        }
-
-        string type = room.roomID.Split("_").Last();
-
-        if (type == "br")
-            offset.x *= -1;
-        if (type == "tl")
-            offset.y *= -1;
-        if (type == "tr")
-            offset *= -1;
-
-        Instantiate(horizontalWall, minimapRoomsParent).transform.localPosition = new Vector2(room.location.x, room.location.y + offset.y);
-        Instantiate(verticalWall, minimapRoomsParent).transform.localPosition = new Vector2(room.location.x + offset.x, room.location.y);
-        Instantiate(minimapObjects.corner, minimapRoomsParent).transform.localPosition = new Vector2(room.location.x, room.location.y) + offset;
     }
 }

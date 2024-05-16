@@ -34,7 +34,6 @@ public class LevelGenerator
     private RoomData[] rooms;
     private System.Random randomizer;
 
-    private List<RoomData> levelData;
     private RoomData[,] level;
     private Vector2Int levelSize;
     private int roomCount;
@@ -56,11 +55,10 @@ public class LevelGenerator
         this.randomizer = randomizer;
     }
 
-    public RoomData[] Generate()
+    public RoomData[,] Generate(out Vector2Int size)
     {
         levelSize = new Vector2Int((properties.maximumRooms + 1) * 4, (properties.maximumRooms + 1) * 4);
         level = new RoomData[levelSize.x, levelSize.y];
-        levelData = new List<RoomData>();
         generationQueue = new Queue<RoomData>();
         roomCount = 0;
         openDoorCount = 0;
@@ -73,13 +71,14 @@ public class LevelGenerator
         while (generationQueue.Count > 0)
         {
             if (!GenerateAdjacentRooms(generationQueue.Dequeue()))
-                return Generate();
+                return Generate(out size);
         }
 
         if (!AddSpawnRoom(bossRoomTiles))
-            return Generate();
+            return Generate(out size);
 
-        return levelData.ToArray();
+        size = levelSize;
+        return level;
     }
 
     private void CategorizeRooms(RoomData[] rooms)
@@ -121,7 +120,7 @@ public class LevelGenerator
     {
         BossRoomData bossRoom = bossRooms[randomizer.Next(0, bossRooms.Length)];
 
-        openDoorCount = bossRoom.GetDoorCount() - 1;
+        openDoorCount = bossRoom.GetDoorCount();
 
         Vector2Int offset = Vector2Int.zero;
 
@@ -158,15 +157,13 @@ public class LevelGenerator
 
         CreateRoom(bossRoom.exitRoom, levelSize / 2 + bossRoom.exitRoomPosition).distanceFromBossRoom = 0;
 
-        roomCount = 2;
+        roomCount = 1;
 
         return new RoomData[] { bottomLeftTile, bottomRightTile, topLeftTile, topRightTile };
     }
 
     private void AssignRoomToLevel(RoomData room)
     {
-        levelData.Add(room);
-
         switch (room.roomType)
         {
             case RoomType.Type1:
@@ -532,7 +529,6 @@ public class LevelGenerator
             if (fittingRooms.Count == 0)
                 continue;
 
-            levelData.Remove(level[room.location.x, room.location.y]);
             CreateRoom(fittingRooms[randomizer.Next(0, fittingRooms.Count)], room.location);
 
             return true;
@@ -563,7 +559,7 @@ public class LevelGenerator
                 if (level[x, y] is null)
                     continue;
 
-                if (level[x, y].distanceFromBossRoom >= properties.minimumDistanceFromBossRoom)
+                if (level[x, y].distanceFromBossRoom >= properties.minimumDistanceFromBossRoom && !candidates.Contains(level[x, y]))
                     candidates.Add(level[x, y]);
             }
         }

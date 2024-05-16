@@ -136,6 +136,7 @@ MonoBehaviour:
     distanceFromBossRoom: 0
     roomType: 0
     isSpawnRoom: 0
+    isBossRoom: 0
     isChestRoom: 0
     isHiddenRoom: 0
     isLockedRoom: 0
@@ -143,7 +144,7 @@ MonoBehaviour:
     hasDoorTop: 0
     hasDoorTopRight: 0
     hasDoorBottomLeft: 0
-    hasDoorBottom: 1
+    hasDoorBottom: 0
     hasDoorBottomRight: 0
     hasDoorLeftTop: 0
     hasDoorLeft: 0
@@ -151,8 +152,16 @@ MonoBehaviour:
     hasDoorRightTop: 0
     hasDoorRight: 0
     hasDoorRightBottom: 0
+  room: {fileID: 0}
+  visibilityTriggers: []
+  enteredTriggers: []
   layoutPresets: []
-  triggers: []
+  unexploredMinimapObject: {fileID: 1802922842314081281, guid: bef74d23a79d9064c980e069c6631336, type: 3}
+  exploredMinimapObject: {fileID: 1802922842314081281, guid: bef74d23a79d9064c980e069c6631336, type: 3}
+  visible: 0
+  cleared: 0
+  minimapObject: {fileID: 0}
+  connectedRooms: []
 --- !u!1 &7168043175140383113
 GameObject:
   m_ObjectHideFlags: 0

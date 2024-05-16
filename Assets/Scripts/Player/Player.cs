@@ -35,16 +35,16 @@ public class Player : MonoBehaviour
     {
         Vector2 velocity = Vector2.zero;
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(Configuration.controls.moveUp))
             velocity.y += 1;
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(Configuration.controls.moveDown))
             velocity.y += -1;
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(Configuration.controls.moveRight))
         {
             velocity.x += 1;
             transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
         }
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(Configuration.controls.moveLeft))
         {
             velocity.x += -1;
             transform.rotation = Quaternion.LookRotation(Vector3.back, Vector3.up);
