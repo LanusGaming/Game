@@ -48,9 +48,9 @@ MonoBehaviour:
   levelEndTrigger: {fileID: 0}
   transitionObject: {fileID: 679647144363379413, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
   properties:
-    minimumRooms: 5000
-    maximumRooms: 5000
-    minimumDistanceFromBossRoom: 20
+    minimumRooms: 10
+    maximumRooms: 15
+    minimumDistanceFromBossRoom: 3
     type1Probability: 4
     type2HProbability: 3
     type2VProbability: 3

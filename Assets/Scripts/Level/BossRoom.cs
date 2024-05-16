@@ -43,33 +43,97 @@ public class BossRoomData
                 break;
         }
 
-        Dictionary<Vector2Int, Vector2Int> connections;
+        Vector2Int[] connections;
 
         connections = bottomLeft.GetDoorConnections();
-        foreach (Vector2Int connectionDirection in connections.Keys)
+        foreach (Vector2Int connectionDirection in connections)
         {
-            directions.Add(connectionDirection, connections[connectionDirection]);
+            directions.Add(connectionDirection, RoomData.GetDoorNormal(connectionDirection, bottomLeft.roomType));
         }
 
         connections = bottomRight.GetDoorConnections();
-        foreach (Vector2Int connectionDirection in connections.Keys)
+        foreach (Vector2Int connectionDirection in connections)
         {
-            directions.Add(new Vector2Int(connectionDirection.x + offset.x, connectionDirection.y), connections[connectionDirection]);
+            directions.Add(new Vector2Int(connectionDirection.x + offset.x, connectionDirection.y), RoomData.GetDoorNormal(connectionDirection, bottomRight.roomType));
         }
 
-        connections = bottomLeft.GetDoorConnections();
-        foreach (Vector2Int connectionDirection in connections.Keys)
+        connections = topLeft.GetDoorConnections();
+        foreach (Vector2Int connectionDirection in connections)
         {
-            directions.Add(new Vector2Int(connectionDirection.x, connectionDirection.y + offset.y), connections[connectionDirection]);
+            directions.Add(new Vector2Int(connectionDirection.x, connectionDirection.y + offset.y), RoomData.GetDoorNormal(connectionDirection, topLeft.roomType));
         }
 
-        connections = bottomLeft.GetDoorConnections();
-        foreach (Vector2Int connectionDirection in connections.Keys)
+        connections = topRight.GetDoorConnections();
+        foreach (Vector2Int connectionDirection in connections)
         {
-            directions.Add(connectionDirection + offset, connections[connectionDirection]);
+            directions.Add(connectionDirection + offset, RoomData.GetDoorNormal(connectionDirection, topRight.roomType));
         }
 
         return directions;
+    }
+
+    public Vector2Int GetRoomSize()
+    {
+        Vector2Int size = Vector2Int.zero;
+
+        switch (bottomLeft.roomType)
+        {
+            case RoomType.Type1:
+                size = new Vector2Int(1, 1);
+                break;
+
+            case RoomType.Type2Horizontal:
+                size = new Vector2Int(2, 1);
+                break;
+
+            case RoomType.Type2Vertical:
+                size = new Vector2Int(1, 2);
+                break;
+
+            case RoomType.Type4:
+                size = new Vector2Int(2, 2);
+                break;
+        }
+
+        switch (bottomRight.roomType)
+        {
+            case RoomType.Type1:
+                size.x += 1;
+                break;
+
+            case RoomType.Type2Horizontal:
+                size.x += 2;
+                break;
+
+            case RoomType.Type2Vertical:
+                size.x += 1;
+                break;
+
+            case RoomType.Type4:
+                size.x += 2;
+                break;
+        }
+
+        switch (topLeft.roomType)
+        {
+            case RoomType.Type1:
+                size.y += 1;
+                break;
+
+            case RoomType.Type2Horizontal:
+                size.y += 1;
+                break;
+
+            case RoomType.Type2Vertical:
+                size.y += 2;
+                break;
+
+            case RoomType.Type4:
+                size.y += 2;
+                break;
+        }
+
+        return size;
     }
 }
 
@@ -83,6 +147,8 @@ public class BossRoom : MonoBehaviour
     public GameObject exitRoomObject;
     [Tooltip("Relative to the bottom-left corner of the bottom-left tile")]
     public Vector2Int exitRoomPosition;
+
+    public GameObject minimapObject;
 
     public BossRoomData GetBossRoomData()
     {

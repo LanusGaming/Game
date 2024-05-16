@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public Player player;
+    public Minimap minimap;
     public Trigger levelEndTrigger;
     public GameObject transitionObject;
 
@@ -37,6 +38,11 @@ public class GameController : MonoBehaviour
         };
 
         GenerateLevel();
+    }
+
+    private void Update()
+    {
+        minimap.minimapCamera.transform.localPosition = new Vector3(player.transform.position.x / roomSizeInTiles.x, player.transform.position.y / roomSizeInTiles.y, -1f);
     }
 
     public void EndLevel(Trigger trigger)
@@ -108,5 +114,7 @@ public class GameController : MonoBehaviour
             GameObject room = Instantiate(roomMap[roomData.roomID], levelParent);
             room.transform.localPosition = new Vector2(roomData.location.x * roomSizeInTiles.x, roomData.location.y * roomSizeInTiles.y);
         }
+
+        minimap.GenerateMinimap(level);
     }
 }

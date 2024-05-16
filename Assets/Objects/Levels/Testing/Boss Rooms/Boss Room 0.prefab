@@ -225,6 +225,7 @@ MonoBehaviour:
   bottomRight: {fileID: 3518722834424066715}
   exitRoomObject: {fileID: 6699056636202499768, guid: 047b3a2faf897ac4d927901ee4f310e8, type: 3}
   exitRoomPosition: {x: 1, y: 3}
+  minimapObject: {fileID: 0}
 --- !u!114 &5884763827144816681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +244,7 @@ MonoBehaviour:
     distanceFromBossRoom: 0
     roomType: 3
     isSpawnRoom: 0
+    isBossRoom: 1
     isChestRoom: 0
     isHiddenRoom: 0
     isLockedRoom: 0
@@ -278,6 +280,7 @@ MonoBehaviour:
     distanceFromBossRoom: 0
     roomType: 2
     isSpawnRoom: 0
+    isBossRoom: 1
     isChestRoom: 0
     isHiddenRoom: 0
     isLockedRoom: 0
@@ -313,6 +316,7 @@ MonoBehaviour:
     distanceFromBossRoom: 0
     roomType: 1
     isSpawnRoom: 0
+    isBossRoom: 1
     isChestRoom: 0
     isHiddenRoom: 0
     isLockedRoom: 0
@@ -348,6 +352,7 @@ MonoBehaviour:
     distanceFromBossRoom: 0
     roomType: 0
     isSpawnRoom: 0
+    isBossRoom: 1
     isChestRoom: 0
     isHiddenRoom: 0
     isLockedRoom: 0

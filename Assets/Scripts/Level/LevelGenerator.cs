@@ -203,9 +203,9 @@ public class LevelGenerator
 
     private bool GenerateAdjacentRooms(RoomData room)
     {
-        Dictionary<Vector2Int, Vector2Int> connections = room.GetDoorConnections();
+        Vector2Int[] connections = room.GetDoorConnections();
 
-        foreach (Vector2Int connectionDirection in connections.Keys)
+        foreach (Vector2Int connectionDirection in connections)
         {
             if (level[room.location.x + connectionDirection.x, room.location.y + connectionDirection.y] != null)
                 continue;
@@ -394,7 +394,7 @@ public class LevelGenerator
 
         foreach (RoomData currentRoom in roomShapes)
         {
-            Dictionary<Vector2Int, Vector2Int> connections = currentRoom.GetDoorConnections();
+            Vector2Int[] connections = currentRoom.GetDoorConnections();
 
             bool fits = true;
             int openDoors = currentRoom.GetDoorCount();
@@ -409,33 +409,33 @@ public class LevelGenerator
                 List<Vector2Int> connectionsFromCurrentRoom = new List<Vector2Int>();
                 List<Vector2Int> connectionsFromAdjacentRoom = new List<Vector2Int>();
 
-                foreach (Vector2Int connectionDirection in connections.Keys)
+                foreach (Vector2Int connectionDirection in connections)
                 {
                     switch (adjacentRoom.roomType)
                     {
                         case RoomType.Type1:
                             if (location + connectionDirection == adjacentRoom.location)
-                                connectionsFromCurrentRoom.Add(location + connectionDirection - connections[connectionDirection]);
+                                connectionsFromCurrentRoom.Add(location + connectionDirection - RoomData.GetDoorNormal(connectionDirection, roomType));
                             break;
 
                         case RoomType.Type2Horizontal:
                             if (location + connectionDirection == adjacentRoom.location || location + connectionDirection == adjacentRoom.location + Vector2Int.right)
-                                connectionsFromCurrentRoom.Add(location + connectionDirection - connections[connectionDirection]);
+                                connectionsFromCurrentRoom.Add(location + connectionDirection - RoomData.GetDoorNormal(connectionDirection, roomType));
                             break;
 
                         case RoomType.Type2Vertical:
                             if (location + connectionDirection == adjacentRoom.location || location + connectionDirection == adjacentRoom.location + Vector2Int.up)
-                                connectionsFromCurrentRoom.Add(location + connectionDirection - connections[connectionDirection]);
+                                connectionsFromCurrentRoom.Add(location + connectionDirection - RoomData.GetDoorNormal(connectionDirection, roomType));
                             break;
 
                         case RoomType.Type4:
                             if (location + connectionDirection == adjacentRoom.location || location + connectionDirection == adjacentRoom.location + Vector2Int.right || location + connectionDirection == adjacentRoom.location + Vector2Int.up || location + connectionDirection == adjacentRoom.location + new Vector2Int(1, 1))
-                                connectionsFromCurrentRoom.Add(location + connectionDirection - connections[connectionDirection]);
+                                connectionsFromCurrentRoom.Add(location + connectionDirection - RoomData.GetDoorNormal(connectionDirection, roomType));
                             break;
                     }
                 }
 
-                foreach (Vector2Int adjacentRoomConnectionDirection in adjacentRoom.GetDoorConnections().Keys)
+                foreach (Vector2Int adjacentRoomConnectionDirection in adjacentRoom.GetDoorConnections())
                 {
                     switch (roomType)
                     {
@@ -475,7 +475,7 @@ public class LevelGenerator
 
                 foreach (Vector2Int currentConnection in connectionsFromCurrentRoom)
                 {
-                    if (currentConnection == location + adjacentRoomOffset - RoomData.GetDoorNormal(adjacentRoomOffset))
+                    if (currentConnection == location + adjacentRoomOffset - RoomData.GetDoorNormal(adjacentRoomOffset, roomType))
                     {
                         currentConnectionCorrect = true;
                         break;
@@ -484,7 +484,7 @@ public class LevelGenerator
 
                 foreach (Vector2Int adjacentConnection in connectionsFromAdjacentRoom)
                 {
-                    if (adjacentConnection == location + adjacentRoomOffset - RoomData.GetDoorNormal(adjacentRoomOffset))
+                    if (adjacentConnection == location + adjacentRoomOffset - RoomData.GetDoorNormal(adjacentRoomOffset, roomType))
                     {
                         adjacentConnectionCorrect = true;
                         break;
@@ -575,7 +575,7 @@ public class LevelGenerator
     {
         List<RoomData> roomsToCheck = new List<RoomData>();
 
-        foreach (Vector2Int adjecentRoomOffset in room.GetDoorConnections().Keys)
+        foreach (Vector2Int adjecentRoomOffset in room.GetDoorConnections())
         {
             RoomData adjacentRoom = level[room.location.x + adjecentRoomOffset.x, room.location.y + adjecentRoomOffset.y];
 

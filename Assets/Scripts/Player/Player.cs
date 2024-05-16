@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
 {
     public float speed = 10f;
 
+    private float health;
+
     [HideInInspector]
     public bool active = false;
 
