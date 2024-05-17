@@ -41,7 +41,7 @@ public class Trigger : MonoBehaviour
 
     private IEnumerator WaitForInput()
     {
-        while (!Input.GetKey((interactKey == KeyCode.None) ? Configuration.controls.interact : interactKey))
+        while (!Input.GetKey((interactKey == KeyCode.None) ? Configuration.Controls.interact : interactKey))
         {
             interactionActiveCallback.Invoke(this);
             yield return new WaitForEndOfFrame();

@@ -1,55 +1,83 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class Player : Entity
 {
-    public float speed = 10f;
+    public static Player instance;
 
-    private float health;
+    public override int health
+    {
+        get { return PlayerData.stats.health; }
+        set { PlayerData.stats.health = value; }
+    }
+    public override int maxHealth
+    {
+        get { return PlayerData.stats.maxHealth; }
+        set { PlayerData.stats.maxHealth = value; }
+    }
+    public override float damage
+    {
+        get { return PlayerData.stats.damage; }
+        set { PlayerData.stats.damage = value; }
+    }
+    public override float moveSpeed
+    {
+        get { return PlayerData.stats.moveSpeed; }
+        set { PlayerData.stats.moveSpeed = value; }
+    }
+    public override float defense
+    {
+        get { return PlayerData.stats.defense; }
+        set { PlayerData.stats.defense = value; }
+    }
 
     [HideInInspector]
     public bool active = false;
 
     private Rigidbody2D rb;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake() { instance = this; }
+
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        if (active)
-            Move();
-        else
-            rb.velocity = Vector3.zero;
+        Move();
     }
 
     private void Move()
     {
         Vector2 velocity = Vector2.zero;
 
-        if (Input.GetKey(Configuration.controls.moveUp))
-            velocity.y += 1;
-        if (Input.GetKey(Configuration.controls.moveDown))
-            velocity.y += -1;
-        if (Input.GetKey(Configuration.controls.moveRight))
+        if (active)
         {
-            velocity.x += 1;
-            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-        }
-        if (Input.GetKey(Configuration.controls.moveLeft))
-        {
-            velocity.x += -1;
-            transform.rotation = Quaternion.LookRotation(Vector3.back, Vector3.up);
+            if (Input.GetKey(Configuration.Controls.moveUp))
+                velocity.y += 1;
+            if (Input.GetKey(Configuration.Controls.moveDown))
+                velocity.y += -1;
+            if (Input.GetKey(Configuration.Controls.moveRight))
+            {
+                velocity.x += 1;
+                spriteRenderer.flipX = false;
+            }
+            if (Input.GetKey(Configuration.Controls.moveLeft))
+            {
+                velocity.x += -1;
+                spriteRenderer.flipX = true;
+            }
         }
 
-        rb.velocity = velocity.normalized * speed;
+        rb.velocity = velocity.normalized * moveSpeed;
+    }
+
+    protected override void Die()
+    {
+        Debug.Log("Player has died!");
     }
 }

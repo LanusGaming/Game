@@ -22,19 +22,24 @@ public class GameController : MonoBehaviour
     public GameObject[] bossRoomObjects;
     public GameObject[] roomObjects;
     public Transform levelParent;
+    public Transform bulletParent;
 
     public static GameController instance;
     public static System.Random generationRandomizer;
+    public static System.Random combatRandomizer;
     public static Queue<string> levelOrder;
 
     private Dictionary<string, GameObject> roomIDToObjectMap;
     private Room[,] level;
     private Vector2Int levelSize;
 
-    void Start()
+    private void Awake()
     {
         instance = this;
+    }
 
+    void Start()
+    {
         levelEndTrigger.triggeredCallback = EndLevel;
 
         player.active = false;

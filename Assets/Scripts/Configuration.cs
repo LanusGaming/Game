@@ -2,35 +2,71 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Difficulty
+namespace Configuration
 {
-    Easy, Normal, Hard, Demonic
-}
+    public enum Difficulty
+    {
+        Easy, Normal, Hard, Demonic
+    }
 
-public class GameSettings
-{
-    public int seed = 0;
-    public Difficulty Difficulty = Difficulty.Normal;
-}
+    public static class Game
+    {
+        public static int seed = 0;
+        public static Difficulty Difficulty = Difficulty.Normal;
 
-public class ControlSettings
-{
-    public KeyCode moveUp = KeyCode.W;
-    public KeyCode moveDown = KeyCode.S;
-    public KeyCode moveLeft = KeyCode.A;
-    public KeyCode moveRight = KeyCode.D;
+        public static float GetDamageMultiplier()
+        {
+            switch (Difficulty)
+            {
+                case Difficulty.Easy:
+                    return 0.75f;
 
-    public KeyCode interact = KeyCode.E;
-}
+                case Difficulty.Normal:
+                    return 1f;
 
-public class Upgrades
-{
+                case Difficulty.Hard:
+                    return 1.5f;
 
-}
+                case Difficulty.Demonic:
+                    return 2f;
+            }
 
-public static class Configuration
-{
-    public static GameSettings game = new GameSettings();
-    public static ControlSettings controls = new ControlSettings();
-    public static Upgrades upgrades = new Upgrades();
+            return 1f;
+        }
+
+        public static float GetHealthMultiplier()
+        {
+            switch (Difficulty)
+            {
+                case Difficulty.Easy:
+                    return 0.75f;
+
+                case Difficulty.Normal:
+                    return 1f;
+
+                case Difficulty.Hard:
+                    return 1.5f;
+
+                case Difficulty.Demonic:
+                    return 2f;
+            }
+
+            return 1f;
+        }
+    }
+
+    public static class Controls
+    {
+        public static KeyCode moveUp = KeyCode.W;
+        public static KeyCode moveDown = KeyCode.S;
+        public static KeyCode moveLeft = KeyCode.A;
+        public static KeyCode moveRight = KeyCode.D;
+
+        public static KeyCode interact = KeyCode.E;
+    }
+
+    public static class Upgrades
+    {
+
+    }
 }
