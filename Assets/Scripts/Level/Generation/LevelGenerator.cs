@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class LevelGenerationProperties
@@ -25,7 +27,187 @@ public class LevelGenerationProperties
     public float type4Probability = 1f;
 }
 
-public class LevelGenerator
+public class LevelGenerator : MonoBehaviour
+{
+    private static LevelGenerationProperties properties;
+    private static Vector2Int roomSizeInTiles;
+    private static GameObject[] spawnRoomObjects;
+    private static GameObject[] bossRoomObjects;
+    private static GameObject[] roomObjects;
+    private static Transform levelParent;
+    private static System.Random randomizer;
+    private static Minimap minimap;
+
+    private static Dictionary<string, GameObject> roomIDToObjectMap;
+    private static Vector2Int levelSize = new Vector2Int();
+    private static RoomData[,] levelData;
+    private static Room[,] level;
+
+    public static Room[,] Generate(LevelGenerationProperties properties, GameObject[] spawnRoomObjects, GameObject[] bossRoomObjects, GameObject[] roomObjects, Vector2Int roomSizeInTiles, Transform levelParent, Minimap minimap, System.Random randomizer, out Vector2Int levelSize)
+    {
+        LevelGenerator.properties = properties;
+        LevelGenerator.roomSizeInTiles = roomSizeInTiles;
+        LevelGenerator.spawnRoomObjects = spawnRoomObjects;
+        LevelGenerator.bossRoomObjects = bossRoomObjects;
+        LevelGenerator.roomObjects = roomObjects;
+        LevelGenerator.levelParent = levelParent;
+        LevelGenerator.randomizer = randomizer;
+        LevelGenerator.minimap = minimap;
+
+        GenerateLevel();
+        GenerateLevelObjects();
+        minimap.GenerateMinimap(level, LevelGenerator.levelSize);
+        ConnectRooms();
+
+        levelSize = LevelGenerator.levelSize;
+        return level;
+    }
+
+    private static void GenerateLevel()
+    {
+        roomIDToObjectMap = new Dictionary<string, GameObject>();
+
+        List<RoomData> spawnRoomsData = new List<RoomData>();
+        List<BossRoomData> bossRoomsData = new List<BossRoomData>();
+        List<RoomData> roomsData = new List<RoomData>();
+
+        foreach (GameObject spawnRoom in spawnRoomObjects)
+        {
+            Room spawnRoomScript = spawnRoom.GetComponent<Room>();
+            RoomData roomData = spawnRoomScript.data;
+            spawnRoomsData.Add(roomData);
+
+            roomData.roomID = spawnRoom.name;
+            roomIDToObjectMap.Add(roomData.roomID, spawnRoom);
+        }
+
+        foreach (GameObject bossRoom in bossRoomObjects)
+        {
+            BossRoom bossRoomScript = bossRoom.GetComponent<BossRoom>();
+            BossRoomData roomData = bossRoomScript.GetBossRoomData();
+            bossRoomsData.Add(roomData);
+
+            roomData.bottomLeft.roomID = bossRoom.name + "_bl";
+            roomData.bottomRight.roomID = bossRoom.name + "_br";
+            roomData.topLeft.roomID = bossRoom.name + "_tl";
+            roomData.topRight.roomID = bossRoom.name + "_tr";
+            roomData.exitRoom.roomID = bossRoomScript.exitRoomObject.name;
+
+            roomIDToObjectMap.Add(roomData.bottomLeft.roomID, bossRoom);
+            roomIDToObjectMap.Add(roomData.bottomRight.roomID, null);
+            roomIDToObjectMap.Add(roomData.topLeft.roomID, null);
+            roomIDToObjectMap.Add(roomData.topRight.roomID, null);
+            roomIDToObjectMap.Add(roomData.exitRoom.roomID, bossRoomScript.exitRoomObject);
+        }
+
+        foreach (GameObject room in roomObjects)
+        {
+            Room roomScript = room.GetComponent<Room>();
+            RoomData roomData = roomScript.data;
+            roomsData.Add(roomData);
+
+            roomData.roomID = room.name;
+            roomIDToObjectMap.Add(roomData.roomID, room);
+        }
+
+        LevelDataGenerator levelGenerator = new LevelDataGenerator(properties, spawnRoomsData.ToArray(), bossRoomsData.ToArray(), roomsData.ToArray(), randomizer);
+
+        levelData = levelGenerator.Generate(out levelSize);
+    }
+
+    private static void GenerateLevelObjects()
+    {
+        level = new Room[levelSize.x, levelSize.y];
+
+        for (int x = 0; x < levelSize.x; x++)
+        {
+            for (int y = 0; y < levelSize.y; y++)
+            {
+                if (levelData[x, y] is null)
+                    continue;
+
+                RoomData roomData = levelData[x, y];
+
+                if (roomData.location != new Vector2Int(x, y))
+                {
+                    if (roomData.isBossRoom)
+                        continue;
+
+                    level[x, y] = level[roomData.location.x, roomData.location.y];
+                    continue;
+                }
+
+                if (roomIDToObjectMap[roomData.roomID] is null)
+                    continue;
+
+                GameObject room = Instantiate(roomIDToObjectMap[roomData.roomID], levelParent);
+                room.transform.localPosition = new Vector2(x * roomSizeInTiles.x, y * roomSizeInTiles.y);
+
+                if (room.GetComponent<BossRoom>() != null)
+                    FillBossRoom(room.GetComponent<BossRoom>(), roomData.location);
+                else
+                    level[x, y] = room.GetComponent<Room>();
+
+                level[x, y].data = roomData;
+
+                if (roomData.isSpawnRoom)
+                    levelParent.position = new Vector2(x * roomSizeInTiles.x, y * roomSizeInTiles.y) * -1;
+            }
+        }
+    }
+
+    private static void FillBossRoom(BossRoom bossRoom, Vector2Int location)
+    {
+        Vector2Int size = bossRoom.GetBossRoomData().GetRoomSize();
+
+        for (int x = 0; x < size.x; x++)
+            for (int y = 0; y < size.y; y++)
+                level[location.x + x, location.y + y] = bossRoom.bottomLeft;
+    }
+
+    private static void ConnectRooms()
+    {
+        for (int x = 0; x < levelSize.x; x++)
+        {
+            for (int y = 0; y < levelSize.y; y++)
+            {
+                if (level[x, y] == null)
+                    continue;
+
+                Room room = level[x, y];
+
+                if (room.data.location != new Vector2Int(x, y))
+                    continue;
+
+                List<Room> connectedRooms = new List<Room>();
+
+                Vector2Int[] connections;
+
+                if (room.data.isBossRoom)
+                    connections = room.GetComponent<BossRoom>().GetBossRoomData().GetDoorConnections().Keys.ToArray();
+                else
+                    connections = room.data.GetDoorConnections();
+
+                foreach (Vector2Int connectionDirection in connections)
+                {
+                    connectedRooms.Add(level[x + connectionDirection.x, y + connectionDirection.y]);
+                }
+
+                room.connectedRooms = connectedRooms.ToArray();
+
+                if (room.data.isSpawnRoom)
+                {
+                    room.OnVisibilityTriggerHit(null);
+                    minimap.ExploreRoom(room);
+                }
+                else if (room.room)
+                    room.room.gameObject.SetActive(false);
+            }
+        }
+    }
+}
+
+public class LevelDataGenerator
 {
     private LevelGenerationProperties properties;
     private RoomData[] spawnRooms;
@@ -45,7 +227,7 @@ public class LevelGenerator
     private RoomData[] type2VRooms;
     private RoomData[] type4Rooms;
 
-    public LevelGenerator(LevelGenerationProperties properties, RoomData[] spawnRooms, BossRoomData[] bossRooms, RoomData[] rooms, System.Random randomizer)
+    public LevelDataGenerator(LevelGenerationProperties properties, RoomData[] spawnRooms, BossRoomData[] bossRooms, RoomData[] rooms, System.Random randomizer)
     {
         this.properties = properties;
         this.bossRooms = bossRooms;

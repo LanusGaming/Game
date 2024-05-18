@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,8 +42,11 @@ public static class HelperFunctions
     {
         Vector2 direction = to - from;
         float angle = Mathf.Atan2(direction.y, direction.x);
-        //if (direction.x < 0f)
-        //    angle += Mathf.PI;
         return Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+    }
+
+    public static System.Random GetNewRandomizer(int seed = 0)
+    {
+        return new System.Random((seed != 0) ? seed : (int)(DateTime.Now.Ticks % int.MaxValue));
     }
 }

@@ -631,6 +631,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: loadNextLevelDelay
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
       propertyPath: playerStats.baseDefense
       value: 10
       objectReference: {fileID: 0}
@@ -652,7 +656,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
       propertyPath: levels.Array.data[2].levels.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
       propertyPath: levels.Array.data[3].levels.Array.size
@@ -683,8 +687,12 @@ PrefabInstance:
       value: Level 4
       objectReference: {fileID: 0}
     - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
-      propertyPath: levels.Array.data[3].levels.Array.data[0]
+      propertyPath: levels.Array.data[2].levels.Array.data[2]
       value: Level 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: levels.Array.data[3].levels.Array.data[0]
+      value: Level 6
       objectReference: {fileID: 0}
     - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
       propertyPath: levels.Array.data[3].levels.Array.data[1]

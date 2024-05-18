@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class BossRoomData
 {
-    public RoomData topLeft;
-    public RoomData topRight;
     public RoomData bottomLeft;
     public RoomData bottomRight;
+    public RoomData topLeft;
+    public RoomData topRight;
 
     public RoomData exitRoom;
     public Vector2Int exitRoomPosition;
@@ -139,10 +139,10 @@ public class BossRoomData
 
 public class BossRoom : MonoBehaviour
 {
-    public Room topLeft;
-    public Room topRight;
     public Room bottomLeft;
     public Room bottomRight;
+    public Room topLeft;
+    public Room topRight;
 
     public GameObject exitRoomObject;
     [Tooltip("Relative to the bottom-left corner of the bottom-left tile")]

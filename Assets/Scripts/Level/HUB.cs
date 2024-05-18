@@ -16,6 +16,7 @@ public struct Stage
 public class HUB : MonoBehaviour
 {
     public int debugSeed = 0;
+    public float loadNextLevelDelay = 5f;
     public Stage[] levels;
 
     public Stats playerStats;
@@ -78,9 +79,8 @@ public class HUB : MonoBehaviour
 
         Debug.Log($"Seed: {Configuration.Game.seed}");
 
-        GameController.generationRandomizer = new System.Random(Configuration.Game.seed);
-        GameController.combatRandomizer = new System.Random((int)(DateTime.Now.Ticks % int.MaxValue));
-        GameController.generalRandomizer = new System.Random((int)(DateTime.Now.Ticks % int.MaxValue));
+        GameController.generationRandomizer = HelperFunctions.GetNewRandomizer(Configuration.Game.seed);
+        GameController.combatRandomizer = HelperFunctions.GetNewRandomizer();
 
         GenerateLevelOrder();
 
@@ -88,7 +88,7 @@ public class HUB : MonoBehaviour
 
         Transition transition = Instantiate(transitionObject).GetComponent<Transition>();
         transition.transform.position = player.transform.position;
-        transition.doneCallback = (transition) => SceneManager.LoadSceneAsync(GameController.levelOrder.Dequeue());
+        transition.doneCallback = (transition) => StartCoroutine(LoadNextLevel());
         transition.reversed = true;
     }
 
@@ -103,5 +103,11 @@ public class HUB : MonoBehaviour
                 GameController.levelOrder.Enqueue(level);
             }
         }
+    }
+
+    private IEnumerator LoadNextLevel()
+    {
+        yield return new WaitForSeconds(loadNextLevelDelay);
+        SceneManager.LoadSceneAsync(GameController.levelOrder.Dequeue());
     }
 }
