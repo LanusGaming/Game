@@ -46,7 +46,7 @@ public class Player : Entity
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         Move();
     }

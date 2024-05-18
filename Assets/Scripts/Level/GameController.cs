@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
@@ -24,12 +23,21 @@ public class GameController : MonoBehaviour
     public Transform levelParent;
     public Transform bulletParent;
 
+    [Header("Debug Options")]
+    public bool generateLevel = true;
+    public bool setRandomizers = false;
+    public bool requiresLevelEndTrigger = true;
+    public bool playOpeningTransition = true;
+    public bool setPlayerStats = false;
+    public Stats playerStats;
+
     public static GameController instance;
     public static System.Random generationRandomizer;
     public static System.Random combatRandomizer;
+    public static System.Random generalRandomizer;
     public static Queue<string> levelOrder;
 
-    private Dictionary<string, GameObject> roomIDToObjectMap;
+    //private Dictionary<string, GameObject> roomIDToObjectMap;
     private Room[,] level;
     private Vector2Int levelSize;
 
@@ -40,27 +48,51 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        levelEndTrigger.triggeredCallback = EndLevel;
+        if (setRandomizers)
+        {
+            generationRandomizer = new System.Random((int)(DateTime.Now.Ticks % int.MaxValue));
+            combatRandomizer = new System.Random((int)(DateTime.Now.Ticks % int.MaxValue));
+            generalRandomizer = new System.Random((int)(DateTime.Now.Ticks % int.MaxValue));
+        }
 
-        player.active = false;
+        if (setPlayerStats)
+            PlayerData.stats = playerStats;
 
-        Transition transition = Instantiate(transitionObject).GetComponent<Transition>();
-        transition.transform.position = player.transform.position;
-        transition.doneCallback = (transition) => {
-            player.active = true;
-            Destroy(transition.gameObject);
-        };
+        if (requiresLevelEndTrigger)
+            levelEndTrigger.triggeredCallback = EndLevel;
 
-        GenerateLevelObjects(GenerateLevel());
+        if (playOpeningTransition)
+        {
+            player.active = false;
+            Transition transition = Instantiate(transitionObject).GetComponent<Transition>();
+            transition.transform.position = player.transform.position;
+            transition.doneCallback = (transition) => {
+                player.active = true;
+                Destroy(transition.gameObject);
+            };
+        }
 
-        minimap.GenerateMinimap(level, levelSize);
-
-        ConnectRooms();
+        if (generateLevel)
+        {
+            level = Generate(properties, levelParent, minimap, generationRandomizer, out levelSize);
+        }
     }
 
     private void Update()
     {
-        minimap.minimapCamera.transform.localPosition = new Vector3(player.transform.position.x / roomSizeInTiles.x, player.transform.position.y / roomSizeInTiles.y, -1f);
+        if (generateLevel)
+            minimap.minimapCamera.transform.localPosition = new Vector3(player.transform.position.x / roomSizeInTiles.x, player.transform.position.y / roomSizeInTiles.y, -1f);
+    }
+
+    public Room[,] Generate(LevelGenerationProperties properties, Transform levelParent, Minimap minimap, System.Random randomizer, out Vector2Int levelSize)
+    {
+        Dictionary<string, GameObject> roomIDToObjectMap;
+        RoomData[,] levelData = GenerateLevel(properties, randomizer, out levelSize, out roomIDToObjectMap);
+        Room[,] level = GenerateLevelObjects(levelData, levelSize, roomIDToObjectMap);
+        minimap.GenerateMinimap(level, levelSize);
+        ConnectRooms(level, levelSize);
+
+        return level;
     }
 
     public void EndLevel(Trigger trigger)
@@ -74,7 +106,7 @@ public class GameController : MonoBehaviour
         transition.doneCallback = (transition) => SceneManager.LoadSceneAsync(levelOrder.Dequeue());
     }
 
-    private RoomData[,] GenerateLevel()
+    private RoomData[,] GenerateLevel(LevelGenerationProperties properties, System.Random randomizer, out Vector2Int levelSize, out Dictionary<string, GameObject> roomIDToObjectMap)
     {
         roomIDToObjectMap = new Dictionary<string, GameObject>();
 
@@ -121,14 +153,14 @@ public class GameController : MonoBehaviour
             roomIDToObjectMap.Add(roomData.roomID, room);
         }
 
-        LevelGenerator levelGenerator = new LevelGenerator(properties, spawnRoomsData.ToArray(), bossRoomsData.ToArray(), roomsData.ToArray(), generationRandomizer);
+        LevelGenerator levelGenerator = new LevelGenerator(properties, spawnRoomsData.ToArray(), bossRoomsData.ToArray(), roomsData.ToArray(), randomizer);
 
         return levelGenerator.Generate(out levelSize);
     }
 
-    private void GenerateLevelObjects(RoomData[,] levelData)
+    private Room[,] GenerateLevelObjects(RoomData[,] levelData, Vector2Int levelSize, Dictionary<string, GameObject> roomIDToObjectMap)
     {
-        level = new Room[levelSize.x, levelSize.y];
+        Room[,] level = new Room[levelSize.x, levelSize.y];
 
         for (int x = 0; x < levelSize.x; x++)
         {
@@ -155,7 +187,7 @@ public class GameController : MonoBehaviour
                 room.transform.localPosition = new Vector2(x * roomSizeInTiles.x, y * roomSizeInTiles.y);
 
                 if (room.GetComponent<BossRoom>() != null)
-                    FillBossRoom(room.GetComponent<BossRoom>(), roomData.location);
+                    FillBossRoom(level, room.GetComponent<BossRoom>(), roomData.location);
                 else
                     level[x, y] = room.GetComponent<Room>();
 
@@ -165,9 +197,11 @@ public class GameController : MonoBehaviour
                     levelParent.position = new Vector2(x * roomSizeInTiles.x, y * roomSizeInTiles.y) * -1;
             }
         }
+
+        return level;
     }
 
-    private void FillBossRoom(BossRoom bossRoom, Vector2Int location)
+    private void FillBossRoom(Room[,] level, BossRoom bossRoom, Vector2Int location)
     {
         Vector2Int size = bossRoom.GetBossRoomData().GetRoomSize();
 
@@ -176,7 +210,7 @@ public class GameController : MonoBehaviour
                 level[location.x + x, location.y + y] = bossRoom.bottomLeft;
     }
 
-    private void ConnectRooms()
+    private void ConnectRooms(Room[,] level, Vector2Int levelSize)
     {
         for (int x = 0; x < levelSize.x; x++)
         {

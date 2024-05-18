@@ -114,6 +114,7 @@ public abstract class Entity : MonoBehaviour
     public abstract float moveSpeed { get; set; }
     public abstract float defense { get; set; }
 
+    public float invinciblityDuration = 0.1f;
     public SpriteRenderer spriteRenderer;
     public Sprite sprite;
 
@@ -121,6 +122,7 @@ public abstract class Entity : MonoBehaviour
     protected Stats stats = new Stats();
 
     private Sprite whiteFlash;
+    private bool invincible;
 
     public static int CalculateDamage(float incomingDamage, Entity entity)
     {
@@ -129,8 +131,12 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void TakeDamage(float damage)
     {
+        if (invincible)
+            return;
+
         health -= CalculateDamage(damage, this);
         StartCoroutine(FlashOnDamage());
+        StartCoroutine(StartInvincibility());
 
         if (health == 0)
             Die();
@@ -141,7 +147,7 @@ public abstract class Entity : MonoBehaviour
         stats.buffs.Add(buff);
 
         if (duration > 0f)
-            StartCoroutine(BuffCountdown(buff, duration));
+            StartCoroutine(StartBuff(buff, duration));
     }
 
     public virtual void RemoveBuff(Buff buff)
@@ -156,6 +162,13 @@ public abstract class Entity : MonoBehaviour
 
     protected abstract void Die();
 
+    private IEnumerator StartInvincibility()
+    {
+        invincible = true;
+        yield return new WaitForSeconds(invinciblityDuration);
+        invincible = false;
+    }
+
     private IEnumerator FlashOnDamage()
     {
         if (whiteFlash is null)
@@ -166,7 +179,7 @@ public abstract class Entity : MonoBehaviour
         spriteRenderer.sprite = sprite;
     }
 
-    private IEnumerator BuffCountdown(Buff buff, float duration)
+    private IEnumerator StartBuff(Buff buff, float duration)
     {
         yield return new WaitForSeconds(duration);
         RemoveBuff(buff);

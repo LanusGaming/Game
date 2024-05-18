@@ -76,6 +76,14 @@ public class Minimap : MonoBehaviour
         }
     }
 
+    public void Clear()
+    {
+        for (int i = 0; i < minimapRoomsParent.childCount; i++)
+        {
+            Destroy(minimapRoomsParent.GetChild(i).gameObject);
+        }
+    }
+
     public Transform ExploreRoom(Room room)
     {
         Destroy(room.minimapObject.gameObject);

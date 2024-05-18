@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VersionControl.Git.ICSharpCode.SharpZipLib.Tar;
 using UnityEngine;
 
 public abstract class Behaviour : MonoBehaviour

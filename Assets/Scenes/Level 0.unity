@@ -177,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5015861491703698199, guid: 40cb5aa27166cff4383c544c817a7043, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -414,22 +414,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4049199715553813072, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
-      propertyPath: bulletSpeed
-      value: 10
+    - target: {fileID: -875448358352813944, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: maximumDistanceFromPlayer
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4049199715553813072, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
-      propertyPath: burstAmount
-      value: 5
+    - target: {fileID: -875448358352813944, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: minimumDistanceFromPlayer
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4049199715553813072, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
-      propertyPath: bulletLifetime
+    - target: {fileID: 2413674740039269699, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 727e3e15b8b2cf742adcf888bc36c7de, type: 3}
+    - target: {fileID: 2413674740039269699, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: attacks.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4049199715553813072, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
-      propertyPath: burstIntervall
-      value: 0.1
-      objectReference: {fileID: 0}
+    - target: {fileID: 2413674740039269699, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: attacks.Array.data[0]
+      value: 
+      objectReference: {fileID: 1446341381441531838}
+    - target: {fileID: 2413674740039269699, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: attacks.Array.data[1]
+      value: 
+      objectReference: {fileID: 1446341381441531838}
     - target: {fileID: 4863395339046432599, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3
@@ -474,15 +482,49 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestEnemy
       objectReference: {fileID: 0}
-    - target: {fileID: 7083945494693871752, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
-      propertyPath: m_BodyType
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6781198488258857956, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 1446341381441531838}
   m_SourcePrefab: {fileID: 100100000, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+--- !u!1 &1446341381441531837 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6781198488258857956, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+  m_PrefabInstance: {fileID: 1446341381441531836}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1446341381441531838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446341381441531837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12cfe83a18b7c8e499e866058de35ddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 0
+  minimumDistanceFromPlayer: 0
+  maximumDistanceFromPlayer: 0
+  standStill: 0
+  recovoryTime: 1
+  cooldown: 2
+  onCooldown: 0
+  executing: 0
+  bulletObject: {fileID: 3627753057657841185, guid: 22f2cd8cb7d054b44b7ecb59664a9185, type: 3}
+  bulletSpeed: 5
+  bulletAcceleration: 0
+  spawnDistanceFromEnemy: 0.5
+  bulletsPerBurst: 8
+  burstAmount: 50
+  burstIntervall: 0.4
+  rotationDegreesPerBurst: 5
+  bulletSpreadAngle: 0
+  bulletLifetime: 0
 --- !u!1001 &3776525792396973786
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class KeepDistance : Behaviour
 
         if (direction.magnitude < minimumDistanceFromPlayer)
             direction *= -1;
-        else if (direction.magnitude < maximumDistanceFromPlayer)
+        else if (direction.magnitude < maximumDistanceFromPlayer || maximumDistanceFromPlayer == 0f)
             direction *= 0;
 
         return direction.normalized;

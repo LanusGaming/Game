@@ -41,6 +41,7 @@ public class HUB : MonoBehaviour
 
         player.active = false;
         PlayerData.stats = playerStats;
+        PlayerData.stats.health = PlayerData.stats.maxHealth;
 
         // show opening transition
         Transition transition = Instantiate(transitionObject).GetComponent<Transition>();
@@ -79,7 +80,8 @@ public class HUB : MonoBehaviour
 
         GameController.generationRandomizer = new System.Random(Configuration.Game.seed);
         GameController.combatRandomizer = new System.Random((int)(DateTime.Now.Ticks % int.MaxValue));
-        
+        GameController.generalRandomizer = new System.Random((int)(DateTime.Now.Ticks % int.MaxValue));
+
         GenerateLevelOrder();
 
         player.active = false;
