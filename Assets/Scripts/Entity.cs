@@ -114,15 +114,15 @@ public abstract class Entity : MonoBehaviour
     public abstract float moveSpeed { get; set; }
     public abstract float defense { get; set; }
 
-    public float invinciblityDuration = 0.1f;
+    public float invinciblityDuration = 0.5f;
     public SpriteRenderer spriteRenderer;
     public Sprite sprite;
 
     [SerializeField]
     protected Stats stats = new Stats();
+    protected bool invincible;
 
     private Sprite whiteFlash;
-    private bool invincible;
 
     public static int CalculateDamage(float incomingDamage, Entity entity)
     {
@@ -136,10 +136,14 @@ public abstract class Entity : MonoBehaviour
 
         health -= CalculateDamage(damage, this);
         StartCoroutine(FlashOnDamage());
-        StartCoroutine(StartInvincibility());
 
         if (health == 0)
-            Die();
+        {
+            invincible = true;
+            StartCoroutine(Die());
+        }
+        else
+            StartCoroutine(StartInvincibility());
     }
 
     public virtual void ApplyBuff(Buff buff, float duration)
@@ -160,7 +164,7 @@ public abstract class Entity : MonoBehaviour
         stats.buffs.Clear();
     }
 
-    protected abstract void Die();
+    protected abstract IEnumerator Die();
 
     private IEnumerator StartInvincibility()
     {

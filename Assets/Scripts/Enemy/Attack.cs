@@ -5,48 +5,36 @@ using UnityEngine;
 
 public abstract class Attack : MonoBehaviour
 {
+    [Min(0)]
     public float damage;
-    public float minimumDistanceFromPlayer;
-    public float maximumDistanceFromPlayer;
-    public bool standStill;
-    public float recovoryTime;
+    [Min(0)]
     public float cooldown;
+    [Min(0)]
+    public float recovoryTime;
+    [Min(0)]
+    public float probability;
 
     [HideInInspector]
     public bool onCooldown;
     [HideInInspector]
     public bool executing;
 
-    public bool Ready(Enemy enemy, Player player)
+    public abstract bool Ready(Enemy enemy, Player player);
+
+    public IEnumerator Invoke(Enemy enemy, Player player)
     {
-        if (onCooldown)
-            return false;
-
-        float distance = (player.transform.position - enemy.transform.position).magnitude;
-
-        return distance >= minimumDistanceFromPlayer && ((maximumDistanceFromPlayer > 0) ? distance < maximumDistanceFromPlayer : true);
-    }
-
-    public IEnumerator Execute(Enemy enemy, Player player)
-    {
-        yield return _Execute(enemy, player);
-        Done(enemy);
-    }
-
-    protected abstract IEnumerator _Execute(Enemy enemy, Player player);
-
-    protected void Done(Enemy enemy)
-    {
-        onCooldown = true;
+        executing = true;
+        yield return Execute(enemy, player);
         executing = false;
-
-        StartCoroutine(Cooldown());
-        enemy.OnAttackFinished(recovoryTime);
+        yield return Cooldown();
     }
 
     private IEnumerator Cooldown()
     {
+        onCooldown = true;
         yield return new WaitForSeconds(cooldown);
         onCooldown = false;
     }
+
+    protected abstract IEnumerator Execute(Enemy enemy, Player player);
 }

@@ -225,8 +225,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 76167275
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -1886,7 +1886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8697865520986572795, guid: 9e22d286c4859c94396bb7aaae53b47f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1935,63 +1935,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1053589529
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 679647144363379413, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_Name
-      value: Transition
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668047455002307627, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668047455002307627, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668047455002307627, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668047455002307627, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668047455002307627, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668047455002307627, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668047455002307627, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668047455002307627, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668047455002307627, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668047455002307627, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
 --- !u!1 &1059770021
 GameObject:
   m_ObjectHideFlags: 0
@@ -2163,6 +2106,58 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1612195329}
     - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: damage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: cooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: bulletSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: burstAmount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: probability
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: bulletObject
+      value: 
+      objectReference: {fileID: 3627753057657841185, guid: 22f2cd8cb7d054b44b7ecb59664a9185, type: 3}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: recovoryTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: burstIntervall
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: bulletsPerBurst
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: bulletSpreadAngle
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: bulletAcceleration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: spawnDistanceFromEnemy
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: rotationDegreesPerBurst
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
       propertyPath: maximumDistanceFromPlayer
       value: 1
       objectReference: {fileID: 0}
@@ -2251,11 +2246,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  minimumDistanceFromPlayer: 0
-  maximumDistanceFromPlayer: 0
-  standStill: 1
-  recovoryTime: 1
   cooldown: 2
+  recovoryTime: 1
+  probability: 0
   onCooldown: 0
   executing: 0
   bulletObject: {fileID: 3627753057657841185, guid: 22f2cd8cb7d054b44b7ecb59664a9185, type: 3}
@@ -2264,7 +2257,7 @@ MonoBehaviour:
   spawnDistanceFromEnemy: 1
   burstAmount: 15
   burstIntervall: 0.42
-  bulletSpreadAngle: 1
+  inaccuracyAngle: 10
   bulletLifetime: 0
 --- !u!1001 &2133497664
 PrefabInstance:
@@ -2274,6 +2267,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 732503614610658371, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: m_AssetsPPU
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2224646392283802148, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: orthographic size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4349235534310171048, guid: d2e8572f74e935f49931343be24718c1, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2338,4 +2339,3 @@ SceneRoots:
   - {fileID: 865430205}
   - {fileID: 341158413}
   - {fileID: 1059770023}
-  - {fileID: 1053589529}

@@ -34,14 +34,15 @@ public class Enemy : Entity
 
     public Behaviour behaviour;
     public Attack[] attacks;
-    public float contactDamage;
+    public Attack onDeath;
     public float contactDamageCooldown;
+
+    [HideInInspector]
+    public bool canMove;
 
     private Player player;
     private Rigidbody2D rb;
 
-    private Attack activeAttack;
-    private float recoveryTimer = 0f;
     private bool inContact;
     private bool contactDamageOnCooldown;
 
@@ -50,24 +51,13 @@ public class Enemy : Entity
         health = maxHealth;
         player = Player.instance;
         rb = GetComponent<Rigidbody2D>();
+
+        StartCoroutine(Attack());
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (activeAttack is not null)
-        {
-            if (!activeAttack.standStill)
-                Move();
-            return;
-        }
-
-        if (recoveryTimer > 0)
-        {
-            recoveryTimer -= Time.deltaTime;
-            Move();
-        }
-        else
-            Attack();
+        Move();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -77,7 +67,7 @@ public class Enemy : Entity
             inContact = true;
 
             if (!contactDamageOnCooldown)
-                StartCoroutine(DoContactDamage());
+                StartCoroutine(ContactDamageRoutine());
         }
     }
 
@@ -89,13 +79,13 @@ public class Enemy : Entity
         }
     }
 
-    private IEnumerator DoContactDamage()
+    private IEnumerator ContactDamageRoutine()
     {
         contactDamageOnCooldown = true;
 
         while (inContact)
         {
-            player.TakeDamage(contactDamage);
+            player.TakeDamage(damage);
             yield return new WaitForSeconds(contactDamageCooldown);
         }
 
@@ -104,18 +94,31 @@ public class Enemy : Entity
 
     private void Move()
     {
-        Vector2 velocity = behaviour.Move(this, player) * moveSpeed;
+        if (canMove)
+            behaviour.Move(this, player);
 
-        if (velocity.x > 0)
+        if (rb.velocity.x > 0)
             spriteRenderer.flipX = false;
         
-        if (velocity.x < 0)
+        if (rb.velocity.x < 0)
             spriteRenderer.flipX = true;
-
-        rb.velocity = velocity;
     }
 
-    private void Attack()
+    private IEnumerator Attack()
+    {
+        while (true)
+        {
+            Attack attack = null;
+            yield return new WaitUntil(() => (attack = ChooseAttack(GetAvailableAttacks())) is not null);
+
+            StartCoroutine(attack.Invoke(this, player));
+
+            yield return new WaitWhile(() => attack.executing);
+            yield return new WaitForSeconds(attack.recovoryTime);
+        }
+    }
+
+    private Attack[] GetAvailableAttacks()
     {
         List<Attack> available = new List<Attack>();
 
@@ -125,24 +128,37 @@ public class Enemy : Entity
                 available.Add(attack);
         }
 
-        if (available.Count == 0)
+        return available.ToArray();
+    }
+
+    private Attack ChooseAttack(Attack[] attacks)
+    {
+        float maxProbability = 0f;
+
+        foreach (var attack in attacks)
+            maxProbability += attack.probability;
+
+        double value = GameController.combatRandomizer.NextDouble() * maxProbability;
+
+        foreach (var attack in attacks)
         {
-            Move();
-            return;
+            if (value < attack.probability)
+                return attack;
+
+            value -= attack.probability;
         }
 
-        activeAttack = available[GameController.combatRandomizer.Next(available.Count)];
-        StartCoroutine(activeAttack.Execute(this, player));
+        return null;
     }
 
-    public void OnAttackFinished(float recovoryTime)
+    protected override IEnumerator Die()
     {
-        recoveryTimer = recovoryTime;
-        activeAttack = null;
-    }
+        if (onDeath is not null)
+        {
+            StartCoroutine(onDeath.Invoke(this, player));
+            yield return new WaitWhile(() => onDeath.executing);
+        }
 
-    protected override void Die()
-    {
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

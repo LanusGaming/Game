@@ -2,38 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireAOE : Attack
+public class Shotgun : Attack
 {
     public GameObject bulletObject;
     public float bulletSpeed = 10f;
     public float bulletAcceleration = 0f;
     public float spawnDistanceFromEnemy = 1f;
-    public int bulletsPerBurst = 8;
-    public int burstAmount = 5;
-    public float burstIntervall = 0.1f;
-    public float rotationDegreesPerBurst = 5f;
-    public float bulletSpreadAngle = 0f;
+    public int bulletsPerBurst = 5;
+    public int burstAmount = 3;
+    public float burstIntervall = 0.5f;
+    public float rotationDegreesPerBurst = 0f;
+    public float bulletSpreadAngle = 60f;
+    public float inaccuracyAngle = 0f;
     public float bulletLifetime = 0f;
+    public bool followPlayer = true;
 
-    protected override IEnumerator _Execute(Enemy enemy, Player player)
+    public override bool Ready(Enemy enemy, Player player)
     {
-        Vector2 startDirection = (player.transform.position - enemy.transform.position).normalized;
+        return true;
+    }
 
+    protected override IEnumerator Execute(Enemy enemy, Player player)
+    {
         for (int i = 0; i < burstAmount; i++)
         {
+            Vector2 startDirection;
+
+            if (followPlayer)
+                startDirection = (player.transform.position - enemy.transform.position).normalized;
+            else
+                startDirection = Vector2.up;
+
             Quaternion burstOffset = Quaternion.AngleAxis(rotationDegreesPerBurst * i, Vector3.forward);
 
             for (int j = 0; j < bulletsPerBurst; j++)
             {
-                Quaternion bulletOffset = Quaternion.AngleAxis(360f / bulletsPerBurst * j, Vector3.forward);
+                Quaternion bulletOffset = Quaternion.AngleAxis(-bulletSpreadAngle / 2f + bulletSpreadAngle / bulletsPerBurst * j, Vector3.forward);
 
                 Transform bullet = Instantiate(bulletObject, GameController.instance.bulletParent).transform;
                 bullet.localPosition = enemy.transform.position + burstOffset * bulletOffset * startDirection * spawnDistanceFromEnemy;
                 bullet.rotation = HelperFunctions.LookTowards(Vector3.zero, burstOffset * bulletOffset * startDirection);
-                bullet.rotation *= Quaternion.AngleAxis((float)(GameController.combatRandomizer.NextDouble() * bulletSpreadAngle * 2 - bulletSpreadAngle), Vector3.forward);
+                bullet.rotation *= Quaternion.AngleAxis((float)(GameController.combatRandomizer.NextDouble() * inaccuracyAngle - inaccuracyAngle / 2f), Vector3.forward);
 
                 Bullet script = bullet.GetComponent<Bullet>();
-                script.damage = damage;
+                script.damage = enemy.damage + damage;
                 script.speed = bulletSpeed;
                 script.acceleration = bulletAcceleration;
                 if (bulletLifetime > 0f) script.lifetime = bulletLifetime;

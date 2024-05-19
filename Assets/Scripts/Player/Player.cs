@@ -76,8 +76,10 @@ public class Player : Entity
         rb.velocity = velocity.normalized * moveSpeed;
     }
 
-    protected override void Die()
+    protected override IEnumerator Die()
     {
         Debug.Log("Player has died!");
+        yield return new WaitForSeconds(invinciblityDuration);
+        invincible = false;
     }
 }

@@ -438,6 +438,18 @@ PrefabInstance:
       propertyPath: attacks.Array.data[1]
       value: 
       objectReference: {fileID: 1446341381441531838}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: probability
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: bulletSpreadAngle
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: rotationDegreesPerBurst
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4863395339046432599, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3
@@ -508,11 +520,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  minimumDistanceFromPlayer: 0
-  maximumDistanceFromPlayer: 0
-  standStill: 0
-  recovoryTime: 1
   cooldown: 2
+  recovoryTime: 1
+  probability: 0
   onCooldown: 0
   executing: 0
   bulletObject: {fileID: 3627753057657841185, guid: 22f2cd8cb7d054b44b7ecb59664a9185, type: 3}
@@ -524,6 +534,7 @@ MonoBehaviour:
   burstIntervall: 0.4
   rotationDegreesPerBurst: 5
   bulletSpreadAngle: 0
+  inaccuracyAngle: 0
   bulletLifetime: 0
 --- !u!1001 &3776525792396973786
 PrefabInstance:
