@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class MinimapLoadingIcon : MonoBehaviour, ILoadingIcon
+public class LevelGenerationLoadingIcon : MonoBehaviour, ILoadingIcon
 {
-    public Minimap minimapLoadingIconMinimap;
+    public Minimap loadingIconMinimap;
     public float explorationIntervall = 0.1f;
     public float generationCooldown = 0.3f;
 
@@ -25,20 +25,19 @@ public class MinimapLoadingIcon : MonoBehaviour, ILoadingIcon
 
     private IEnumerator ShowMinimapIcon()
     {
-        minimapLoadingIconMinimap.gameObject.SetActive(true);
+        loadingIconMinimap.gameObject.SetActive(true);
 
         while (true)
         {
             ClearMinimap();
 
             Vector2Int levelSize;
-            Room[,] level = LevelGenerator.Generate(properties, spawnRoomObjects, bossRoomObjects, roomObjects, roomSizeInTiles, levelParent, minimapLoadingIconMinimap, HelperFunctions.GetNewRandomizer(), out levelSize);
+            Room[,] level = LevelGenerator.Generate(properties, spawnRoomObjects, bossRoomObjects, roomObjects, roomSizeInTiles, levelParent, loadingIconMinimap, HelperFunctions.GetNewRandomizer(), out levelSize);
 
             Room spawnRoom = GetSpawnRoom(level, levelSize);
             spawnRoom.OnVisibilityTriggerHit(null);
 
-            List<Room> exploredRooms = new List<Room>();
-            exploredRooms.Add(spawnRoom);
+            List<Room> exploredRooms = new List<Room> { spawnRoom };
 
             yield return ExploreRooms(spawnRoom.connectedRooms.ToArray(), exploredRooms);
 
@@ -55,7 +54,7 @@ public class MinimapLoadingIcon : MonoBehaviour, ILoadingIcon
             if (exploredRooms.Contains(room))
                 continue;
 
-            minimapLoadingIconMinimap.ExploreRoom(room);
+            loadingIconMinimap.ExploreRoom(room);
             room.OnVisibilityTriggerHit(null);
             exploredRooms.Add(room);
             next.AddRange(room.connectedRooms);
@@ -86,7 +85,7 @@ public class MinimapLoadingIcon : MonoBehaviour, ILoadingIcon
 
     private void ClearMinimap()
     {
-        minimapLoadingIconMinimap.Clear();
+        loadingIconMinimap.Clear();
 
         for (int i = 0; i < levelParent.childCount; i++)
         {

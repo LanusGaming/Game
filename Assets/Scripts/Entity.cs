@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [Serializable]
 public class Buff
@@ -116,13 +117,13 @@ public abstract class Entity : MonoBehaviour
 
     public float invinciblityDuration = 0.5f;
     public SpriteRenderer spriteRenderer;
-    public Sprite sprite;
+    public Material flashWhiteMaterial;
 
     [SerializeField]
     protected Stats stats = new Stats();
     protected bool invincible;
 
-    private Sprite whiteFlash;
+    private Material originalMaterial;
 
     public static int CalculateDamage(float incomingDamage, Entity entity)
     {
@@ -135,6 +136,7 @@ public abstract class Entity : MonoBehaviour
             return;
 
         health -= CalculateDamage(damage, this);
+        Debug.Log($"Entity {gameObject.name} is now at {health}hp");
         StartCoroutine(FlashOnDamage());
 
         if (health == 0)
@@ -175,12 +177,12 @@ public abstract class Entity : MonoBehaviour
 
     private IEnumerator FlashOnDamage()
     {
-        if (whiteFlash is null)
-            whiteFlash = HelperFunctions.GenerateWhiteFlashSprite(spriteRenderer.sprite);
+        if (originalMaterial is null)
+            originalMaterial = spriteRenderer.material;
 
-        spriteRenderer.sprite = whiteFlash;
+        spriteRenderer.material = flashWhiteMaterial;
         yield return new WaitForSeconds(0.1f);
-        spriteRenderer.sprite = sprite;
+        spriteRenderer.material = originalMaterial;
     }
 
     private IEnumerator StartBuff(Buff buff, float duration)

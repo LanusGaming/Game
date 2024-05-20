@@ -30,14 +30,72 @@ public class Minimap : MonoBehaviour
 {
     public MinimapObjects minimapObjects;
     public Camera minimapCamera;
-    public Transform spriteMask;
-    public Transform background;
-    public Transform minimapRoomsParent;
+    public Camera mapCamera;
+    public Transform playerRepresantation;
+    public Transform minimapSpriteMask;
+    public Transform minimapBackground;
+    public Transform mapSpriteMask;
+    public Transform mapBackground;
+    public Transform roomsParent;
+    public float mapZoomSensitivity = 0.2f;
+    public float minZoomSize = 1f;
+
+    [HideInInspector]
+    public bool inMinimapMode = true;
+
+    private Vector3 mousePoint = Vector3.zero;
+    private float originalCameraSize;
+    private Coroutine changingRoomRoutine;
 
     private void Start()
     {
-        spriteMask.localScale = new Vector3(minimapCamera.orthographicSize * 2, minimapCamera.orthographicSize * 2, 1);
-        background.localScale = spriteMask.localScale;
+        minimapSpriteMask.localScale = new Vector3(minimapCamera.orthographicSize * 2, minimapCamera.orthographicSize * 2, 1);
+        minimapBackground.localScale = minimapSpriteMask.localScale;
+
+        if (mapCamera != null)
+        {
+            mapSpriteMask.localScale = new Vector3(mapCamera.orthographicSize * 2f * Screen.width / Screen.height, mapCamera.orthographicSize * 2f, 1);
+            mapBackground.localScale = mapSpriteMask.localScale;
+        }
+    }
+
+    private void Update()
+    {
+        if (!inMinimapMode)
+        {
+            if (mousePoint != Vector3.zero)
+            {
+                Vector3 point = mapCamera.ScreenToWorldPoint(Input.mousePosition);
+                mapCamera.transform.localPosition += mousePoint - new Vector3(point.x, point.y);
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                mousePoint = mapCamera.ScreenToWorldPoint(Input.mousePosition);
+                mousePoint = new Vector3(mousePoint.x, mousePoint.y);
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                mousePoint = Vector3.zero;
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (changingRoomRoutine != null)
+                    StopCoroutine(changingRoomRoutine);
+
+                changingRoomRoutine = StartCoroutine(ChangeRoom(mapCamera.ScreenToWorldPoint(Input.mousePosition)));
+            }
+
+            if (Input.mouseScrollDelta != Vector2.zero)
+            {
+                mapCamera.orthographicSize += Input.mouseScrollDelta.y * mapZoomSensitivity;
+                mapCamera.orthographicSize = Mathf.Max(minZoomSize, mapCamera.orthographicSize);
+
+                mapBackground.localScale = new Vector3(mapCamera.orthographicSize * 2f * Screen.width / Screen.height, mapCamera.orthographicSize * 2f, 1);
+            }
+        }
     }
 
     public void GenerateMinimap(Room[,] level, Vector2Int size)
@@ -60,7 +118,7 @@ public class Minimap : MonoBehaviour
                     corridorParent = GenerateRoom(room.data);
                 else
                 {
-                    corridorParent = Instantiate(room.unexploredMinimapObject, minimapRoomsParent).transform;
+                    corridorParent = Instantiate(room.unexploredMinimapObject, roomsParent).transform;
                     corridorParent.localPosition = new Vector2(room.data.location.x, room.data.location.y);
                 }
 
@@ -69,7 +127,7 @@ public class Minimap : MonoBehaviour
                 room.minimapObject = corridorParent;
 
                 if (room.data.isSpawnRoom)
-                    minimapRoomsParent.localPosition = new Vector2(room.data.location.x, room.data.location.y) * -1;
+                    roomsParent.localPosition = new Vector2(room.data.location.x, room.data.location.y) * -1;
                 else
                     corridorParent.gameObject.SetActive(false);
             }
@@ -78,9 +136,17 @@ public class Minimap : MonoBehaviour
 
     public void Clear()
     {
-        for (int i = 0; i < minimapRoomsParent.childCount; i++)
+        GameObject[] children = new GameObject[roomsParent.childCount];
+
+        for (int i = 0; i < roomsParent.childCount; i++)
         {
-            Destroy(minimapRoomsParent.GetChild(i).gameObject);
+            children[i] = roomsParent.GetChild(i).gameObject;
+        }
+
+        foreach (GameObject child in children)
+        {
+            child.SetActive(false);
+            Destroy(child);
         }
     }
 
@@ -94,13 +160,43 @@ public class Minimap : MonoBehaviour
             corridorParent = GenerateRoom(room.data, true);
         else
         {
-            corridorParent = Instantiate(room.exploredMinimapObject, minimapRoomsParent).transform;
+            corridorParent = Instantiate(room.exploredMinimapObject, roomsParent).transform;
             corridorParent.localPosition = new Vector2(room.data.location.x, room.data.location.y);
         }
 
         GenerateCorridors(room.data, corridorParent);
 
         return corridorParent;
+    }
+
+    public bool SwitchMode()
+    {
+        if (mapCamera == null)
+            return false;
+
+        if (changingRoomRoutine != null)
+            return false;
+
+        inMinimapMode = !inMinimapMode;
+
+        if (inMinimapMode)
+        {
+            mapCamera.gameObject.SetActive(false);
+            minimapCamera.gameObject.SetActive(true);
+
+            mapCamera.transform.localPosition = new Vector3(0f, 0f, -1f);
+            mapCamera.orthographicSize = originalCameraSize;
+            mapBackground.localScale = new Vector3(mapCamera.orthographicSize * 2f * Screen.width / Screen.height, mapCamera.orthographicSize * 2f, 1);
+        }
+        else
+        {
+            minimapCamera.gameObject.SetActive(false);
+            mapCamera.gameObject.SetActive(true);
+
+            originalCameraSize = mapCamera.orthographicSize;
+        }
+
+        return true;
     }
 
     private Transform GenerateRoom(RoomData room, bool explored = false)
@@ -126,7 +222,7 @@ public class Minimap : MonoBehaviour
                 break;
         }
 
-        GameObject generatedRoom = Instantiate(roomObject, minimapRoomsParent);
+        GameObject generatedRoom = Instantiate(roomObject, roomsParent);
         generatedRoom.transform.localPosition = new Vector2(room.location.x, room.location.y);
 
         return generatedRoom.transform;
@@ -152,5 +248,12 @@ public class Minimap : MonoBehaviour
             Vector2Int corridorPosition = connectionDirection - RoomData.GetDoorNormal(connectionDirection, room.roomType);
             Instantiate(corridorObject, parent).transform.localPosition = new Vector2(corridorPosition.x, corridorPosition.y);
         }
+    }
+
+    private IEnumerator ChangeRoom(Vector2 newPosition)
+    {
+        Debug.Log("Changing Room!");
+        yield return new WaitForSeconds(2f);
+        changingRoomRoutine = null;
     }
 }

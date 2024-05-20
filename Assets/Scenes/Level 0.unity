@@ -536,6 +536,7 @@ MonoBehaviour:
   bulletSpreadAngle: 0
   inaccuracyAngle: 0
   bulletLifetime: 0
+  followPlayer: 1
 --- !u!1001 &3776525792396973786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -781,6 +782,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2224646392283802148, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: orthographic size
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5810881412235210820, guid: d2e8572f74e935f49931343be24718c1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -828,8 +833,60 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8818504876056503296, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7209692319739291773}
   m_SourcePrefab: {fileID: 100100000, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+--- !u!1 &7209692319739291772 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8818504876056503296, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+  m_PrefabInstance: {fileID: 7209692319739291771}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7209692319739291773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7209692319739291772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

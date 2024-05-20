@@ -36,5 +36,19 @@ public abstract class Attack : MonoBehaviour
         onCooldown = false;
     }
 
+    protected void SpawnBullet(Enemy enemy, GameObject bulletObject, Vector3 direction, float spawnDistanceFromEnemy, float inaccuracyAngle, float speed, float acceleration, float lifetime)
+    {
+        Transform bullet = Instantiate(bulletObject, GameController.instance.bulletParent).transform;
+        bullet.localPosition = enemy.transform.position + direction * spawnDistanceFromEnemy;
+        bullet.rotation = HelperFunctions.LookTowards(Vector2.zero, direction);
+        bullet.rotation *= Quaternion.AngleAxis((float)(GameController.combatRandomizer.NextDouble() * inaccuracyAngle - inaccuracyAngle / 2f), Vector3.forward);
+
+        Bullet script = bullet.GetComponent<Bullet>();
+        script.damage = enemy.damage + damage;
+        script.speed = speed;
+        script.acceleration = acceleration;
+        if (lifetime > 0f) script.lifetime = lifetime;
+    }
+
     protected abstract IEnumerator Execute(Enemy enemy, Player player);
 }

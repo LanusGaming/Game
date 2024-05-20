@@ -43,18 +43,21 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
 
-    void Start()
-    {
         if (setRandomizers)
         {
             generationRandomizer = HelperFunctions.GetNewRandomizer();
             combatRandomizer = HelperFunctions.GetNewRandomizer();
         }
+    }
 
+    void Start()
+    {
         if (setPlayerStats)
+        {
             PlayerData.stats = playerStats;
+            PlayerData.stats.health = playerStats.maxHealth;
+        }
 
         if (requiresLevelEndTrigger)
             levelEndTrigger.triggeredCallback = EndLevel;
@@ -79,7 +82,21 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         if (generateLevel)
-            minimap.minimapCamera.transform.localPosition = new Vector3(player.transform.position.x / roomSizeInTiles.x, player.transform.position.y / roomSizeInTiles.y, -1f);
+            minimap.playerRepresantation.localPosition = new Vector3(player.transform.position.x / roomSizeInTiles.x, player.transform.position.y / roomSizeInTiles.y);
+
+        if (Input.GetKeyDown(Configuration.Controls.map))
+        {
+            if (minimap.inMinimapMode && player.active)
+            {
+                if (minimap.SwitchMode())
+                    player.active = false;
+            }
+            else if (!minimap.inMinimapMode && !player.active)
+            {
+                if (minimap.SwitchMode())
+                    player.active = true;
+            }
+        }
     }
 
     public void EndLevel(Trigger trigger)

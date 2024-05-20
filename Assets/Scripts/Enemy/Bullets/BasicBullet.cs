@@ -29,5 +29,9 @@ public class BasicBullet : Bullet
             Player.instance.TakeDamage(damage);
             Destroy(gameObject);
         }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            Destroy(gameObject);
+        }
     }
 }

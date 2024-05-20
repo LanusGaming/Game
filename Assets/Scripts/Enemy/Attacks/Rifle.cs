@@ -23,16 +23,7 @@ public class Rifle : Attack
     {
         for (int i = 0; i < burstAmount; i++)
         {
-            Transform bullet = Instantiate(bulletObject, GameController.instance.bulletParent).transform;
-            bullet.localPosition = enemy.transform.position + (player.transform.position - enemy.transform.position).normalized * spawnDistanceFromEnemy;
-            bullet.rotation = HelperFunctions.LookTowards(enemy.transform.position, player.transform.position);
-            bullet.rotation *= Quaternion.AngleAxis((float)(GameController.combatRandomizer.NextDouble() * inaccuracyAngle - inaccuracyAngle / 2f), Vector3.forward);
-
-            Bullet script = bullet.GetComponent<Bullet>();
-            script.damage = enemy.damage + damage;
-            script.speed = bulletSpeed;
-            script.acceleration = bulletAcceleration;
-            if (bulletLifetime > 0f) script.lifetime = bulletLifetime;
+            SpawnBullet(enemy, bulletObject, (player.transform.position - enemy.transform.position).normalized, spawnDistanceFromEnemy, inaccuracyAngle, bulletSpeed, bulletAcceleration, bulletLifetime);
 
             yield return new WaitForSeconds(burstIntervall);
         }

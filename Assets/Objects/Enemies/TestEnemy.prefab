@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7664727309364231436}
   - component: {fileID: 7854445973347175159}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1649626439141463445}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,12 +78,12 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!1 &6781198488258857956
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,12 +95,13 @@ GameObject:
   - component: {fileID: 4863395339046432599}
   - component: {fileID: 2413674740039269699}
   - component: {fileID: -875448358352813944}
-  - component: {fileID: 3161593210260479491}
+  - component: {fileID: 6489286234844208270}
+  - component: {fileID: 3077672403967704553}
   - component: {fileID: 7083945494693871752}
-  - component: {fileID: 1611230333203070410}
+  - component: {fileID: 2591428249430897266}
   m_Layer: 0
   m_Name: TestEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,18 +136,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invinciblityDuration: 0.1
   spriteRenderer: {fileID: 7854445973347175159}
-  sprite: {fileID: 0}
+  flashWhiteMaterial: {fileID: 2100000, guid: f10a8d81efb3f27488dc5ce6c7f2629e, type: 2}
   stats:
     baseMaxHealth: 20
     baseDamage: 0
     baseMoveSpeed: 3
     baseDefense: 0
     buffs: []
-  behaviour: {fileID: -875448358352813944}
+  behaviour: {fileID: 6489286234844208270}
   attacks:
-  - {fileID: 3161593210260479491}
-  contactDamage: 10
+  - {fileID: 3077672403967704553}
+  onDeath: {fileID: 0}
   contactDamageCooldown: 1
+  canMove: 0
 --- !u!114 &-875448358352813944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimumDistanceFromPlayer: 0
   maximumDistanceFromPlayer: 0
---- !u!114 &3161593210260479491
+--- !u!114 &6489286234844208270
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,27 +172,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 6781198488258857956}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12cfe83a18b7c8e499e866058de35ddb, type: 3}
+  m_Script: {fileID: 11500000, guid: 18f11159646cafe42b1583ce0a32ebf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 15
-  minimumDistanceFromPlayer: 0
-  maximumDistanceFromPlayer: 0
-  standStill: 0
+--- !u!114 &3077672403967704553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6781198488258857956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d85fd0e233bb3a244b7b7325af2d8fc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 30
+  cooldown: 3
   recovoryTime: 1
-  cooldown: 2
+  probability: 1
   onCooldown: 0
   executing: 0
   bulletObject: {fileID: 3627753057657841185, guid: 22f2cd8cb7d054b44b7ecb59664a9185, type: 3}
-  bulletSpeed: 1
-  bulletAcceleration: 7
-  spawnDistanceFromEnemy: 0.7
-  bulletsPerBurst: 8
-  burstAmount: 50
-  burstIntervall: 0.3
-  rotationDegreesPerBurst: 5
-  bulletSpreadAngle: 0
-  bulletLifetime: 0
+  lineMaterial: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  lineColor: {r: 1, g: 0, b: 0, a: 1}
+  minLineThickness: 0.01
+  maxLineThickness: 0.1
+  startupDuration: 2
+  firingDelay: 0.1
+  bulletSpeed: 50
+  spawnDistanceFromEnemy: 0.5
+  maxDistance: 50
 --- !u!50 &7083945494693871752
 Rigidbody2D:
   serializedVersion: 4
@@ -203,8 +215,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -218,8 +230,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &1611230333203070410
-CircleCollider2D:
+--- !u!61 &2591428249430897266
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -250,6 +262,16 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.18163076}
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 0.31836924
+  m_Size: {x: 0.7, y: 0.5}
+  m_EdgeRadius: 0

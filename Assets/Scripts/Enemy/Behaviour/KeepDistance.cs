@@ -7,7 +7,7 @@ public class KeepDistance : Behaviour
     public float minimumDistanceFromPlayer = 5f;
     public float maximumDistanceFromPlayer = 7f;
 
-    public override Vector2 Move(Enemy enemy, Player player)
+    public override void Move(Enemy enemy, Player player)
     {
         Vector2 direction = player.transform.position - transform.position;
 
@@ -16,6 +16,6 @@ public class KeepDistance : Behaviour
         else if (direction.magnitude < maximumDistanceFromPlayer || maximumDistanceFromPlayer == 0f)
             direction *= 0;
 
-        return direction.normalized;
+        MoveInDirection(enemy, direction);
     }
 }

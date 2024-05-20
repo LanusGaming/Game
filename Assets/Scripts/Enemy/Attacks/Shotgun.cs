@@ -39,16 +39,7 @@ public class Shotgun : Attack
             {
                 Quaternion bulletOffset = Quaternion.AngleAxis(-bulletSpreadAngle / 2f + bulletSpreadAngle / bulletsPerBurst * j, Vector3.forward);
 
-                Transform bullet = Instantiate(bulletObject, GameController.instance.bulletParent).transform;
-                bullet.localPosition = enemy.transform.position + burstOffset * bulletOffset * startDirection * spawnDistanceFromEnemy;
-                bullet.rotation = HelperFunctions.LookTowards(Vector3.zero, burstOffset * bulletOffset * startDirection);
-                bullet.rotation *= Quaternion.AngleAxis((float)(GameController.combatRandomizer.NextDouble() * inaccuracyAngle - inaccuracyAngle / 2f), Vector3.forward);
-
-                Bullet script = bullet.GetComponent<Bullet>();
-                script.damage = enemy.damage + damage;
-                script.speed = bulletSpeed;
-                script.acceleration = bulletAcceleration;
-                if (bulletLifetime > 0f) script.lifetime = bulletLifetime;
+                SpawnBullet(enemy, bulletObject, burstOffset * bulletOffset * startDirection, spawnDistanceFromEnemy, inaccuracyAngle, bulletSpeed, bulletAcceleration, bulletLifetime);
             }
 
             yield return new WaitForSeconds(burstIntervall);

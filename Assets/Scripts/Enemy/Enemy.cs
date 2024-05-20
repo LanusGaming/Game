@@ -55,6 +55,18 @@ public class Enemy : Entity
         StartCoroutine(Attack());
     }
 
+    private void Update()
+    {
+        if (rb.velocity.x > 0.05f)
+            spriteRenderer.flipX = false;
+
+        if (rb.velocity.x < 0.05f)
+            spriteRenderer.flipX = true;
+
+        if (Math.Abs(rb.velocity.x) < 0.05f)
+            spriteRenderer.flipX = (player.transform.position - transform.position).x < 0f;
+    }
+
     private void FixedUpdate()
     {
         Move();
@@ -94,14 +106,10 @@ public class Enemy : Entity
 
     private void Move()
     {
+        rb.velocity = Vector3.zero;
+
         if (canMove)
             behaviour.Move(this, player);
-
-        if (rb.velocity.x > 0)
-            spriteRenderer.flipX = false;
-        
-        if (rb.velocity.x < 0)
-            spriteRenderer.flipX = true;
     }
 
     private IEnumerator Attack()

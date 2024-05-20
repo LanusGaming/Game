@@ -29,9 +29,6 @@ public class Transition : MonoBehaviour
     {
         timer = 0;
         screenRadius = (new Vector2(Screen.width, Screen.height)).magnitude * Camera.main.orthographicSize/Screen.height * 2f + 1;
-
-        if (GameController.instance is not null)
-            GameController.instance.minimap.gameObject.SetActive(false);
     }
 
     void Update()
@@ -55,8 +52,6 @@ public class Transition : MonoBehaviour
                     loadingIconObject.GetComponent<ILoadingIcon>().Show();
                 }
             }
-            else if (GameController.instance is not null)
-                GameController.instance.minimap.gameObject.SetActive(true);
 
             doneCallback.Invoke(this);
         }
