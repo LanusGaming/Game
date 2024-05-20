@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6818010769299322814}
   - component: {fileID: 1746111372406205952}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2037085991148151135}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Corridor Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}

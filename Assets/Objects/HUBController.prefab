@@ -44,10 +44,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd5d9a707d463b4ea0679c86e24241b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugSeed: 136433000
+  loadNextLevelDelay: 5
   levels:
-  - levels: 01000000
-  - levels: 0200000003000000
-  - levels: 0400000005000000
-  - levels: 06000000
+  - levels: []
+  - levels: []
+  - levels: []
+  - levels: []
+  playerStats:
+    baseMaxHealth: 0
+    baseDamage: 0
+    baseMoveSpeed: 0
+    baseDefense: 0
+    buffs: []
+  player: {fileID: 0}
   startGameTrigger: {fileID: 0}
-  debugSeed: 0
+  interactTrigger: {fileID: 0}
+  interactDialog: {fileID: 0}
+  transitionObject: {fileID: 0}

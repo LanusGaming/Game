@@ -43,7 +43,7 @@ public class LevelGenerator : MonoBehaviour
     private static RoomData[,] levelData;
     private static Room[,] level;
 
-    public static Room[,] Generate(LevelGenerationProperties properties, GameObject[] spawnRoomObjects, GameObject[] bossRoomObjects, GameObject[] roomObjects, Vector2Int roomSizeInTiles, Transform levelParent, Minimap minimap, System.Random randomizer, out Vector2Int levelSize)
+    public static Room[,] Generate(LevelGenerationProperties properties, GameObject[] spawnRoomObjects, GameObject[] bossRoomObjects, GameObject[] roomObjects, Vector2Int roomSizeInTiles, Transform levelParent, Minimap minimap, System.Random randomizer, out Vector2Int levelSize, bool showAll = false, bool clearAll = false)
     {
         LevelGenerator.properties = properties;
         LevelGenerator.roomSizeInTiles = roomSizeInTiles;
@@ -56,8 +56,8 @@ public class LevelGenerator : MonoBehaviour
 
         GenerateLevel();
         GenerateLevelObjects();
-        minimap.GenerateMinimap(level, LevelGenerator.levelSize);
-        ConnectRooms();
+        minimap.GenerateMinimap(level, LevelGenerator.levelSize, roomSizeInTiles);
+        ConnectRooms(showAll, clearAll);
 
         levelSize = LevelGenerator.levelSize;
         return level;
@@ -165,7 +165,7 @@ public class LevelGenerator : MonoBehaviour
                 level[location.x + x, location.y + y] = bossRoom.bottomLeft;
     }
 
-    private static void ConnectRooms()
+    private static void ConnectRooms(bool showAll = false, bool clearAll = false)
     {
         for (int x = 0; x < levelSize.x; x++)
         {
@@ -198,10 +198,47 @@ public class LevelGenerator : MonoBehaviour
                 if (room.data.isSpawnRoom)
                 {
                     room.OnVisibilityTriggerHit(null);
-                    minimap.ExploreRoom(room);
+                    room.minimapObject = minimap.ExploreRoom(room);
+                    room.cleared = true;
                 }
-                else if (room.room)
-                    room.room.gameObject.SetActive(false);
+                else
+                {
+                    if (room.room)
+                        room.room.gameObject.SetActive(false);
+                    else
+                    {
+                        for (int i = 0; i < room.transform.childCount; i++)
+                        {
+                            room.transform.GetChild(i).gameObject.SetActive(false);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!showAll)
+            return;
+
+        for (int x = 0; x < levelSize.x; x++)
+        {
+            for (int y = 0; y < levelSize.y; y++)
+            {
+                if (level[x, y] == null)
+                    continue;
+
+                Room room = level[x, y];
+
+                if (room.data.location != new Vector2Int(x, y))
+                    continue;
+
+                if (room.data.isSpawnRoom)
+                    continue;
+
+                room.minimapObject.gameObject.SetActive(true);
+                room.MakeVisible();
+
+                if (clearAll)
+                    room.MarkAsCleared();
             }
         }
     }
@@ -726,10 +763,10 @@ public class LevelDataGenerator
         bossRoomTiles[2].distanceFromBossRoom = 0;
         bossRoomTiles[3].distanceFromBossRoom = 0;
 
-        AssignDistanceValueForAdjacentRooms(bossRoomTiles[0]);
-        AssignDistanceValueForAdjacentRooms(bossRoomTiles[1]);
-        AssignDistanceValueForAdjacentRooms(bossRoomTiles[2]);
-        AssignDistanceValueForAdjacentRooms(bossRoomTiles[3]);
+        AssignDistanceValuesForAdjacentRooms(bossRoomTiles[0]);
+        AssignDistanceValuesForAdjacentRooms(bossRoomTiles[1]);
+        AssignDistanceValuesForAdjacentRooms(bossRoomTiles[2]);
+        AssignDistanceValuesForAdjacentRooms(bossRoomTiles[3]);
 
         List<RoomData> candidates = new List<RoomData>();
 
@@ -748,7 +785,7 @@ public class LevelDataGenerator
         return candidates.ToArray();
     }
 
-    private void AssignDistanceValueForAdjacentRooms(RoomData room)
+    private void AssignDistanceValuesForAdjacentRooms(RoomData room)
     {
         List<RoomData> roomsToCheck = new List<RoomData>();
 
@@ -770,7 +807,7 @@ public class LevelDataGenerator
 
         foreach(RoomData roomToCheck in roomsToCheck)
         {
-            AssignDistanceValueForAdjacentRooms(roomToCheck);
+            AssignDistanceValuesForAdjacentRooms(roomToCheck);
         }
     }
 }

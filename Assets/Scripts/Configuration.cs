@@ -63,6 +63,7 @@ namespace Configuration
         public static KeyCode moveRight = KeyCode.D;
         public static KeyCode interact = KeyCode.E;
         public static KeyCode map = KeyCode.M;
+        public static KeyCode exit = KeyCode.Escape;
     }
 
     public static class Upgrades

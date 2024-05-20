@@ -45,8 +45,13 @@ public static class HelperFunctions
         return Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
     }
 
-    public static System.Random GetNewRandomizer(int seed = 0)
+    public static System.Random GetNewRandomizer(int seed = 0, bool printSeed = false)
     {
-        return new System.Random((seed != 0) ? seed : (int)(DateTime.Now.Ticks % int.MaxValue));
+        seed = (seed != 0) ? seed : (int)(DateTime.Now.Ticks % int.MaxValue);
+
+        if (printSeed)
+            Debug.Log($"Seed: {seed}");
+
+        return new System.Random(seed);
     }
 }

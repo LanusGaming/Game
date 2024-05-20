@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -39,16 +38,23 @@ public class Minimap : MonoBehaviour
     public Transform roomsParent;
     public float mapZoomSensitivity = 0.2f;
     public float minZoomSize = 1f;
+    public float quickTravelSpeed = 3f;
 
     [HideInInspector]
     public bool inMinimapMode = true;
 
+    private Player player;
+
+    private Vector2Int roomSizeInTiles;
     private Vector3 mousePoint = Vector3.zero;
     private float originalCameraSize;
     private Coroutine changingRoomRoutine;
+    private Dictionary<Room, int> distanceValues;
 
     private void Start()
     {
+        player = Player.instance;
+
         minimapSpriteMask.localScale = new Vector3(minimapCamera.orthographicSize * 2, minimapCamera.orthographicSize * 2, 1);
         minimapBackground.localScale = minimapSpriteMask.localScale;
 
@@ -61,7 +67,18 @@ public class Minimap : MonoBehaviour
 
     private void Update()
     {
-        if (!inMinimapMode)
+        if (!inMinimapMode && Input.GetKeyDown(Configuration.Controls.exit))
+            SwitchMode();
+
+        if (Input.GetKeyDown(Configuration.Controls.map) && mapCamera != null)
+            if (inMinimapMode && player.active || !inMinimapMode && !player.active)
+                SwitchMode();
+
+        if (inMinimapMode && playerRepresantation != null)
+        {
+            playerRepresantation.localPosition = new Vector3(player.transform.position.x / roomSizeInTiles.x, player.transform.position.y / roomSizeInTiles.y);
+        }
+        else if (!inMinimapMode)
         {
             if (mousePoint != Vector3.zero)
             {
@@ -90,15 +107,16 @@ public class Minimap : MonoBehaviour
 
             if (Input.mouseScrollDelta != Vector2.zero)
             {
-                mapCamera.orthographicSize += Input.mouseScrollDelta.y * mapZoomSensitivity;
+                mapCamera.orthographicSize += -Input.mouseScrollDelta.y * mapZoomSensitivity * mapCamera.orthographicSize / 5f;
                 mapCamera.orthographicSize = Mathf.Max(minZoomSize, mapCamera.orthographicSize);
 
-                mapBackground.localScale = new Vector3(mapCamera.orthographicSize * 2f * Screen.width / Screen.height, mapCamera.orthographicSize * 2f, 1);
+                mapSpriteMask.localScale = new Vector3(mapCamera.orthographicSize * 2f * Screen.width / Screen.height, mapCamera.orthographicSize * 2f, 1);
+                mapBackground.localScale = mapSpriteMask.localScale;
             }
         }
     }
 
-    public void GenerateMinimap(Room[,] level, Vector2Int size)
+    public void GenerateMinimap(Room[,] level, Vector2Int size, Vector2Int roomSizeInTiles)
     {
         for (int x = 0; x < size.x; x++)
         {
@@ -122,7 +140,14 @@ public class Minimap : MonoBehaviour
                     corridorParent.localPosition = new Vector2(room.data.location.x, room.data.location.y);
                 }
 
-                GenerateCorridors(room.data, corridorParent);
+
+                if (room.data.isBossRoom)
+                {
+                    BossRoom bossRoom = room.gameObject.GetComponent<BossRoom>();
+                    GenerateCorridors(bossRoom.GetBossRoomData(), corridorParent);
+                }
+                else
+                    GenerateCorridors(room.data, corridorParent);
 
                 room.minimapObject = corridorParent;
 
@@ -132,6 +157,8 @@ public class Minimap : MonoBehaviour
                     corridorParent.gameObject.SetActive(false);
             }
         }
+
+        this.roomSizeInTiles = roomSizeInTiles;
     }
 
     public void Clear()
@@ -164,18 +191,21 @@ public class Minimap : MonoBehaviour
             corridorParent.localPosition = new Vector2(room.data.location.x, room.data.location.y);
         }
 
-        GenerateCorridors(room.data, corridorParent);
+        if (room.data.isBossRoom)
+        {
+            BossRoom bossRoom = room.gameObject.GetComponent<BossRoom>();
+            GenerateCorridors(bossRoom.GetBossRoomData(), corridorParent);
+        }
+        else
+            GenerateCorridors(room.data, corridorParent);
 
         return corridorParent;
     }
 
-    public bool SwitchMode()
+    private void SwitchMode()
     {
-        if (mapCamera == null)
-            return false;
-
         if (changingRoomRoutine != null)
-            return false;
+            return;
 
         inMinimapMode = !inMinimapMode;
 
@@ -184,19 +214,23 @@ public class Minimap : MonoBehaviour
             mapCamera.gameObject.SetActive(false);
             minimapCamera.gameObject.SetActive(true);
 
-            mapCamera.transform.localPosition = new Vector3(0f, 0f, -1f);
             mapCamera.orthographicSize = originalCameraSize;
-            mapBackground.localScale = new Vector3(mapCamera.orthographicSize * 2f * Screen.width / Screen.height, mapCamera.orthographicSize * 2f, 1);
+
+            mapSpriteMask.localScale = new Vector3(mapCamera.orthographicSize * 2f * Screen.width / Screen.height, mapCamera.orthographicSize * 2f, 1);
+            mapBackground.localScale = mapSpriteMask.localScale;
+
+            player.active = true;
         }
         else
         {
             minimapCamera.gameObject.SetActive(false);
             mapCamera.gameObject.SetActive(true);
 
+            mapCamera.transform.localPosition = new Vector3(playerRepresantation.localPosition.x, playerRepresantation.localPosition.y, -1f);
             originalCameraSize = mapCamera.orthographicSize;
-        }
 
-        return true;
+            player.active = false;
+        }
     }
 
     private Transform GenerateRoom(RoomData room, bool explored = false)
@@ -250,10 +284,192 @@ public class Minimap : MonoBehaviour
         }
     }
 
+    private void GenerateCorridors(BossRoomData bossRoom, Transform parent)
+    {
+        Dictionary<Vector2Int, Vector2Int> connections = bossRoom.GetDoorConnections();
+        foreach (Vector2Int connectionDirection in connections.Keys)
+        {
+            GameObject corridorObject = null;
+
+            Vector2Int corridorType = connections[connectionDirection];
+
+            if (corridorType == Vector2Int.up)
+                corridorObject = minimapObjects.corridorTop;
+            if (corridorType == Vector2Int.down)
+                corridorObject = minimapObjects.corridorBottom;
+            if (corridorType == Vector2Int.left)
+                corridorObject = minimapObjects.corridorLeft;
+            if (corridorType == Vector2Int.right)
+                corridorObject = minimapObjects.corridorRight;
+
+            Vector2Int corridorPosition = connectionDirection - connections[connectionDirection];
+            Instantiate(corridorObject, parent).transform.localPosition = new Vector2(corridorPosition.x, corridorPosition.y);
+        }
+    }
+
     private IEnumerator ChangeRoom(Vector2 newPosition)
     {
         Debug.Log("Changing Room!");
-        yield return new WaitForSeconds(2f);
+
+        Vector2Int offset = - new Vector2Int((int)roomsParent.transform.localPosition.x, (int)roomsParent.transform.localPosition.y);
+        Vector2Int currentRoomPosition = new Vector2Int(Mathf.RoundToInt(playerRepresantation.localPosition.x), Mathf.RoundToInt(playerRepresantation.localPosition.y)) + offset;
+        Vector2Int destinationRoomPosition = new Vector2Int(Mathf.RoundToInt(newPosition.x), Mathf.RoundToInt(newPosition.y)) + offset;
+
+        Room currentRoom = GameController.instance.level[currentRoomPosition.x, currentRoomPosition.y];
+
+        if (destinationRoomPosition.x < 0 || destinationRoomPosition.x >= GameController.instance.levelSize.x || destinationRoomPosition.y < 0 || destinationRoomPosition.y >= GameController.instance.levelSize.y)
+        {
+            changingRoomRoutine = null;
+            yield break;
+        }
+
+        Room destinationRoom = GameController.instance.level[destinationRoomPosition.x, destinationRoomPosition.y];
+        
+        if (destinationRoom == null || !destinationRoom.cleared)
+        {
+            changingRoomRoutine = null;
+            yield break;
+        }
+
+        SpriteRenderer destinationSpriteRenderer = destinationRoom.minimapObject.GetComponentInChildren<SpriteRenderer>();
+
+        Color previousColor = destinationSpriteRenderer.color;
+        destinationSpriteRenderer.color = Color.green;
+        yield return new WaitForSeconds(0.1f);
+        destinationSpriteRenderer.color = previousColor;
+
+        distanceValues = new Dictionary<Room, int> { { destinationRoom, 0 } };
+        AssignDistanceValuesForAdjacentRooms(destinationRoom, 1);
+
+        List<Room> path = GetPath(currentRoom);
+        path.Reverse();
+
+        yield return FollowPath(currentRoom, path);
+
+        player.transform.position = playerRepresantation.transform.position * new Vector2(roomSizeInTiles.x, roomSizeInTiles.y);
+        
         changingRoomRoutine = null;
+        SwitchMode();
+    }
+
+    private void AssignDistanceValuesForAdjacentRooms(Room room, int distance)
+    {
+        List<Room> roomsToCheck = new List<Room>();
+
+        foreach (Room adjacentRoom in room.connectedRooms)
+        {
+            if (!adjacentRoom.cleared)
+                continue;
+
+            if (!distanceValues.ContainsKey(adjacentRoom))
+            {
+                distanceValues.Add(adjacentRoom, distance);
+                roomsToCheck.Add(adjacentRoom);
+            }
+            else if (distanceValues[adjacentRoom] > distance)
+            {
+                distanceValues[adjacentRoom] = distance;
+                roomsToCheck.Add(adjacentRoom);
+            }
+        }
+
+        foreach (Room roomToCheck in roomsToCheck)
+        {
+            AssignDistanceValuesForAdjacentRooms(roomToCheck, distance + 1);
+        }
+    }
+
+    private List<Room> GetPath(Room room)
+    {
+        foreach (Room adjacentRoom in room.connectedRooms)
+        {
+            if (!distanceValues.ContainsKey(adjacentRoom))
+                continue;
+
+            if (distanceValues[adjacentRoom] == 0)
+                return new List<Room> { adjacentRoom };
+
+            if (distanceValues[adjacentRoom] < distanceValues[room])
+            {
+                List<Room> path = GetPath(adjacentRoom);
+
+                if (path != null)
+                {
+                    path.Add(adjacentRoom);
+                    return path;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private IEnumerator FollowPath(Room currentRoom, List<Room> path)
+    {
+        Vector3 corridorEntranceOffset = Vector3.zero;
+        Vector3 corridorExitOffset = Vector3.zero;
+
+        if (currentRoom.data.isBossRoom)
+        {
+            Dictionary<Vector2Int, Vector2Int> connections = currentRoom.GetComponent<BossRoom>().GetBossRoomData().GetDoorConnections();
+
+            foreach (Vector2Int connection in connections.Keys)
+            {
+                Vector2Int adjacentRoomPosition = currentRoom.data.location + connection;
+                if (GameController.instance.level[adjacentRoomPosition.x, adjacentRoomPosition.y] == path[0])
+                {
+                    corridorEntranceOffset = (Vector2)connection - (Vector2)connections[connection] * 0.6f;
+                    corridorExitOffset = (Vector2)connection - (Vector2)connections[connection] * 0.4f;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            foreach (Vector2Int connection in currentRoom.data.GetDoorConnections())
+            {
+                Vector2Int adjacentRoomPosition = currentRoom.data.location + connection;
+                if (GameController.instance.level[adjacentRoomPosition.x, adjacentRoomPosition.y] == path[0])
+                {
+                    Vector2 direction = RoomData.GetDoorNormal(connection, currentRoom.data.roomType);
+                    corridorEntranceOffset = (Vector2)connection - direction * 0.6f;
+                    corridorExitOffset = (Vector2)connection - direction * 0.4f;
+                    break;
+                }
+            }
+        }
+
+        Vector3 corridorEntrance = currentRoom.minimapObject.transform.position + corridorEntranceOffset;
+        Vector3 corridorExit = currentRoom.minimapObject.transform.position + corridorExitOffset;
+
+        float roomDuration = (corridorEntrance - playerRepresantation.position).magnitude / quickTravelSpeed;
+        float corridorDuration = (corridorExit - corridorEntrance).magnitude / quickTravelSpeed;
+
+        float timer = roomDuration;
+        Vector3 startPosition = playerRepresantation.position;
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            playerRepresantation.position = Vector3.Lerp(corridorEntrance, startPosition, timer / roomDuration);
+            yield return new WaitForEndOfFrame();
+        }
+
+        timer = corridorDuration;
+        startPosition = corridorEntrance;
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            playerRepresantation.position = Vector3.Lerp(corridorExit, startPosition, timer / corridorDuration);
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (path.Count == 1)
+            yield break;
+
+        Room nextRoom = path[0];
+        path.RemoveAt(0);
+        yield return FollowPath(nextRoom, path);
     }
 }

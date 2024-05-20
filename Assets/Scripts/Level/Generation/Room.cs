@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using UnityEditor;
 using UnityEngine;
 
 [Serializable]
@@ -348,8 +345,30 @@ public class Room : MonoBehaviour
         if (visible)
             return;
 
+        MakeVisible();
+    }
+
+    public void OnEnteredTriggerHit(Trigger trigger)
+    {
+        if (cleared)
+            return;
+
+        Debug.Log("Entered Combat");
+
+        MarkAsCleared();
+    }
+
+    public void MakeVisible()
+    {
         if (room)
             room.gameObject.SetActive(true);
+        else
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(true);
+            }
+        }
 
         foreach (Room room in connectedRooms)
             if (!room.visible)
@@ -361,14 +380,10 @@ public class Room : MonoBehaviour
             visibilityTrigger.gameObject.SetActive(false);
     }
 
-    public void OnEnteredTriggerHit(Trigger trigger)
+    public void MarkAsCleared()
     {
-        if (cleared)
-            return;
-
-        Debug.Log("Entered Combat");
-
-        GameController.instance.minimap.ExploreRoom(this);
+        minimapObject = GameController.instance.minimap.ExploreRoom(this);
+        cleared = true;
 
         foreach (Trigger enteredTrigger in enteredTriggers)
             enteredTrigger.gameObject.SetActive(false);

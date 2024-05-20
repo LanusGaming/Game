@@ -32,12 +32,6 @@ public class HUB : MonoBehaviour
     {
         buildIndex = SceneManager.GetActiveScene().buildIndex;
 
-        // set seed for current run
-        if (debugSeed != 0)
-            Configuration.Game.seed = debugSeed;
-        else if (Configuration.Game.seed == 0)
-            Configuration.Game.seed = (int)(DateTime.Now.Ticks % int.MaxValue);
-
         startGameTrigger.triggeredCallback = StartGame;
 
         player.active = false;
@@ -77,9 +71,12 @@ public class HUB : MonoBehaviour
     {
         player.active = false;
 
-        Debug.Log($"Seed: {Configuration.Game.seed}");
+        if (debugSeed != 0)
+            Configuration.Game.seed = debugSeed;
+        else if (Configuration.Game.seed == 0)
+            Configuration.Game.seed = (int)(DateTime.Now.Ticks % int.MaxValue);
 
-        GameController.generationRandomizer = HelperFunctions.GetNewRandomizer(Configuration.Game.seed);
+        GameController.generationRandomizer = HelperFunctions.GetNewRandomizer(Configuration.Game.seed, true);
         GameController.combatRandomizer = HelperFunctions.GetNewRandomizer();
 
         GenerateLevelOrder();

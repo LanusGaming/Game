@@ -26,19 +26,24 @@ public class GameController : MonoBehaviour
 
     [Header("Debug Options")]
     public bool generateLevel = true;
+    public bool showAllRooms = false;
+    public bool exploreAllRooms = false;
     public bool setRandomizers = false;
+    public int seed = 0;
     public bool requiresLevelEndTrigger = true;
     public bool playOpeningTransition = true;
     public bool setPlayerStats = false;
     public Stats playerStats;
 
+    [HideInInspector]
+    public Room[,] level;
+    [HideInInspector]
+    public Vector2Int levelSize;
+
     public static GameController instance;
     public static System.Random generationRandomizer;
     public static System.Random combatRandomizer;
     public static Queue<string> levelOrder;
-
-    private Room[,] level;
-    private Vector2Int levelSize;
 
     private void Awake()
     {
@@ -46,7 +51,7 @@ public class GameController : MonoBehaviour
 
         if (setRandomizers)
         {
-            generationRandomizer = HelperFunctions.GetNewRandomizer();
+            generationRandomizer = HelperFunctions.GetNewRandomizer(seed, true);
             combatRandomizer = HelperFunctions.GetNewRandomizer();
         }
     }
@@ -75,28 +80,13 @@ public class GameController : MonoBehaviour
 
         if (generateLevel)
         {
-            level = LevelGenerator.Generate(properties, spawnRoomObjects, bossRoomObjects, roomObjects, roomSizeInTiles, levelParent, minimap, generationRandomizer, out levelSize);
+            level = LevelGenerator.Generate(properties, spawnRoomObjects, bossRoomObjects, roomObjects, roomSizeInTiles, levelParent, minimap, generationRandomizer, out levelSize, showAllRooms, exploreAllRooms);
         }
     }
 
     private void Update()
     {
-        if (generateLevel)
-            minimap.playerRepresantation.localPosition = new Vector3(player.transform.position.x / roomSizeInTiles.x, player.transform.position.y / roomSizeInTiles.y);
 
-        if (Input.GetKeyDown(Configuration.Controls.map))
-        {
-            if (minimap.inMinimapMode && player.active)
-            {
-                if (minimap.SwitchMode())
-                    player.active = false;
-            }
-            else if (!minimap.inMinimapMode && !player.active)
-            {
-                if (minimap.SwitchMode())
-                    player.active = true;
-            }
-        }
     }
 
     public void EndLevel(Trigger trigger)

@@ -250,6 +250,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3901721210335499639, guid: 20540c5c95f1cb642b42ae8ad01874a5, type: 3}
+      propertyPath: quickTravelSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4719158648168732448, guid: 20540c5c95f1cb642b42ae8ad01874a5, type: 3}
       propertyPath: m_Name
       value: Minimap
@@ -310,6 +314,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccab2a49c2be1ca448c3dcc740acc21c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!20 &1251297578 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 18544953305339963, guid: 20540c5c95f1cb642b42ae8ad01874a5, type: 3}
+  m_PrefabInstance: {fileID: 1251297576}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1641880272
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -438,6 +447,18 @@ PrefabInstance:
       propertyPath: attacks.Array.data[1]
       value: 
       objectReference: {fileID: 1446341381441531838}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: probability
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: bulletSpreadAngle
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161593210260479491, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: rotationDegreesPerBurst
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4863395339046432599, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3
@@ -508,11 +529,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  minimumDistanceFromPlayer: 0
-  maximumDistanceFromPlayer: 0
-  standStill: 0
-  recovoryTime: 1
   cooldown: 2
+  recovoryTime: 1
+  probability: 0
   onCooldown: 0
   executing: 0
   bulletObject: {fileID: 3627753057657841185, guid: 22f2cd8cb7d054b44b7ecb59664a9185, type: 3}
@@ -524,7 +543,9 @@ MonoBehaviour:
   burstIntervall: 0.4
   rotationDegreesPerBurst: 5
   bulletSpreadAngle: 0
+  inaccuracyAngle: 0
   bulletLifetime: 0
+  followPlayer: 1
 --- !u!1001 &3776525792396973786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -590,8 +611,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1986052025}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
+      propertyPath: showAllRooms
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: levelGenerator
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
+      propertyPath: exploreAllRooms
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: levelEndTrigger
@@ -604,6 +633,14 @@ PrefabInstance:
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: roomObjects.Array.size
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
+      propertyPath: properties.maximumRooms
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
+      propertyPath: properties.minimumRooms
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: roomObjects.Array.data[0]
@@ -753,6 +790,10 @@ PrefabInstance:
       propertyPath: spawnRoomObjects.Array.data[3]
       value: 
       objectReference: {fileID: 8527446893717985353, guid: d2b27ef4467fda046a8ebea400ebd6f0, type: 3}
+    - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
+      propertyPath: properties.minimumDistanceFromBossRoom
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3740917338672820912, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: m_Name
       value: GameController
@@ -770,6 +811,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 356046717590723854, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: m_Cameras.Array.data[0]
+      value: 
+      objectReference: {fileID: 1251297578}
     - target: {fileID: 5810881412235210820, guid: d2e8572f74e935f49931343be24718c1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

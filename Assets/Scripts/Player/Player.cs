@@ -10,28 +10,28 @@ public class Player : Entity
 
     public override int health
     {
-        get { return PlayerData.stats.health; }
-        set { PlayerData.stats.health = value; }
+        get { return PlayerData.health; }
+        set { PlayerData.health = value; }
     }
     public override int maxHealth
     {
-        get { return PlayerData.stats.maxHealth; }
-        set { PlayerData.stats.maxHealth = value; }
+        get { return PlayerData.maxHealth; }
+        set { PlayerData.maxHealth = value; }
     }
     public override float damage
     {
-        get { return PlayerData.stats.damage; }
-        set { PlayerData.stats.damage = value; }
+        get { return PlayerData.damage; }
+        set { PlayerData.damage = value; }
     }
     public override float moveSpeed
     {
-        get { return PlayerData.stats.moveSpeed; }
-        set { PlayerData.stats.moveSpeed = value; }
+        get { return PlayerData.moveSpeed; }
+        set { PlayerData.moveSpeed = value; }
     }
     public override float defense
     {
-        get { return PlayerData.stats.defense; }
-        set { PlayerData.stats.defense = value; }
+        get { return PlayerData.defense; }
+        set { PlayerData.defense = value; }
     }
 
     [HideInInspector]
