@@ -57,16 +57,16 @@ public class Player : Entity
 
         if (active)
         {
-            if (Input.GetKey(Configuration.Controls.moveUp))
+            if (Input.GetKey(Settings.Controls.moveUp))
                 velocity.y += 1;
-            if (Input.GetKey(Configuration.Controls.moveDown))
+            if (Input.GetKey(Settings.Controls.moveDown))
                 velocity.y += -1;
-            if (Input.GetKey(Configuration.Controls.moveRight))
+            if (Input.GetKey(Settings.Controls.moveRight))
             {
                 velocity.x += 1;
                 spriteRenderer.flipX = false;
             }
-            if (Input.GetKey(Configuration.Controls.moveLeft))
+            if (Input.GetKey(Settings.Controls.moveLeft))
             {
                 velocity.x += -1;
                 spriteRenderer.flipX = true;

@@ -39,6 +39,10 @@ public class Minimap : MonoBehaviour
     public float mapZoomSensitivity = 0.2f;
     public float minZoomSize = 1f;
     public float quickTravelSpeed = 3f;
+    public bool showQuickTravelPath = true;
+    public float quickTravelPathWidth = 0.05f;
+    public Color quickTravelPathColor = Color.green;
+    public Material quickTravelPathMaterial;
 
     [HideInInspector]
     public bool inMinimapMode = true;
@@ -49,6 +53,8 @@ public class Minimap : MonoBehaviour
     private Vector3 mousePoint = Vector3.zero;
     private float originalCameraSize;
     private Coroutine changingRoomRoutine;
+    private SpriteRenderer destinationSpriteRenderer;
+    private Color destinationSpritePreviousColor;
     private Dictionary<Room, int> distanceValues;
 
     private void Start()
@@ -67,10 +73,10 @@ public class Minimap : MonoBehaviour
 
     private void Update()
     {
-        if (!inMinimapMode && Input.GetKeyDown(Configuration.Controls.exit))
+        if (!inMinimapMode && Input.GetKeyDown(Settings.Controls.exit))
             SwitchMode();
 
-        if (Input.GetKeyDown(Configuration.Controls.map) && mapCamera != null)
+        if (Input.GetKeyDown(Settings.Controls.map) && mapCamera != null)
             if (inMinimapMode && player.active || !inMinimapMode && !player.active)
                 SwitchMode();
 
@@ -100,7 +106,12 @@ public class Minimap : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 if (changingRoomRoutine != null)
+                {
                     StopCoroutine(changingRoomRoutine);
+
+                    if (destinationSpriteRenderer != null)
+                        destinationSpriteRenderer.color = destinationSpritePreviousColor;
+                }
 
                 changingRoomRoutine = StartCoroutine(ChangeRoom(mapCamera.ScreenToWorldPoint(Input.mousePosition)));
             }
@@ -324,6 +335,12 @@ public class Minimap : MonoBehaviour
         }
 
         Room destinationRoom = GameController.instance.level[destinationRoomPosition.x, destinationRoomPosition.y];
+
+        if (destinationRoom == currentRoom)
+        {
+            changingRoomRoutine = null;
+            yield break;
+        }
         
         if (destinationRoom == null || !destinationRoom.cleared)
         {
@@ -331,20 +348,37 @@ public class Minimap : MonoBehaviour
             yield break;
         }
 
-        SpriteRenderer destinationSpriteRenderer = destinationRoom.minimapObject.GetComponentInChildren<SpriteRenderer>();
+        destinationSpriteRenderer = destinationRoom.minimapObject.GetComponentInChildren<SpriteRenderer>();
 
-        Color previousColor = destinationSpriteRenderer.color;
+        destinationSpritePreviousColor = destinationSpriteRenderer.color;
         destinationSpriteRenderer.color = Color.green;
         yield return new WaitForSeconds(0.1f);
-        destinationSpriteRenderer.color = previousColor;
+        destinationSpriteRenderer.color = destinationSpritePreviousColor;
+
+        destinationSpriteRenderer = null;
 
         distanceValues = new Dictionary<Room, int> { { destinationRoom, 0 } };
         AssignDistanceValuesForAdjacentRooms(destinationRoom, 1);
 
-        List<Room> path = GetPath(currentRoom);
+        List<Vector3> path = GetPath(currentRoom);
+        path.Add(playerRepresantation.position);
         path.Reverse();
 
-        yield return FollowPath(currentRoom, path);
+        LineRenderer line = gameObject.AddComponent<LineRenderer>();
+        line.enabled = showQuickTravelPath;
+        line.sortingLayerName = "Minimap";
+        line.sortingOrder = 1;
+        line.material = quickTravelPathMaterial;
+        line.startColor = quickTravelPathColor;
+        line.endColor = quickTravelPathColor;
+        line.startWidth = quickTravelPathWidth;
+        line.endWidth = quickTravelPathWidth;
+        line.positionCount = path.Count;
+        line.SetPositions(path.ToArray());
+
+        yield return FollowPath(path, line);
+
+        Destroy(line);
 
         player.transform.position = playerRepresantation.transform.position * new Vector2(roomSizeInTiles.x, roomSizeInTiles.y);
         
@@ -379,23 +413,61 @@ public class Minimap : MonoBehaviour
         }
     }
 
-    private List<Room> GetPath(Room room)
+    private List<Vector3> GetPath(Room room)
     {
+        if (distanceValues[room] == 0)
+            return new List<Vector3>();
+
         foreach (Room adjacentRoom in room.connectedRooms)
         {
             if (!distanceValues.ContainsKey(adjacentRoom))
                 continue;
 
-            if (distanceValues[adjacentRoom] == 0)
-                return new List<Room> { adjacentRoom };
-
             if (distanceValues[adjacentRoom] < distanceValues[room])
             {
-                List<Room> path = GetPath(adjacentRoom);
+                List<Vector3> path = GetPath(adjacentRoom);
 
                 if (path != null)
                 {
-                    path.Add(adjacentRoom);
+                    Vector3 corridorEntranceOffset = Vector3.zero;
+                    Vector3 corridorExitOffset = Vector3.zero;
+
+                    if (room.data.isBossRoom)
+                    {
+                        Dictionary<Vector2Int, Vector2Int> connections = room.GetComponent<BossRoom>().GetBossRoomData().GetDoorConnections();
+
+                        foreach (Vector2Int connection in connections.Keys)
+                        {
+                            Vector2Int adjacentRoomPosition = room.data.location + connection;
+                            if (GameController.instance.level[adjacentRoomPosition.x, adjacentRoomPosition.y] == adjacentRoom)
+                            {
+                                corridorEntranceOffset = (Vector2)connection - (Vector2)connections[connection] * 0.6f;
+                                corridorExitOffset = (Vector2)connection - (Vector2)connections[connection] * 0.4f;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (Vector2Int connection in room.data.GetDoorConnections())
+                        {
+                            Vector2Int adjacentRoomPosition = room.data.location + connection;
+                            if (GameController.instance.level[adjacentRoomPosition.x, adjacentRoomPosition.y] == adjacentRoom)
+                            {
+                                Vector2 direction = RoomData.GetDoorNormal(connection, room.data.roomType);
+                                corridorEntranceOffset = (Vector2)connection - direction * 0.6f;
+                                corridorExitOffset = (Vector2)connection - direction * 0.4f;
+                                break;
+                            }
+                        }
+                    }
+
+                    Vector3 corridorEntrance = room.minimapObject.transform.position + corridorEntranceOffset;
+                    Vector3 corridorExit = room.minimapObject.transform.position + corridorExitOffset;
+
+                    path.Add(corridorExit);
+                    path.Add(corridorEntrance);
+
                     return path;
                 }
             }
@@ -404,72 +476,27 @@ public class Minimap : MonoBehaviour
         return null;
     }
 
-    private IEnumerator FollowPath(Room currentRoom, List<Room> path)
+    private IEnumerator FollowPath(List<Vector3> path, LineRenderer line)
     {
-        Vector3 corridorEntranceOffset = Vector3.zero;
-        Vector3 corridorExitOffset = Vector3.zero;
+        if (path.Count == 1)
+            yield break;
 
-        if (currentRoom.data.isBossRoom)
-        {
-            Dictionary<Vector2Int, Vector2Int> connections = currentRoom.GetComponent<BossRoom>().GetBossRoomData().GetDoorConnections();
-
-            foreach (Vector2Int connection in connections.Keys)
-            {
-                Vector2Int adjacentRoomPosition = currentRoom.data.location + connection;
-                if (GameController.instance.level[adjacentRoomPosition.x, adjacentRoomPosition.y] == path[0])
-                {
-                    corridorEntranceOffset = (Vector2)connection - (Vector2)connections[connection] * 0.6f;
-                    corridorExitOffset = (Vector2)connection - (Vector2)connections[connection] * 0.4f;
-                    break;
-                }
-            }
-        }
-        else
-        {
-            foreach (Vector2Int connection in currentRoom.data.GetDoorConnections())
-            {
-                Vector2Int adjacentRoomPosition = currentRoom.data.location + connection;
-                if (GameController.instance.level[adjacentRoomPosition.x, adjacentRoomPosition.y] == path[0])
-                {
-                    Vector2 direction = RoomData.GetDoorNormal(connection, currentRoom.data.roomType);
-                    corridorEntranceOffset = (Vector2)connection - direction * 0.6f;
-                    corridorExitOffset = (Vector2)connection - direction * 0.4f;
-                    break;
-                }
-            }
-        }
-
-        Vector3 corridorEntrance = currentRoom.minimapObject.transform.position + corridorEntranceOffset;
-        Vector3 corridorExit = currentRoom.minimapObject.transform.position + corridorExitOffset;
-
-        float roomDuration = (corridorEntrance - playerRepresantation.position).magnitude / quickTravelSpeed;
-        float corridorDuration = (corridorExit - corridorEntrance).magnitude / quickTravelSpeed;
-
-        float timer = roomDuration;
+        float duration = (path[1] - playerRepresantation.position).magnitude / quickTravelSpeed;
+        float timer = duration;
         Vector3 startPosition = playerRepresantation.position;
 
         while (timer > 0)
         {
             timer -= Time.deltaTime;
-            playerRepresantation.position = Vector3.Lerp(corridorEntrance, startPosition, timer / roomDuration);
+            playerRepresantation.position = Vector3.Lerp(path[1], startPosition, timer / duration);
+            path[0] = playerRepresantation.position;
+            line.SetPosition(0, path[0]);
             yield return new WaitForEndOfFrame();
         }
 
-        timer = corridorDuration;
-        startPosition = corridorEntrance;
-
-        while (timer > 0)
-        {
-            timer -= Time.deltaTime;
-            playerRepresantation.position = Vector3.Lerp(corridorExit, startPosition, timer / corridorDuration);
-            yield return new WaitForEndOfFrame();
-        }
-
-        if (path.Count == 1)
-            yield break;
-
-        Room nextRoom = path[0];
-        path.RemoveAt(0);
-        yield return FollowPath(nextRoom, path);
+        path.RemoveAt(1);
+        line.positionCount = path.Count;
+        line.SetPositions(path.ToArray());
+        yield return FollowPath(path, line);
     }
 }

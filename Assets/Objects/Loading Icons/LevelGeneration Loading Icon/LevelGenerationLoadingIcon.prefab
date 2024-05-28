@@ -109,7 +109,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingIconMinimap: {fileID: 6268199887411146210}
-  texture: {fileID: 8600000, guid: ddabd85143a2d1d40afcb101d6062608, type: 2}
   explorationIntervall: 0.1
   generationCooldown: 0.5
   properties:
@@ -270,6 +269,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3901721210335499639, guid: 20540c5c95f1cb642b42ae8ad01874a5, type: 3}
       propertyPath: navMeshSurface
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3901721210335499639, guid: 20540c5c95f1cb642b42ae8ad01874a5, type: 3}
+      propertyPath: playerRepresantation
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4719158648168732448, guid: 20540c5c95f1cb642b42ae8ad01874a5, type: 3}

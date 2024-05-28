@@ -84,9 +84,22 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void OnApplicationQuit()
     {
+        SaveManager.SaveAll();
+    }
 
+    public Room GetRoomAt(Vector2 position)
+    {
+        if (level == null)
+            return null;
+
+        Vector2Int coordinates = new Vector2Int(Mathf.RoundToInt(position.x / roomSizeInTiles.x), Mathf.RoundToInt(position.y / roomSizeInTiles.y)) - new Vector2Int((int)(levelParent.transform.position.x / roomSizeInTiles.x), (int)(levelParent.transform.position.y / roomSizeInTiles.y));
+        
+        if (coordinates.x < 0 || coordinates.y < 0 || coordinates.x >= levelSize.x || coordinates.y >= levelSize.y)
+            return null;
+
+        return level[coordinates.x, coordinates.y];
     }
 
     public void EndLevel(Trigger trigger)

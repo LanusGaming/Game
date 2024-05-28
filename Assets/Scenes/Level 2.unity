@@ -250,6 +250,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3901721210335499639, guid: 20540c5c95f1cb642b42ae8ad01874a5, type: 3}
+      propertyPath: quickTravelSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4719158648168732448, guid: 20540c5c95f1cb642b42ae8ad01874a5, type: 3}
       propertyPath: m_Name
       value: Minimap
@@ -811,6 +815,10 @@ PrefabInstance:
       propertyPath: m_Cameras.Array.data[0]
       value: 
       objectReference: {fileID: 1251297578}
+    - target: {fileID: 2224646392283802148, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: orthographic size
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5810881412235210820, guid: d2e8572f74e935f49931343be24718c1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -851,6 +859,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6569899617637092466, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6569899617637092466, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: m_Cameras.Array.data[0]
+      value: 
+      objectReference: {fileID: 1251297578}
     - target: {fileID: 8818504876056503296, guid: d2e8572f74e935f49931343be24718c1, type: 3}
       propertyPath: m_Name
       value: Camera

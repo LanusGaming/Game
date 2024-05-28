@@ -115,13 +115,14 @@ public abstract class Entity : MonoBehaviour
     public abstract float moveSpeed { get; set; }
     public abstract float defense { get; set; }
 
+    public bool invincible;
     public float invinciblityDuration = 0.5f;
     public SpriteRenderer spriteRenderer;
     public Material flashWhiteMaterial;
+    
 
     [SerializeField]
     protected Stats stats = new Stats();
-    protected bool invincible;
 
     private Material originalMaterial;
 

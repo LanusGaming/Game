@@ -620,7 +620,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: exploreAllRooms
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: levelEndTrigger
@@ -815,6 +815,10 @@ PrefabInstance:
       propertyPath: m_Cameras.Array.data[0]
       value: 
       objectReference: {fileID: 1251297578}
+    - target: {fileID: 2224646392283802148, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: orthographic size
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5810881412235210820, guid: d2e8572f74e935f49931343be24718c1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -855,6 +859,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6569899617637092466, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6569899617637092466, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: m_Cameras.Array.data[0]
+      value: 
+      objectReference: {fileID: 1251297578}
     - target: {fileID: 8818504876056503296, guid: d2e8572f74e935f49931343be24718c1, type: 3}
       propertyPath: m_Name
       value: Camera

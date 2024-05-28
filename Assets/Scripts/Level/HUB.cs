@@ -67,16 +67,21 @@ public class HUB : MonoBehaviour
         };
     }
 
+    private void OnApplicationQuit()
+    {
+        SaveManager.SaveAll();
+    }
+
     public void StartGame(Trigger trigger)
     {
         player.active = false;
 
         if (debugSeed != 0)
-            Configuration.Game.seed = debugSeed;
-        else if (Configuration.Game.seed == 0)
-            Configuration.Game.seed = (int)(DateTime.Now.Ticks % int.MaxValue);
+            GameData.Config.seed = debugSeed;
+        else if (GameData.Config.seed == 0)
+            GameData.Config.seed = (int)(DateTime.Now.Ticks % int.MaxValue);
 
-        GameController.generationRandomizer = HelperFunctions.GetNewRandomizer(Configuration.Game.seed, true);
+        GameController.generationRandomizer = HelperFunctions.GetNewRandomizer(GameData.Config.seed, true);
         GameController.combatRandomizer = HelperFunctions.GetNewRandomizer();
 
         GenerateLevelOrder();

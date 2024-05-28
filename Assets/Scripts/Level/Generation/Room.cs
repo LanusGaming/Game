@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [Serializable]
 public enum RoomType
@@ -314,6 +315,7 @@ public class Room : MonoBehaviour
 {
     public RoomData data;
     public Transform room;
+    public Pathfinder pathfinder;
     public Trigger[] visibilityTriggers;
     public Trigger[] enteredTriggers;
     public GameObject[] layoutPresets;
@@ -335,9 +337,7 @@ public class Room : MonoBehaviour
             trigger.triggeredCallback = OnVisibilityTriggerHit;
 
         foreach (Trigger trigger in enteredTriggers)
-        {
             trigger.triggeredCallback = OnEnteredTriggerHit;
-        }
     }
 
     public void OnVisibilityTriggerHit(Trigger trigger)
