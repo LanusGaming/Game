@@ -6,7 +6,6 @@ using UnityEngine;
 public class Trigger : MonoBehaviour
 {
     public bool interactable;
-    public KeyCode interactKey;
 
     public Action<Trigger> triggeredCallback;
     public Action<Trigger> interactionEnteredCallback;
@@ -41,7 +40,7 @@ public class Trigger : MonoBehaviour
 
     private IEnumerator WaitForInput()
     {
-        while (!Input.GetKey((interactKey == KeyCode.None) ? Settings.Controls.interact : interactKey))
+        while (!Settings.Controls.InteractPressed)
         {
             interactionActiveCallback.Invoke(this);
             yield return new WaitForEndOfFrame();

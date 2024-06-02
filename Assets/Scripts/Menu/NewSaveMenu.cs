@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class NewSaveMenu : SaveMenu
 {
-    public override void OnSlotSelected(int index)
+    public override void SelectSlot(int index)
     {
-        Debug.Log(index);
+        Debug.Log(SaveManager.saves[index]);
 
         if (SaveManager.saves[index] == null)
         {

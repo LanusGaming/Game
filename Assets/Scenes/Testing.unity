@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &127536728
 Transform:
   m_ObjectHideFlags: 0
@@ -742,7 +742,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4719158648168732448, guid: 20540c5c95f1cb642b42ae8ad01874a5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7530620927226792891, guid: 20540c5c95f1cb642b42ae8ad01874a5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -865,12 +865,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 865430205}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
+      propertyPath: loadSettings
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: showAllRooms
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: generateLevel
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: setPlayerStats
@@ -882,7 +886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: exploreAllRooms
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: playOpeningTransition
@@ -1201,6 +1205,14 @@ PrefabInstance:
     - target: {fileID: 3296911401044830682, guid: d2e8572f74e935f49931343be24718c1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnResumeButtonClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447294458432645625, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773820513704465925, guid: d2e8572f74e935f49931343be24718c1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5810881412235210820, guid: d2e8572f74e935f49931343be24718c1, type: 3}
       propertyPath: m_LocalPosition.x

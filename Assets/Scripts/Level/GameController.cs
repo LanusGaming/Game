@@ -6,11 +6,13 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using System;
 using System.Linq;
+using UnityEngine.Audio;
 
 public class GameController : MonoBehaviour
 {
     public Player player;
     public Minimap minimap;
+    
     public Trigger levelEndTrigger;
     public GameObject transitionObject;
     public Transform bulletParent;
@@ -34,6 +36,10 @@ public class GameController : MonoBehaviour
     public bool playOpeningTransition = true;
     public bool setPlayerStats = false;
     public Stats playerStats;
+    public bool loadSettings = false;
+    public AudioMixer mixer;
+    public bool setSettings = false;
+    public Settings settings;
 
     [HideInInspector]
     public Room[,] level;
@@ -48,6 +54,17 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        if (loadSettings)
+        {
+            Settings.Mixer = mixer;
+            Settings.SettingsManager.LoadSettings();
+        }
+        else if (setSettings)
+        {
+            Settings.Mixer = mixer;
+            Settings.Apply(settings);
+        }
 
         if (setRandomizers)
         {

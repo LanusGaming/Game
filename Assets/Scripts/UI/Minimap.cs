@@ -73,10 +73,10 @@ public class Minimap : MonoBehaviour
 
     private void Update()
     {
-        if (!inMinimapMode && Input.GetKeyDown(Settings.Controls.exit))
+        if (!inMinimapMode && Settings.Controls.ExitPressed)
             SwitchMode();
 
-        if (Input.GetKeyDown(Settings.Controls.map) && mapCamera != null)
+        if (Settings.Controls.OpenMapPressed && mapCamera != null)
             if (inMinimapMode && player.active || !inMinimapMode && !player.active)
                 SwitchMode();
 

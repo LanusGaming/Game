@@ -7,53 +7,44 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public abstract class SaveMenu : MonoBehaviour
+public abstract class SaveMenu : Menu
 {
+    public Animator buttonAnimator;
     public GameObject slotObject;
     public Transform slotParent;
 
-    public Button test;
+    protected SaveSlot[] slots;
 
-    protected MenuController controller;
-    protected TextMeshProUGUI[] slots;
-
-    private void Start()
+    protected override void Start()
     {
-        controller = FindObjectOfType<MenuController>();
+        base.Start();
 
-        slots = new TextMeshProUGUI[SaveManager.SAVE_COUNT];
+        slots = new SaveSlot[SaveManager.SAVE_COUNT];
 
         for (int i = 0; i < SaveManager.SAVE_COUNT; i++)
         {
             RectTransform slot = Instantiate(slotObject, slotParent).GetComponent<RectTransform>();
             slot.localPosition = new Vector3(0, -i * 200);
 
-            slots[i] = slot.GetComponentInChildren<TextMeshProUGUI>();
-
-            SaveSlot saveSlot = slot.gameObject.AddComponent<SaveSlot>();
-            saveSlot.index = i;
-            saveSlot.menu = this;
-
-            slot.GetComponent<Button>().onClick.AddListener(saveSlot.OnSlotSelected);
+            slots[i] = slot.GetComponent<SaveSlot>();
+            slots[i].index = i;
+            slots[i].menu = this;
         }
 
         UpdateSlots();
     }
 
-    protected virtual void UpdateSlots()
+    protected virtual void UpdateSlots(string placeholder = "+", bool interactableWhenMissing = true)
     {
-        for (int i = 0; i < slots.Length; i++)
+        foreach (var slot in slots)
         {
-            if (SaveManager.saves[i] != null)
-                slots[i].text = SaveManager.saves[i].name;
-            else
-                slots[i].text = "+";
+            slot.UpdateSlot(placeholder, interactableWhenMissing);
         }
     }
 
-    public void Show()
+    public override void Show()
     {
-        gameObject.SetActive(true);
+        base.Show();
 
         if (slots == null)
             return;
@@ -61,21 +52,17 @@ public abstract class SaveMenu : MonoBehaviour
         UpdateSlots();
     }
 
-    public void Hide()
+    public abstract void SelectSlot(int index);
+
+    public virtual void ClearSlot(int index)
     {
-        gameObject.SetActive(false);
-    }
+        if (SaveManager.activeSave == SaveManager.saves[index])
+        {
+            SaveManager.activeSave = null;
+            controller.continueButton.SetActive(false);
+        }
 
-    public abstract void OnSlotSelected(int index);
-}
-
-public class SaveSlot : MonoBehaviour
-{
-    public int index;
-    public SaveMenu menu;
-
-    public void OnSlotSelected()
-    {
-        menu.OnSlotSelected(index);
+        SaveManager.saves[index] = null;
+        UpdateSlots();
     }
 }

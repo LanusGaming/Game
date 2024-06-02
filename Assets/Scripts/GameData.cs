@@ -131,12 +131,14 @@ public static class SaveManager
 
     public static void SaveAll()
     {
-        foreach (var save in saves)
+        for (int i = 0; i < SAVE_COUNT; i++)
         {
-            if (save == null)
-                continue;
+            Save save = saves[i];
 
-            Save(save);
+            if (save == null)
+                Clear(i);
+            else
+                Save(save);
         }
     }
 
@@ -194,5 +196,13 @@ public static class SaveManager
         fileStream.Close();
 
         return save;
+    }
+
+    private static void Clear(int index)
+    {
+        string path = $"{Application.persistentDataPath}/{SAVE_PREFIX}_{index}";
+
+        if (File.Exists(path))
+            File.Delete(path);
     }
 }

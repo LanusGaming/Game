@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class LoadSaveMenu : SaveMenu
 {
-    public override void OnSlotSelected(int index)
+    protected override void UpdateSlots(string placeholder = "-", bool interactableWhenMissing = false)
+    {
+        base.UpdateSlots("-", false);
+    }
+
+    public override void SelectSlot(int index)
     {
         if (SaveManager.saves[index] != null)
         {

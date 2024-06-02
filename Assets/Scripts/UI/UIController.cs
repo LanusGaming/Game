@@ -28,7 +28,7 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(Settings.Controls.exit))
+        if (Settings.Controls.ExitPressed)
         {
             if (GameController.instance != null && !GameController.instance.minimap.inMinimapMode)
                 return;

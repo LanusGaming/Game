@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public static class HelperFunctions
@@ -54,4 +56,46 @@ public static class HelperFunctions
 
         return new System.Random(seed);
     }
+
+    public static int GetGreatestCommonDivisor(int a, int b)
+    {
+        return (b == 0) ? a : GetGreatestCommonDivisor(b, a % b);
+    }
+    
+    public static float RoundToPlaces(float value, int places)
+    {
+        float multiplier = Mathf.Pow(10f, places);
+        return (((int)(value * multiplier)) / multiplier);
+    }
 }
+
+
+/*public interface IHasCustomEqualsMethod
+{
+    public bool HasEqualProperties(object other)
+    {
+        if (GetType() != other.GetType())
+            return false;
+
+        foreach (var member in GetType().GetMembers())
+        {
+            if (member.MemberType != MemberTypes.Field)
+                continue;
+
+            FieldInfo field = member as FieldInfo;
+            
+            if (field.FieldType.GetInterfaces().Contains(typeof(IHasCustomEqualsMethod)))
+            {
+                if (!((IHasCustomEqualsMethod)field.GetValue(this)).HasEqualProperties(field.GetValue(other)))
+                    return false;
+            }
+            else
+            {
+                if (!field.GetValue(this).Equals(field.GetValue(other)))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+}*/
