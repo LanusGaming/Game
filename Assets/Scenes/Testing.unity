@@ -906,11 +906,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: properties.maximumRooms
-      value: 500
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: properties.minimumRooms
-      value: 400
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 2777747573680789536, guid: a8ca56a786436f84a8845735998f719f, type: 3}
       propertyPath: requiresLevelEndTrigger
@@ -1093,6 +1093,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2413674740039269699, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
+      propertyPath: stats.moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4863395339046432599, guid: dc29b81e147c3df439b57ef2587a74aa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4

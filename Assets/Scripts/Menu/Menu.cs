@@ -17,7 +17,7 @@ public abstract class Menu : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (Settings.Controls.ExitPressed)
+        if (InputManager.ExitPressed)
             controller.HideActiveMenu();
     }
 

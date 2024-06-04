@@ -12,27 +12,21 @@ public class UIController : MonoBehaviour
     public GameObject escapeMenu;
     public GameObject confirmDialogObject;
 
-    public static UIController instance;
+    public static UIController Instance { get; private set; }
 
     private Player player;
 
-    private void Awake()
-    {
-        instance = this;
-    }
+    private void Awake() { Instance = this; }
 
     private void Start()
     {
-        player = Player.instance;
+        player = Player.Instance;
     }
 
     private void Update()
     {
-        if (Settings.Controls.ExitPressed)
+        if (InputManager.ExitPressed)
         {
-            if (GameController.instance != null && !GameController.instance.minimap.inMinimapMode)
-                return;
-
             escapeMenu.SetActive(!escapeMenu.activeSelf);
             ChangePauseMode(escapeMenu.activeSelf);
         }
@@ -91,7 +85,7 @@ public class UIController : MonoBehaviour
         escapeMenu.SetActive(false);
         ChangePauseMode(false);
 
-        Transition transition = Instantiate(GameController.instance.transitionObject).GetComponent<Transition>();
+        Transition transition = Instantiate(GameController.Instance.transitionObject).GetComponent<Transition>();
         transition.transform.position = player.transform.position;
         transition.reversed = true;
 
@@ -100,7 +94,7 @@ public class UIController : MonoBehaviour
 
     private IEnumerator LoadScene(int buildIndex)
     {
-        yield return new WaitForSeconds(GameController.instance.loadNextLevelDelay);
+        yield return new WaitForSeconds(GameController.Instance.loadNextLevelDelay);
         SceneManager.LoadSceneAsync(buildIndex);
     }
 }

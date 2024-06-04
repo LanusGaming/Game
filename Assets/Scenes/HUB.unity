@@ -719,6 +719,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
+      propertyPath: playerStats.moveSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515819622132088473, guid: 55ee8effbdfd94a43b9f1cb6ea4481b7, type: 3}
       propertyPath: playerStats.baseDefense
       value: 10
       objectReference: {fileID: 0}

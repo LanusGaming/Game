@@ -382,7 +382,7 @@ public class Room : MonoBehaviour
 
     public void MarkAsCleared()
     {
-        minimapObject = GameController.instance.minimap.ExploreRoom(this);
+        minimapObject = GameController.Instance.minimap.ExploreRoom(this);
         cleared = true;
 
         foreach (Trigger enteredTrigger in enteredTriggers)

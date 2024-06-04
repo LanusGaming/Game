@@ -7,10 +7,10 @@ using UnityEngine.SceneManagement;
 using System;
 using System.Linq;
 using UnityEngine.Audio;
+using Game;
 
 public class GameController : MonoBehaviour
 {
-    public Player player;
     public Minimap minimap;
     
     public Trigger levelEndTrigger;
@@ -37,8 +37,8 @@ public class GameController : MonoBehaviour
     public bool setPlayerStats = false;
     public Stats playerStats;
     public bool loadSettings = false;
-    public AudioMixer mixer;
     public bool setSettings = false;
+    public AudioMixer mixer;
     public Settings settings;
 
     [HideInInspector]
@@ -46,24 +46,34 @@ public class GameController : MonoBehaviour
     [HideInInspector]
     public Vector2Int levelSize;
 
-    public static GameController instance;
+    public static GameController Instance { get; private set; }
     public static System.Random generationRandomizer;
     public static System.Random combatRandomizer;
     public static Queue<string> levelOrder;
 
+    private Player player;
+
     private void Awake()
     {
-        instance = this;
+        Instance = this;
 
-        if (loadSettings)
+        if (loadSettings || setSettings)
         {
             Settings.Mixer = mixer;
-            Settings.SettingsManager.LoadSettings();
-        }
-        else if (setSettings)
-        {
-            Settings.Mixer = mixer;
-            Settings.Apply(settings);
+
+            if (loadSettings)
+            {
+                Settings.SettingsManager.LoadSettings();
+                Settings.Apply();
+            }
+            else if (setSettings)
+            {
+                Settings.Mixer = mixer;
+                Settings.Apply(settings);
+            }
+
+            SaveData.Set(new SaveData());
+            SaveData.StartRun();
         }
 
         if (setRandomizers)
@@ -75,10 +85,12 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        player = Player.Instance;
+
         if (setPlayerStats)
         {
-            PlayerData.stats = playerStats;
-            PlayerData.stats.health = playerStats.maxHealth;
+            RunData.ActiveRun.playerData.stats = playerStats;
+            RunData.ActiveRun.playerData.stats.Health = playerStats.MaxHealth;
         }
 
         if (requiresLevelEndTrigger)

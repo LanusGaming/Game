@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 public class VideoMenu : Menu, ISettingsMenu
 {
@@ -10,93 +11,85 @@ public class VideoMenu : Menu, ISettingsMenu
     //public Selector displaySelector;
     public Toggle vsyncToggle;
 
+    private bool initialized;
+
     protected override void Start()
     {
         base.Start();
 
+        Inititalize();
         Revert();
+
+        initialized = true;
+    }
+
+    private void Inititalize()
+    {
+        resolutionSelector.Initialize(GetResolutions(), ResolutionToString);
+        fullScreenModeSelector.Initialize(new FullScreenMode[] { FullScreenMode.ExclusiveFullScreen, FullScreenMode.FullScreenWindow, FullScreenMode.Windowed }, FullScreenModeToString);
+
+        //displaySelector.Initialize(GetDisplays());
     }
 
     public void Apply(Settings changes)
     {
-        Resolution resolution = Screen.resolutions[(int)resolutionSelector.GetValue()];
-        changes.video.resolution = new Vector2Int(resolution.width, resolution.height);
+        if (!initialized)
+            return;
 
-        switch ((int)fullScreenModeSelector.GetValue())
-        {
-            case 0:
-                changes.video.mode = FullScreenMode.ExclusiveFullScreen;
-                break;
-
-            case 1:
-                changes.video.mode = FullScreenMode.FullScreenWindow;
-                break;
-
-            case 2:
-                changes.video.mode = FullScreenMode.Windowed;
-                break;
-        }
-
+        changes.video.resolution = (Vector2Int)resolutionSelector.GetValue();
+        changes.video.mode = (FullScreenMode)fullScreenModeSelector.GetValue();
         //changes.video.display = (int)displaySelector.GetValue();
-
-        changes.video.vsync = (bool)vsyncToggle.GetValue();
+        changes.video.vsync = vsyncToggle.GetValue();
     }
 
     public void Revert()
     {
-        resolutionSelector.Initialize(GetResolutions());
-        resolutionSelector.SetValue(GetResolutionIndex(Settings.Video.Resolution));
-
-        fullScreenModeSelector.SetValue(GetFullScreenModeIndex(Settings.Video.FullScreenMode));
-
-        //displaySelector.Initialize(GetDisplays());
+        resolutionSelector.SetValue(Settings.Video.Resolution);
+        fullScreenModeSelector.SetValue(Settings.Video.FullScreenMode);
         //displaySelector.SetValue(Settings.Video.Display);
-
         vsyncToggle.SetValue(Settings.Video.VSync);
     }
 
-    private string[] GetResolutions()
+    private Vector2Int[] GetResolutions()
     {
-        List<string> resolutions = new List<string>();
+        List<Vector2Int> resolutions = new List<Vector2Int>();
 
         foreach (var resolution in Screen.resolutions)
         {
-            int gcd = HelperFunctions.GetGreatestCommonDivisor(resolution.width, resolution.height);
-            resolutions.Add($"{resolution.width} x {resolution.height} ({resolution.width / gcd}:{resolution.height / gcd})");
+            Vector2Int size = new Vector2Int(resolution.width, resolution.height);
+
+            if (resolutions.Contains(size))
+                continue;
+
+            resolutions.Add(size);
         }
 
         return resolutions.ToArray();
     }
 
-    private int GetResolutionIndex(Vector2Int resolution)
+    private string ResolutionToString(object resolution) { return ResolutionToString((Vector2Int) resolution); }
+    private string ResolutionToString(Vector2Int resolution)
     {
-        for (int i = 0; i < Screen.resolutions.Length; i++)
-        {
-            if (resolution.x == Screen.resolutions[i].width && resolution.y == Screen.resolutions[i].height)
-                return i;
-        }
-
-        return 0;
+        int gcd = HelperFunctions.GetGreatestCommonDivisor(resolution.x, resolution.y);
+        return $"{resolution.x} x {resolution.y} ({resolution.x / gcd}:{resolution.y / gcd})";
     }
 
-    private int GetFullScreenModeIndex(FullScreenMode mode)
+    private string FullScreenModeToString(object mode) { return FullScreenModeToString((FullScreenMode) mode); }
+    private string FullScreenModeToString(FullScreenMode mode)
     {
         switch (mode)
         {
             case FullScreenMode.ExclusiveFullScreen:
-                return 0;
+                return "Fullscreen";
 
             case FullScreenMode.FullScreenWindow:
-                return 1;
+                return "Borderless";
 
             case FullScreenMode.Windowed:
-                return 2;
-
-            case FullScreenMode.MaximizedWindow:
-                return 2;
+                return "Windowed";
 
             default:
-                return 0;
+                return "Fullscreen";
         }
     }
 

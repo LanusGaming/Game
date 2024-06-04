@@ -40,7 +40,7 @@ public class Trigger : MonoBehaviour
 
     private IEnumerator WaitForInput()
     {
-        while (!Settings.Controls.InteractPressed)
+        while (!InputManager.InteractPressed)
         {
             interactionActiveCallback.Invoke(this);
             yield return new WaitForEndOfFrame();

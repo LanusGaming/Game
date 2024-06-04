@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 public class AudioMenu : Menu, ISettingsMenu
 {
@@ -10,79 +12,51 @@ public class AudioMenu : Menu, ISettingsMenu
     public Slider uiVolumeSlider;
     public Selector speakerModeSelector;
 
+    private bool initialized;
+
     protected override void Start()
     {
         base.Start();
 
+        Initialize();
         Revert();
+
+        initialized = true;
+    }
+
+    private void Initialize()
+    {
+        masterVolumeSlider.Initialize(0, Settings.Audio.MAX_VOLUME, true);
+        musicVolumeSlider.Initialize(0, Settings.Audio.MAX_VOLUME, true);
+        sfxVolumeSlider.Initialize(0, Settings.Audio.MAX_VOLUME, true);
+        uiVolumeSlider.Initialize(0, Settings.Audio.MAX_VOLUME, true);
+        speakerModeSelector.Initialize(new AudioSpeakerMode[] { AudioSpeakerMode.Mono, AudioSpeakerMode.Stereo, AudioSpeakerMode.Quad, AudioSpeakerMode.Surround }, SpeakerModeToString);
     }
 
     public void Apply(Settings changes)
     {
-        changes.audio.master = (int)(float)masterVolumeSlider.GetValue();
-        changes.audio.music = (int)(float)musicVolumeSlider.GetValue();
-        changes.audio.sfx = (int)(float)sfxVolumeSlider.GetValue();
-        changes.audio.ui = (int)(float)uiVolumeSlider.GetValue();
+        if (!initialized)
+            return;
 
-        switch ((int)speakerModeSelector.GetValue())
-        {
-            case 0:
-                changes.audio.mode = AudioSpeakerMode.Mono;
-                break;
-
-            case 1:
-                changes.audio.mode = AudioSpeakerMode.Stereo;
-                break;
-
-            case 2:
-                changes.audio.mode = AudioSpeakerMode.Quad;
-                break;
-
-            case 3:
-                changes.audio.mode = AudioSpeakerMode.Surround;
-                break;
-
-            default:
-                changes.audio.mode = AudioSpeakerMode.Stereo;
-                break;
-        }
+        changes.audio.master = (int)masterVolumeSlider.GetValue();
+        changes.audio.music = (int)musicVolumeSlider.GetValue();
+        changes.audio.sfx = (int)sfxVolumeSlider.GetValue();
+        changes.audio.ui = (int)uiVolumeSlider.GetValue();
+        changes.audio.mode = (AudioSpeakerMode) speakerModeSelector.GetValue();
     }
 
     public void Revert()
     {
-        masterVolumeSlider.Initialize(0, Settings.Audio.MAX_VOLUME, true);
-        masterVolumeSlider.SetValue((float)Settings.Audio.MasterVolume);
-
-        musicVolumeSlider.Initialize(0, Settings.Audio.MAX_VOLUME, true);
-        musicVolumeSlider.SetValue((float)Settings.Audio.MusicVolume);
-
-        sfxVolumeSlider.Initialize(0, Settings.Audio.MAX_VOLUME, true);
-        sfxVolumeSlider.SetValue((float)Settings.Audio.SFXVolume);
-
-        uiVolumeSlider.Initialize(0, Settings.Audio.MAX_VOLUME, true);
-        uiVolumeSlider.SetValue((float)Settings.Audio.UIVolume);
-
-        speakerModeSelector.SetValue(GetSpeakerModeIndex(Settings.Audio.SpeakerMode));
+        masterVolumeSlider.SetValue(Settings.Audio.MasterVolume);
+        musicVolumeSlider.SetValue(Settings.Audio.MusicVolume);
+        sfxVolumeSlider.SetValue(Settings.Audio.SFXVolume);
+        uiVolumeSlider.SetValue(Settings.Audio.UIVolume);
+        speakerModeSelector.SetValue(Settings.Audio.SpeakerMode);
     }
 
-    private int GetSpeakerModeIndex(AudioSpeakerMode mode)
+    private string SpeakerModeToString(object mode) { return SpeakerModeToString((AudioSpeakerMode) mode); }
+    private string SpeakerModeToString(AudioSpeakerMode mode)
     {
-        switch (mode)
-        {
-            case AudioSpeakerMode.Mono:
-                return 0;
-
-            case AudioSpeakerMode.Stereo:
-                return 1;
-
-            case AudioSpeakerMode.Quad:
-                return 2;
-
-            case AudioSpeakerMode.Surround:
-                return 3;
-
-            default:
-                return 1;
-        }
+        return Enum.GetName(typeof(AudioSpeakerMode), mode);
     }
 }

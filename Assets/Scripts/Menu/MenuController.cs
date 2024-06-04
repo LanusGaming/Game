@@ -3,9 +3,12 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using Game;
 
 public class MenuController : MonoBehaviour
 {
+    public static MenuController Instance { get; private set; }
+
     public string hubSceneName = "HUB";
     public GameObject continueButton;
     public GameObject transitionObject;
@@ -15,6 +18,8 @@ public class MenuController : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+
         Settings.Mixer = mixer;
         Settings.SettingsManager.LoadSettings();
         SaveManager.LoadSaves();
@@ -36,7 +41,7 @@ public class MenuController : MonoBehaviour
 
     public void StartGame()
     {
-        GameData.Set(SaveManager.activeSave.gameData);
+        SaveManager.Apply();
 
         Transition transition = Instantiate(transitionObject).GetComponent<Transition>();
         transition.reversed = true;

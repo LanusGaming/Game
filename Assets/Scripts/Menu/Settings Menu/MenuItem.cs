@@ -4,12 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class MenuItem : MonoBehaviour
+public abstract class MenuItem<T> : MonoBehaviour
 {
     [Range(0f, 1f)]
     public float defaultAlpha = 0.5f;
     [Range(0f, 1f)]
     public float highlightAlpha = 1f;
+
+    protected T value;
 
     private RectTransform bounds;
     private Graphic[] elements;
@@ -51,10 +53,14 @@ public abstract class MenuItem : MonoBehaviour
         }
     }
 
-    public abstract object GetValue();
-
-    public virtual void SetValue(object value)
+    public virtual T GetValue()
     {
+        return value;
+    }
+
+    public virtual void SetValue(T value)
+    {
+        this.value = value;
         SettingsMenu.Updated(GetComponentInParent<ISettingsMenu>());
     }
 }

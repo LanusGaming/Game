@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Slider : MenuItem
+public class Slider : MenuItem<float>
 {
     public int roundToDecimalPlaces = 2;
     public UnityEngine.UI.Slider slider;
     public TextMeshProUGUI indicator;
-
-    private float value;
 
     public void Initialize(float minValue, float maxValue, bool wholeNumbers)
     {
@@ -18,19 +16,12 @@ public class Slider : MenuItem
         slider.wholeNumbers = wholeNumbers;
     }
 
-    public override object GetValue()
+    public override void SetValue(float value)
     {
-        return value;
-    }
-
-    public override void SetValue(object value)
-    {
-        this.value = (float)value;
-        slider.value = this.value;
-
-        indicator.text = HelperFunctions.RoundToPlaces(this.value, roundToDecimalPlaces).ToString();
-
         base.SetValue(value);
+
+        slider.value = value;
+        indicator.text = HelperFunctions.RoundToPlaces(value, roundToDecimalPlaces).ToString();
     }
 
     public void ChangeValue(float value)

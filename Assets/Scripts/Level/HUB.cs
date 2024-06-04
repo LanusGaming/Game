@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using Game;
 
 [Serializable]
 public struct Stage
@@ -35,8 +36,7 @@ public class HUB : MonoBehaviour
         startGameTrigger.triggeredCallback = StartGame;
 
         player.active = false;
-        PlayerData.stats = playerStats;
-        PlayerData.stats.health = PlayerData.stats.maxHealth;
+        SaveData.Current.basePlayer = new PlayerData(playerStats);
 
         // show opening transition
         Transition transition = Instantiate(transitionObject).GetComponent<Transition>();
@@ -49,7 +49,7 @@ public class HUB : MonoBehaviour
         // test for interact dialog
         GameObject dialog = null;
 
-        interactTrigger.interactionEnteredCallback = (trigger) => dialog = UIController.instance.DisplayDialog(interactDialog, player.transform.position);
+        interactTrigger.interactionEnteredCallback = (trigger) => dialog = UIController.Instance.DisplayDialog(interactDialog, player.transform.position);
         interactTrigger.interactionActiveCallback = (trigger) =>
         {
             dialog.transform.localPosition = Camera.main.WorldToScreenPoint(player.transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f);
@@ -77,16 +77,18 @@ public class HUB : MonoBehaviour
         player.active = false;
 
         if (debugSeed != 0)
-            GameData.Config.seed = debugSeed;
-        else if (GameData.Config.seed == 0)
-            GameData.Config.seed = (int)(DateTime.Now.Ticks % int.MaxValue);
+            SaveData.Current.config.seed = debugSeed;
+        else if (SaveData.Config.Seed == 0)
+            SaveData.Current.config.seed = (int)(DateTime.Now.Ticks % int.MaxValue);
 
-        GameController.generationRandomizer = HelperFunctions.GetNewRandomizer(GameData.Config.seed, true);
+        GameController.generationRandomizer = HelperFunctions.GetNewRandomizer(SaveData.Config.Seed, true);
         GameController.combatRandomizer = HelperFunctions.GetNewRandomizer();
 
         GenerateLevelOrder();
 
         player.active = false;
+
+        SaveData.StartRun();
 
         Transition transition = Instantiate(transitionObject).GetComponent<Transition>();
         transition.transform.position = player.transform.position;

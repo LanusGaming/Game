@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2520647757384231812}
   - component: {fileID: 2777747573680789536}
+  - component: {fileID: 205464065523134992}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -44,9 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3578920dc6ee0d84cadfb3a89c198eb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  minimap: {fileID: 0}
   levelEndTrigger: {fileID: 0}
   transitionObject: {fileID: 679647144363379413, guid: 8f8a5da0860a6b447a917ce0c965a5f0, type: 3}
+  bulletParent: {fileID: 0}
+  loadNextLevelDelay: 2
   properties:
     minimumRooms: 10
     maximumRooms: 15
@@ -60,3 +63,73 @@ MonoBehaviour:
   bossRoomObjects: []
   roomObjects: []
   levelParent: {fileID: 0}
+  generateLevel: 1
+  showAllRooms: 0
+  exploreAllRooms: 0
+  setRandomizers: 0
+  seed: 0
+  requiresLevelEndTrigger: 1
+  playOpeningTransition: 1
+  setPlayerStats: 0
+  playerStats:
+    health: 100
+    maxHealth: 100
+    damage: 1
+    moveSpeed: 5
+    defense: 0
+  loadSettings: 0
+  mixer: {fileID: 24100000, guid: 4bc24ffd7058dcc4f9df3de906b37a8e, type: 2}
+  setSettings: 0
+  settings:
+    video:
+      resolution: {x: 2802, y: 588}
+      mode: 0
+      vsync: 1
+    audio:
+      master: 50
+      music: 100
+      sfx: 100
+      ui: 100
+      mode: 2
+    controls:
+      moveUp:
+        name: Up
+        primaryKey: 119
+        secondaryKey: 0
+      moveDown:
+        name: Down
+        primaryKey: 115
+        secondaryKey: 0
+      moveLeft:
+        name: Left
+        primaryKey: 97
+        secondaryKey: 0
+      moveRight:
+        name: Right
+        primaryKey: 100
+        secondaryKey: 0
+      interact:
+        name: Interact
+        primaryKey: 101
+        secondaryKey: 0
+      openMap:
+        name: Map
+        primaryKey: 109
+        secondaryKey: 0
+      exit:
+        name: Exit
+        primaryKey: 27
+        secondaryKey: 0
+  levelSize: {x: 0, y: 0}
+--- !u!114 &205464065523134992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740917338672820912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32aa93025bd385b4d8021784c8028d6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

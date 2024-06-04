@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 [Serializable]
 public class MinimapObjects
@@ -45,7 +46,7 @@ public class Minimap : MonoBehaviour
     public Material quickTravelPathMaterial;
 
     [HideInInspector]
-    public bool inMinimapMode = true;
+    public bool inMapMode = false;
 
     private Player player;
 
@@ -59,7 +60,7 @@ public class Minimap : MonoBehaviour
 
     private void Start()
     {
-        player = Player.instance;
+        player = Player.Instance;
 
         minimapSpriteMask.localScale = new Vector3(minimapCamera.orthographicSize * 2, minimapCamera.orthographicSize * 2, 1);
         minimapBackground.localScale = minimapSpriteMask.localScale;
@@ -73,18 +74,17 @@ public class Minimap : MonoBehaviour
 
     private void Update()
     {
-        if (!inMinimapMode && Settings.Controls.ExitPressed)
+        if (inMapMode && InputManager.Pressed(Settings.Controls.Exit, "map"))
             SwitchMode();
 
-        if (Settings.Controls.OpenMapPressed && mapCamera != null)
-            if (inMinimapMode && player.active || !inMinimapMode && !player.active)
-                SwitchMode();
+        if (InputManager.Pressed(Settings.Controls.OpenMap, "map") && mapCamera != null && (!inMapMode && player.active || inMapMode && !player.active))
+            SwitchMode();
 
-        if (inMinimapMode && playerRepresantation != null)
+        if (!inMapMode && playerRepresantation != null)
         {
             playerRepresantation.localPosition = new Vector3(player.transform.position.x / roomSizeInTiles.x, player.transform.position.y / roomSizeInTiles.y);
         }
-        else if (!inMinimapMode)
+        else if (inMapMode)
         {
             if (mousePoint != Vector3.zero)
             {
@@ -218,10 +218,24 @@ public class Minimap : MonoBehaviour
         if (changingRoomRoutine != null)
             return;
 
-        inMinimapMode = !inMinimapMode;
+        inMapMode = !inMapMode;
 
-        if (inMinimapMode)
+        if (inMapMode)
         {
+            InputManager.Focus("map");
+
+            minimapCamera.gameObject.SetActive(false);
+            mapCamera.gameObject.SetActive(true);
+
+            mapCamera.transform.localPosition = new Vector3(playerRepresantation.localPosition.x, playerRepresantation.localPosition.y, -1f);
+            originalCameraSize = mapCamera.orthographicSize;
+
+            player.active = false;
+        }
+        else
+        {
+            InputManager.Unfocus();
+
             mapCamera.gameObject.SetActive(false);
             minimapCamera.gameObject.SetActive(true);
 
@@ -231,16 +245,6 @@ public class Minimap : MonoBehaviour
             mapBackground.localScale = mapSpriteMask.localScale;
 
             player.active = true;
-        }
-        else
-        {
-            minimapCamera.gameObject.SetActive(false);
-            mapCamera.gameObject.SetActive(true);
-
-            mapCamera.transform.localPosition = new Vector3(playerRepresantation.localPosition.x, playerRepresantation.localPosition.y, -1f);
-            originalCameraSize = mapCamera.orthographicSize;
-
-            player.active = false;
         }
     }
 
@@ -326,15 +330,15 @@ public class Minimap : MonoBehaviour
         Vector2Int currentRoomPosition = new Vector2Int(Mathf.RoundToInt(playerRepresantation.localPosition.x), Mathf.RoundToInt(playerRepresantation.localPosition.y)) + offset;
         Vector2Int destinationRoomPosition = new Vector2Int(Mathf.RoundToInt(newPosition.x), Mathf.RoundToInt(newPosition.y)) + offset;
 
-        Room currentRoom = GameController.instance.level[currentRoomPosition.x, currentRoomPosition.y];
+        Room currentRoom = GameController.Instance.level[currentRoomPosition.x, currentRoomPosition.y];
 
-        if (destinationRoomPosition.x < 0 || destinationRoomPosition.x >= GameController.instance.levelSize.x || destinationRoomPosition.y < 0 || destinationRoomPosition.y >= GameController.instance.levelSize.y)
+        if (destinationRoomPosition.x < 0 || destinationRoomPosition.x >= GameController.Instance.levelSize.x || destinationRoomPosition.y < 0 || destinationRoomPosition.y >= GameController.Instance.levelSize.y)
         {
             changingRoomRoutine = null;
             yield break;
         }
 
-        Room destinationRoom = GameController.instance.level[destinationRoomPosition.x, destinationRoomPosition.y];
+        Room destinationRoom = GameController.Instance.level[destinationRoomPosition.x, destinationRoomPosition.y];
 
         if (destinationRoom == currentRoom)
         {
@@ -439,7 +443,7 @@ public class Minimap : MonoBehaviour
                         foreach (Vector2Int connection in connections.Keys)
                         {
                             Vector2Int adjacentRoomPosition = room.data.location + connection;
-                            if (GameController.instance.level[adjacentRoomPosition.x, adjacentRoomPosition.y] == adjacentRoom)
+                            if (GameController.Instance.level[adjacentRoomPosition.x, adjacentRoomPosition.y] == adjacentRoom)
                             {
                                 corridorEntranceOffset = (Vector2)connection - (Vector2)connections[connection] * 0.6f;
                                 corridorExitOffset = (Vector2)connection - (Vector2)connections[connection] * 0.4f;
@@ -452,7 +456,7 @@ public class Minimap : MonoBehaviour
                         foreach (Vector2Int connection in room.data.GetDoorConnections())
                         {
                             Vector2Int adjacentRoomPosition = room.data.location + connection;
-                            if (GameController.instance.level[adjacentRoomPosition.x, adjacentRoomPosition.y] == adjacentRoom)
+                            if (GameController.Instance.level[adjacentRoomPosition.x, adjacentRoomPosition.y] == adjacentRoom)
                             {
                                 Vector2 direction = RoomData.GetDoorNormal(connection, room.data.roomType);
                                 corridorEntranceOffset = (Vector2)connection - direction * 0.6f;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Game;
 
 public class SettingsMenu : Menu
 {
@@ -30,13 +31,13 @@ public class SettingsMenu : Menu
         Settings changes;
 
         if (instance.changes == null)
-            changes = new Settings(Settings.Instance);
+            changes = new Settings(Settings.Current);
         else
             changes = instance.changes;
 
         menu.Apply(changes);
 
-        if (changes == Settings.Instance)
+        if (changes == Settings.Current)
         {
             instance.changes = null;
             instance.applyButtons.SetActive(false);

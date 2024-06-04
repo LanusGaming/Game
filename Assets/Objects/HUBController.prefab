@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2458268143966419106}
   - component: {fileID: 4515819622132088473}
+  - component: {fileID: 1798273576254626695}
   m_Layer: 0
   m_Name: HUBController
   m_TagString: Untagged
@@ -62,3 +63,15 @@ MonoBehaviour:
   interactTrigger: {fileID: 0}
   interactDialog: {fileID: 0}
   transitionObject: {fileID: 0}
+--- !u!114 &1798273576254626695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3352206041278845706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32aa93025bd385b4d8021784c8028d6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
